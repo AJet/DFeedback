@@ -2,10 +2,6 @@
 
 DFeedback (DaisyDisk Feedback) is a component for providing in-app feedback and requesting support. Along with the text, the component can send the user's e-mail and optional system configuration profile.
 
-Here's how it looks:
-
-![Screenshot](ReadMeScreenshot.png)
-
 ##Usage
 
 DFeedback is a package of source code (Cocoa, Obj-C) that you simply add to your project.
@@ -23,7 +19,7 @@ Don't forget to link to the following frameworks:
 
 ##Origin, credits and legal stuff
 
-DaisyDisk Feedback was inspired by [JRFeedbackProvider](https://github.com/rentzsch/jrfeedbackprovider), but totally rewritten from scratch (except maybe some tiny portions of code).
+DFeedback was inspired by [JRFeedbackProvider](https://github.com/rentzsch/jrfeedbackprovider), but totally rewritten from scratch (except maybe some tiny portions of code).
 
 The component is available under the terms of non-restrictive [MIT license](http://en.wikipedia.org/wiki/MIT_License).
 
@@ -46,6 +42,6 @@ We used [JRFeedbackProvider](https://github.com/rentzsch/jrfeedbackprovider) in 
 * optional system info (collected in the background, can be previewed by users)
 
 __Are there any downsides?__<br />
-We haven't build XXXX as an all-purpose ultra-flexible component. It's designed with DaisyDisk in mind, but you're free to modify it to fit your special needs.
+We haven't build DFeedback as an all-purpose ultra-flexible component. It's designed with DaisyDisk in mind, but you're free to modify it to fit your special needs.
 
-Love XXX and use it in your own projects? Feel free to send http://www.daisydiskapp.com/support.php us a link/screenshot.
+Love DFeedback and use it in your own projects? Feel free to [send](http://www.daisydiskapp.com/support.php) us a link/screenshot.

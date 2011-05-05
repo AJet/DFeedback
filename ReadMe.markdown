@@ -2,6 +2,8 @@
 
 DFeedback (DaisyDisk Feedback) is a component for providing in-app feedback and requesting support. Along with the text, the component can send the user's e-mail and optional system configuration profile.
 
+![Screenshot](http://www.daisydiskapp.com/img/DFScreenshot.png)
+
 ##Usage
 
 DFeedback is a package of source code (Cocoa, Obj-C) that you simply add to your project.

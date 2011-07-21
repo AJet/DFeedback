@@ -10,4 +10,4 @@
 "DF_ALERT_SENDFAILED_MESSAGE" = "The following error has occurred: %@";
 "DF_ALERT_SENDFAILED_DISMISS_BUTTON_TITLE" = "Dismiss";
 
-"DF_TEXT_PLACEHOLDER" = ""; /* we do understand English :) */
+"DF_TEXT_PLACEHOLDER" = ""; /* we do understand English, for other languages should be, translated: Please write your feedback in English, as we can't understand <language>. */

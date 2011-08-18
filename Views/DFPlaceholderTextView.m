@@ -46,12 +46,17 @@
 {
 	// draw super
 	[super drawRect:rect];
+
+	[NSGraphicsContext saveGraphicsState];
+
 	// draw placeholder
 	if ([[self string] isEqualToString:@""] && self != [[self window] firstResponder])
 	{
 		NSRect textRect = NSInsetRect([self bounds], [[self textContainer] lineFragmentPadding], 0.0);
 		[m_placeholderString drawInRect:textRect withAttributes:DFPlaceholderTextView_placeholderTextAttributes];
 	}
+	
+	[NSGraphicsContext restoreGraphicsState];
 }
 
 //-------------------------------------------------------------------------------------------------

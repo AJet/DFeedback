@@ -342,7 +342,7 @@ static NSString* s_feedbackURL = nil;
 	[[self window] setContentBorderThickness:DFWindow_bottomBarHeight forEdge: NSMinYEdge];
 	
 	// initialize placeholder strings
-	[textView setPlaceholderString:NSLocalizedStringFromTable(@"DF_TEXT_PLACEHOLDER", @"DFLocalizable", nil)];
+	[textView setPlaceholderText:NSLocalizedStringFromTable(@"DF_TEXT_PLACEHOLDER", @"DFLocalizable", nil)];
 	
 	// initialize email bounce icon
 	[emailBounceIcon setIcon:DFWindow_emailWarningImage];

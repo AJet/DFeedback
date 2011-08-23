@@ -22,22 +22,22 @@
 //-------------------------------------------------------------------------------------------------
 - (void)dealloc
 {
-	[m_placeholderString release];
+	[m_placeholderText release];
 	[super dealloc];
 }
 
 //-------------------------------------------------------------------------------------------------
-- (NSString*)placeholderString
+- (NSString*)placeholderText
 {
-	return m_placeholderString;
+	return m_placeholderText;
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)setPlaceholderString:(NSString*)value
+- (void)setPlaceholderText:(NSString*)value
 {
 	[value retain];
-	[m_placeholderString release];
-	m_placeholderString = value;
+	[m_placeholderText release];
+	m_placeholderText = value;
 	[self setNeedsDisplay:YES];
 }
 
@@ -50,27 +50,25 @@
 	[NSGraphicsContext saveGraphicsState];
 
 	// draw placeholder
-	if ([[self string] isEqualToString:@""] && self != [[self window] firstResponder])
+	if ([self string] == nil || [[self string] isEqualToString:@""])
 	{
 		NSRect textRect = NSInsetRect([self bounds], [[self textContainer] lineFragmentPadding], 0.0);
-		[m_placeholderString drawInRect:textRect withAttributes:DFPlaceholderTextView_placeholderTextAttributes];
+		[[self placeholderText] drawInRect:textRect withAttributes:DFPlaceholderTextView_placeholderTextAttributes];
 	}
 	
 	[NSGraphicsContext restoreGraphicsState];
 }
 
 //-------------------------------------------------------------------------------------------------
-- (BOOL)becomeFirstResponder
+- (void)didChangeText
 {
-	[self setNeedsDisplay:YES];
-	return [super becomeFirstResponder];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (BOOL)resignFirstResponder
-{
-	[self setNeedsDisplay:YES];
-	return [super resignFirstResponder];
+	[super didChangeText];
+	// clear explicitly, or otherwise the placeholder text will sometimes leave some dirty pixels
+	if (m_shouldInvalidateOnChange)
+	{
+		[self setNeedsDisplay:YES];
+	}
+	m_shouldInvalidateOnChange = ([self string] == nil || [[self string] isEqualToString:@""]);
 }
 
 @end

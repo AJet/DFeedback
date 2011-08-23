@@ -10,14 +10,17 @@
 //-------------------------------------------------------------------------------------------------
 @interface DFPlaceholderTextView : NSTextView
 {
-	NSString* m_placeholderString;
+	NSString* m_placeholderText;
+	bool m_shouldInvalidateOnChange;
 }
 
 //-------------------------------------------------------------------------------------------------
 // Public instance methods
 //-------------------------------------------------------------------------------------------------
-// Placeholder string
-- (NSString*)placeholderString;
-- (void)setPlaceholderString:(NSString*)value;
+// Placeholder text
+// NOTE: this property is intentionally named differently than placeholderString, to avoid clashing
+// with undocumented NSTextView's method that seems to do the same thing and causes the text to double
+- (NSString*)placeholderText;
+- (void)setPlaceholderText:(NSString*)value;
 
 @end

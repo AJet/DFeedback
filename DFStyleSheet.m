@@ -26,7 +26,7 @@ NSDictionary*	DFPlaceholderTextView_placeholderTextAttributes = nil;
 void			initializeDFPlaceholderTextViewStyles()
 {
 	DFPlaceholderTextView_placeholderTextAttributes = [[NSDictionary dictionaryWithObjectsAndKeys:[NSColor colorWithDeviceRed:128.0/255.0 green:128.0/255.0 blue:145.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
-														[NSFont systemFontOfSize:12], NSFontAttributeName,
+														[NSFont userFontOfSize:12], NSFontAttributeName,
 														nil] retain];
 }
 

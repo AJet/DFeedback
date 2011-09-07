@@ -32,6 +32,17 @@ static NSString* s_feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 @implementation DFWindowController
 //-------------------------------------------------------------------------------------------------
++ (DFWindowController*)singleton
+{
+	if (s_singleton == nil)
+	{
+		s_singleton = [[DFWindowController alloc] init];
+	}
+	return s_singleton;
+}
+
+
+//-------------------------------------------------------------------------------------------------
 - (DFFeedbackType)currentFeedbackType;
 {
 	return (DFFeedbackType)[tabView indexOfTabViewItem:[tabView selectedTabViewItem]];
@@ -357,6 +368,19 @@ static NSString* s_feedbackURL = nil;
 	{
 		[emailComboBox selectItemAtIndex:0];
 	}
+	
+	// restoration
+	SEL setRestorableSel = @selector(setRestorable:);
+	if ([[self window] respondsToSelector:setRestorableSel])
+	{
+		NSUInteger isRestorable = YES;
+		[[self window] performSelector:setRestorableSel withObject:(id)isRestorable];
+	}
+	SEL setRestorationClassSel = @selector(setRestorationClass:);
+	if ([[self window] respondsToSelector:setRestorationClassSel])
+	{
+		[[self window] performSelector:setRestorationClassSel withObject:[self class]];
+	}
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -366,6 +390,11 @@ static NSString* s_feedbackURL = nil;
 	[super dealloc];
 }
 
+//-------------------------------------------------------------------------------------------------
++ (void)restoreWindowWithIdentifier:(NSString*)identifier state:(NSCoder*)state completionHandler:(void (^)(NSWindow*, NSError*))completionHandler
+{
+	completionHandler([[self singleton] window], nil);
+}
 
 //-------------------------------------------------------------------------------------------------
 - (IBAction)sendReport:(id)sender
@@ -485,26 +514,22 @@ static NSString* s_feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 + (void)showFeedback:(DFFeedbackType)feedbackType
 {
-	if (s_singleton == nil)
-	{
-		s_singleton = [[DFWindowController alloc] init];
-	}
 	
 	// center the window
-	NSWindow* window = [s_singleton window];
+	NSWindow* window = [[self singleton] window];
 	if (![window isVisible])
 	{
 		[window center];
 	}
 	
 	// initialize
-	[s_singleton initializeControls:feedbackType];
+	[[self singleton] initializeControls:feedbackType];
 	
 	// show window non-modally
-	[s_singleton showWindow:nil];
+	[[self singleton] showWindow:nil];
 	
 	// initialize first responder
-	[s_singleton initializeFirstResponder];
+	[[self singleton] initializeFirstResponder];
 }
 
 //-------------------------------------------------------------------------------------------------

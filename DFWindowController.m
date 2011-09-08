@@ -11,6 +11,7 @@
 #import "DFStyleSheet.h"
 #import "DFBounceIconView.h"
 #import "DFKeyTabView.h"
+#import "OSVersionChecker.h"
 
 //-------------------------------------------------------------------------------------------------
 // Private constants
@@ -22,6 +23,13 @@ typedef enum
 	DFFeedback_Feature = 1,
 	DFFeedback_Bug = 2
 } DFFeedbackType;
+
+//-------------------------------------------------------------------------------------------------
+static NSString* const STATE_MESSAGE = @"DFeedback_Message";
+static NSString* const STATE_EMAILADDRESS = @"DFeedback_EmailAddress";
+static NSString* const STATE_FEEDBACKTYPE = @"DFeedback_FeedbackType";
+static NSString* const STATE_INCLUDESYSTEMPROFILE = @"DFeedback_IncludeSystemProfile";
+static NSString* const STATE_INCLUDEEMAILADDRESS = @"DFeedback_IncludeEmailAddress";
 
 //-------------------------------------------------------------------------------------------------
 // Private static data
@@ -37,15 +45,47 @@ static NSString* s_feedbackURL = nil;
 	if (s_singleton == nil)
 	{
 		s_singleton = [[DFWindowController alloc] init];
+		// make sure the NIB is loaded
+		[s_singleton window];
 	}
 	return s_singleton;
 }
 
+//-------------------------------------------------------------------------------------------------
+- (NSUInteger)tabIndexFromFeedbackType:(DFFeedbackType)feedbackType
+{
+	return (DFFeedbackType)feedbackType;
+}
+
+//-------------------------------------------------------------------------------------------------
+- (DFFeedbackType)feedbackTypeFromTabIndex:(NSUInteger)tabIndex
+{
+	return (NSUInteger)tabIndex;
+}
+
+//-------------------------------------------------------------------------------------------------
+- (NSString*)feedbackTypeStringFromType:(DFFeedbackType)feedbackType
+{
+	switch(feedbackType)
+	{
+		case DFFeedback_Bug:
+			return @"Bug Report";
+		case DFFeedback_Feature:
+			return @"Feature Request";
+		case DFFeedback_General:
+			return @"General Question";
+		default:
+			NSAssert (false, @"Invalid case for feedback type");
+			break;
+	}
+	return nil;
+}
 
 //-------------------------------------------------------------------------------------------------
 - (DFFeedbackType)currentFeedbackType;
 {
-	return (DFFeedbackType)[tabView indexOfTabViewItem:[tabView selectedTabViewItem]];
+	NSUInteger tabIndex = [tabView indexOfTabViewItem:[tabView selectedTabViewItem]];
+	return [self feedbackTypeFromTabIndex:tabIndex];
 }
 
 
@@ -93,24 +133,6 @@ static NSString* s_feedbackURL = nil;
 	[detailsProgressIndicator stopAnimation:self];
 	[detailsProgressIndicator setHidden:YES];
 	[detailsTextContainer setHidden:NO];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (NSString*)feedbackTypeStringFromType:(DFFeedbackType)feedbackType
-{
-	switch(feedbackType)
-	{
-		case DFFeedback_Bug:
-			return @"Bug Report";
-		case DFFeedback_Feature:
-			return @"Feature Request";
-		case DFFeedback_General:
-			return @"General Question";
-		default:
-			NSAssert (false, @"Invalid case for feedback type");
-			break;
-	}
-	return nil;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -330,9 +352,10 @@ static NSString* s_feedbackURL = nil;
 	[[self window] setTitle:windowTitle];
 	
 	// select tab
-	[tabsSegmentedControl setSelectedSegment:feedbackType];
-	[tabView selectTabViewItemAtIndex:feedbackType];
-	[self tabView:tabView didSelectTabViewItem:[tabView tabViewItemAtIndex:[self currentFeedbackType]]];
+	NSUInteger tabIndex = [self tabIndexFromFeedbackType:feedbackType];
+	[tabsSegmentedControl setSelectedSegment:tabIndex];
+	[tabView selectTabViewItemAtIndex:tabIndex];
+	[self tabView:tabView didSelectTabViewItem:[tabView tabViewItemAtIndex:tabIndex]];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -370,16 +393,10 @@ static NSString* s_feedbackURL = nil;
 	}
 	
 	// restoration
-	SEL setRestorableSel = @selector(setRestorable:);
-	if ([[self window] respondsToSelector:setRestorableSel])
+	if ([OSVersionChecker macOsVersion] >= OSVersion_Lion)
 	{
-		NSUInteger isRestorable = YES;
-		[[self window] performSelector:setRestorableSel withObject:(id)isRestorable];
-	}
-	SEL setRestorationClassSel = @selector(setRestorationClass:);
-	if ([[self window] respondsToSelector:setRestorationClassSel])
-	{
-		[[self window] performSelector:setRestorationClassSel withObject:[self class]];
+		[[self window] performSelector:@selector(setRestorable:) withObject:(id)(NSUInteger)YES];
+		[[self window] performSelector:@selector(setRestorationClass:) withObject:[self class]];
 	}
 }
 
@@ -391,9 +408,52 @@ static NSString* s_feedbackURL = nil;
 }
 
 //-------------------------------------------------------------------------------------------------
+- (void)restoreState:(NSCoder*)state
+{
+	DFFeedbackType feedbackType = DFFeedback_General;
+	if ([state containsValueForKey:STATE_FEEDBACKTYPE])
+	{
+		feedbackType = (DFFeedbackType)[state decodeIntForKey:STATE_FEEDBACKTYPE];
+	}
+	[self initializeControls:feedbackType];
+
+	NSString* message = [state decodeObjectForKey:STATE_MESSAGE];
+	if (message != nil)
+	{
+		[textView setString:message];
+	}
+	NSString* emailAddress = [state decodeObjectForKey:STATE_EMAILADDRESS];
+	if (emailAddress != nil)
+	{
+		[emailComboBox setStringValue:emailAddress];
+	}
+	if ([state containsValueForKey:STATE_INCLUDEEMAILADDRESS])
+	{
+		BOOL includeEmailAddress = [state decodeBoolForKey:STATE_INCLUDEEMAILADDRESS];
+		[includeEmailCheckBox setState:includeEmailAddress ? NSOnState : NSOffState];
+	}
+	if ([state containsValueForKey:STATE_INCLUDESYSTEMPROFILE])
+	{
+		BOOL includeSystemProfile = [state decodeBoolForKey:STATE_INCLUDESYSTEMPROFILE];
+		[includeSystemProfileCheckBox setState:includeSystemProfile ? NSOnState : NSOffState];
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
 + (void)restoreWindowWithIdentifier:(NSString*)identifier state:(NSCoder*)state completionHandler:(void (^)(NSWindow*, NSError*))completionHandler
 {
+	[[self singleton] restoreState:state];
 	completionHandler([[self singleton] window], nil);
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)window:(NSWindow*)window willEncodeRestorableState:(NSCoder*)state
+{
+	[state encodeObject:[textView string] forKey:STATE_MESSAGE];
+	[state encodeObject:[emailComboBox stringValue] forKey:STATE_EMAILADDRESS];
+	[state encodeInt:[self currentFeedbackType] forKey:STATE_FEEDBACKTYPE];
+	[state encodeBool:[includeEmailCheckBox state] == NSOnState forKey:STATE_INCLUDEEMAILADDRESS];
+	[state encodeBool:[includeSystemProfileCheckBox state] == NSOnState forKey:STATE_INCLUDESYSTEMPROFILE];
 }
 
 //-------------------------------------------------------------------------------------------------

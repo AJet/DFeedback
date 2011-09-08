@@ -50,7 +50,7 @@
 	[NSGraphicsContext saveGraphicsState];
 
 	// draw placeholder
-	if ([self string] == nil || [[self string] isEqualToString:@""])
+	if (([self string] == nil || [[self string] isEqualToString:@""]) && self != [[self window] firstResponder])
 	{
 		NSRect textRect = NSInsetRect([self bounds], [[self textContainer] lineFragmentPadding], 0.0);
 		[[self placeholderText] drawInRect:textRect withAttributes:DFPlaceholderTextView_placeholderTextAttributes];
@@ -69,6 +69,20 @@
 		[self setNeedsDisplay:YES];
 	}
 	m_shouldInvalidateOnChange = ([self string] == nil || [[self string] isEqualToString:@""]);
+}
+
+//-------------------------------------------------------------------------------------------------
+- (BOOL)becomeFirstResponder
+{
+	[self setNeedsDisplay:YES];
+	return [super becomeFirstResponder];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (BOOL)resignFirstResponder
+{
+	[self setNeedsDisplay:YES];
+	return [super resignFirstResponder];
 }
 
 @end

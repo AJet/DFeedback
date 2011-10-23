@@ -12,15 +12,6 @@
 // NOTE: The view needs to be slightly larger than its icon, to allow room for bouncing
 //-------------------------------------------------------------------------------------------------
 @interface DFBounceIconView : NSView 
-{
-	CALayer* m_rootLayer;
-	CALayer* m_iconLayer;
-	bool m_isShowing;
-	NSImage* m_icon;
-}
-
-//-------------------------------------------------------------------------------------------------
-// Public methods
 //-------------------------------------------------------------------------------------------------
 // Sets the icon
 - (void)setIcon:(NSImage*)icon;

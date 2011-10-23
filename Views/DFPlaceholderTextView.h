@@ -9,13 +9,6 @@
 // A text view subclass that displays a placeholder text when it's empty and not key
 //-------------------------------------------------------------------------------------------------
 @interface DFPlaceholderTextView : NSTextView
-{
-	NSString* m_placeholderText;
-	bool m_shouldInvalidateOnChange;
-}
-
-//-------------------------------------------------------------------------------------------------
-// Public instance methods
 //-------------------------------------------------------------------------------------------------
 // Placeholder text
 // NOTE: this property is intentionally named differently than placeholderString, to avoid clashing

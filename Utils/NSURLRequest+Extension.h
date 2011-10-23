@@ -9,9 +9,6 @@
 // Extension to NSURLRequest with utilities
 //-------------------------------------------------------------------------------------------------
 @interface NSURLRequest (Extension)
-
-//-------------------------------------------------------------------------------------------------
-// Public methods
 //-------------------------------------------------------------------------------------------------
 // Create request with HTTP POST form
 + (NSURLRequest*)requestWithURL:(NSURL*)url postForm:(NSDictionary*)values;

@@ -9,22 +9,10 @@
 // Encapsulates asynchronous fetching of system profile
 //-------------------------------------------------------------------------------------------------
 @interface DFSystemProfileFetcher : NSObject 
-{
-	id m_target;
-	SEL m_action;
-	NSTask* m_scriptTask;
-	NSPipe* m_scriptPipe;
-	NSString* m_profile;
-	bool m_isDoneFetching;
-}
-
 //-------------------------------------------------------------------------------------------------
-// Initializers
-//-------------------------------------------------------------------------------------------------
+// Initializer
 - (id)initWithCallbackTarget:(id)target action:(SEL)action;
 
-//-------------------------------------------------------------------------------------------------
-// Public methods
 //-------------------------------------------------------------------------------------------------
 // Begins fetching system profile, completes asynchronously
 - (void)fetch;

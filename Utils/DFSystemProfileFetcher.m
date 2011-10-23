@@ -8,6 +8,16 @@
 //-------------------------------------------------------------------------------------------------
 @implementation DFSystemProfileFetcher
 //-------------------------------------------------------------------------------------------------
+{
+	id m_target;
+	SEL m_action;
+	NSTask* m_scriptTask;
+	NSPipe* m_scriptPipe;
+	NSString* m_profile;
+	bool m_isDoneFetching;
+}
+
+//-------------------------------------------------------------------------------------------------
 - (id)initWithCallbackTarget:(id)target action:(SEL)action
 {
 	self = [super init];

@@ -9,20 +9,10 @@
 // Encapsulates asynchronous feedback sending
 //-------------------------------------------------------------------------------------------------
 @interface DFFeedbackSender : NSObject 
-{
-	id m_target;
-	SEL m_action;
-	bool m_isCanceled;
-	NSURLConnection* m_connection;
-}
-
 //-------------------------------------------------------------------------------------------------
 // Initializers
-//-------------------------------------------------------------------------------------------------
 - (id)initWithCallbackTarget:(id)target action:(SEL)action;
 
-//-------------------------------------------------------------------------------------------------
-// Public methods
 //-------------------------------------------------------------------------------------------------
 // Begins sending feedback, completes asynchronously
 - (void)sendFeedbackToURL:(NSString*)url

@@ -9,14 +9,6 @@
 //-------------------------------------------------------------------------------------------------
 @implementation DFFeedbackSender
 //-------------------------------------------------------------------------------------------------
-{
-	id m_target;
-	SEL m_action;
-	bool m_isCanceled;
-	NSURLConnection* m_connection;
-}
-
-//-------------------------------------------------------------------------------------------------
 - (id)initWithCallbackTarget:(id)target action:(SEL)action
 {
 	self = [super init];

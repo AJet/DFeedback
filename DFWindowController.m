@@ -40,47 +40,6 @@ static NSString* s_feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 @implementation DFWindowController
 //-------------------------------------------------------------------------------------------------
-{
-	// tab control
-	IBOutlet NSSegmentedControl* tabsSegmentedControl;
-	IBOutlet DFKeyTabView* tabView;
-    
-	// text view
-	IBOutlet NSView* textContainer;
-	IBOutlet DFPlaceholderTextView* textView;
-    
-	// system profile controls
-	IBOutlet NSView* systemProfileContainer;
-	IBOutlet NSButton* includeSystemProfileCheckBox;
-    
-	// email controls
-	IBOutlet NSButton* includeEmailCheckBox;
-	IBOutlet NSComboBox* emailComboBox;
-	IBOutlet DFBounceIconView* emailBounceIcon;
-    
-	// progress controls
-	IBOutlet NSView* progressContainer;
-	IBOutlet NSProgressIndicator* progressIndicator;
-	IBOutlet NSTextField* sendingProgressLabel;
-	IBOutlet NSTextField* profilingProgressLabel;
-    
-	// footer controls
-	IBOutlet NSButton* sendButton;
-    
-	// details window controls
-	IBOutlet NSWindow* detailsWindow;
-	IBOutlet NSView* detailsTextContainer;
-	IBOutlet NSTextView* detailsTextView;
-	IBOutlet NSProgressIndicator* detailsProgressIndicator;
-	IBOutlet NSTextField* detailsProgressLabel;
-	
-	// workers
-	DFSystemProfileFetcher* m_systemProfileFetcher;
-	DFFeedbackSender* m_feedbackSender;
-	bool m_isSendingReport;
-}
-
-//-------------------------------------------------------------------------------------------------
 + (DFWindowController*)singleton
 {
 	if (s_singleton == nil)

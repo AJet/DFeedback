@@ -10,6 +10,14 @@
 //-------------------------------------------------------------------------------------------------
 @interface DFFeedbackSender : NSObject 
 //-------------------------------------------------------------------------------------------------
+{
+	id m_target;
+	SEL m_action;
+	bool m_isCanceled;
+	NSURLConnection* m_connection;
+}
+
+//-------------------------------------------------------------------------------------------------
 // Initializers
 - (id)initWithCallbackTarget:(id)target action:(SEL)action;
 

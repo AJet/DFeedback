@@ -24,7 +24,10 @@
 + (NSURLRequest*)requestWithURL:(NSURL*)url postForm:(NSDictionary*)values 
 {
     // create the mime multipart boundary
-    NSString* uuid = [(id)CFUUIDCreateString(kCFAllocatorDefault, CFUUIDCreate(kCFAllocatorDefault)) autorelease];
+    CFUUIDRef uuidRef = CFUUIDCreate(NULL);
+    CFStringRef uuidStringRef = CFUUIDCreateString(NULL, uuidRef);
+    CFRelease(uuidRef);
+    NSString* uuid = [(NSString *)uuidStringRef autorelease];
     NSString* boundary = [NSString stringWithFormat:@"x-mime-boundary://%@", uuid];
     
     // create the form

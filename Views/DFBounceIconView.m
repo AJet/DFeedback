@@ -55,7 +55,7 @@
 		
 		// replace icon layer without animation
 		[CATransaction begin];
-		[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+		[CATransaction setDisableActions:true];
 		
 		CGFloat opacity = [m_iconLayer opacity];
 		[m_iconLayer removeFromSuperlayer];
@@ -119,7 +119,7 @@
 - (void)show
 {
 	[CATransaction begin];
-	[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+    [CATransaction setDisableActions:true];
 	
 	[m_iconLayer setOpacity:1.0];
 	m_isShowing = true;
@@ -131,7 +131,7 @@
 - (void)hide
 {
 	[CATransaction begin];
-	[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+    [CATransaction setDisableActions:true];
 	
 	[m_iconLayer setOpacity:0.0];
 	m_isShowing = false;

@@ -3,11 +3,8 @@
 DFeedback (DaisyDisk Feedback) is a two-in-one component for providing user feedback:
 
 1. It allows the user to send feedback and request support from within your app. Along with the message, the component can optionally send the user's e-mail and system configuration profile.
-
 ![Screenshot](http://www.daisydiskapp.com/img/DFFeedbackScreenshot.png)
-
 2. It automatically catches all unhandled exceptions and shows a crash report window suggesting the user to send an anonymous crash report, along with the stack trace, system configuration profile and optional user comments.
-
 ![Screenshot](http://www.daisydiskapp.com/img/DFCrashReportScreenshot.png)
 
 ##Usage
@@ -17,33 +14,33 @@ DFeedback is a package of source code (Cocoa, Obj-C) that you simply add to your
 The API is simple:
 
 1. The feedback window:
-- First, call +[DFFeedbackWindowController initializeWithFeedbackURL:] once to initialize the component and provide a URL for sending the feedback. (For example, in your -[NSApplicationDelegate applicationWillFinishLaunching:])
+ - First, call +[DFFeedbackWindowController initializeWithFeedbackURL:] once to initialize the component and provide a URL for sending the feedback. (For example, in your -[NSApplicationDelegate applicationWillFinishLaunching:])
 
-- Call one of +[DFFeedbackWindowController show*] methods to display the feedback dialog.
+ - Call one of +[DFFeedbackWindowController show*] methods to display the feedback dialog.
 
 2. The crash reporter:
-- First, call +[DFCrashReporterWindowController initializeWithFeedbackURL:icon:] once to initialize the component and provide a URL for sending the feedback. (For example, in your -[NSApplicationDelegate applicationWillFinishLaunching:])
-- Specify DFApplication class as the principle class in your application's Info.plist file. Or, if you already use your own application principal class subclassed from NSApplication, subclass it from the DFApplication class instead. 
-- Use -[DFApplication isPortmortem] flag:
-a) In your -[NSApplicationDelegate applicationShouldTerminateAfterLastWindowClosed:], if your app should normally quit on last window closed, but not so after a crash, when the crash reporter will forcedly close all windows and show the report window, like this: 
+ - First, call +[DFCrashReporterWindowController initializeWithFeedbackURL:icon:] once to initialize the component and provide a URL for sending the feedback. (For example, in your -[NSApplicationDelegate applicationWillFinishLaunching:])
+ - Specify DFApplication class as the principle class in your application's Info.plist file. Or, if you already use your own application principal class subclassed from NSApplication, subclass it from the DFApplication class instead. 
+ - Use -[DFApplication isPortmortem] flag:
+  a) In your -[NSApplicationDelegate applicationShouldTerminateAfterLastWindowClosed:], if your app should normally quit on last window closed, but not so after a crash, when the crash reporter will forcedly close all windows and show the report window, like this: 
 
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication*)application
-{
-    // don't quit at this point and allow the crash reporter to show first
-	return ![(DFApplication*)NSApp isPostmortem];
-}
+        - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication*)application
+        {
+            // don't quit at this point and allow the crash reporter to show first
+            return ![(DFApplication*)NSApp isPostmortem];
+        }
 
-b) In your -[NSUserInterfaceValidations validateUserInterfaceItem:], in order to disable all (or some) menu items while the app is being terminated due to an uncaught exception, like this:
+  b) In your -[NSUserInterfaceValidations validateUserInterfaceItem:], in order to disable all (or some) menu items while the app is being terminated due to an uncaught exception, like this:
 
-- (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)item
-{
-    // disable all menu items while showing the crash reporter
-	if ([(DFApplication*)NSApp isPostmortem])
-	{
-		return NO;
-	}
-    ...
-}
+        - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)item
+        {
+            // disable all menu items while showing the crash reporter
+            if ([(DFApplication*)NSApp isPostmortem])
+            {
+                return NO;
+            }
+            ...
+        }
 
 
 The two above components are independent on each other, you can use any or both of them.

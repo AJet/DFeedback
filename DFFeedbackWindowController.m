@@ -1,10 +1,10 @@
 //-------------------------------------------------------------------------------------------------
-// Copyright (c) 2008-2011 DaisyDisk Team: <http://www.daisydiskapp.com>
+// Copyright (c) 2008 DaisyDisk Team: <http://www.daisydiskapp.com>
 // Some rights reserved: <http://opensource.org/licenses/mit-license.php>
 //-------------------------------------------------------------------------------------------------
 
 #import <AddressBook/AddressBook.h>
-#import "DFWindowController.h"
+#import "DFFeedbackWindowController.h"
 #import "DFSystemProfileFetcher.h"
 #import "DFFeedbackSender.h"
 #import "DFPlaceholderTextView.h"
@@ -16,7 +16,7 @@
 //-------------------------------------------------------------------------------------------------
 // Private constants
 //-------------------------------------------------------------------------------------------------
-static NSString* const NIB_NAME = @"DFWindow";
+static NSString* const NIB_NAME = @"DFFeedbackWindow";
 typedef enum
 {
 	DFFeedback_General = 0,
@@ -34,19 +34,20 @@ static NSString* const STATE_INCLUDEEMAILADDRESS = @"DFeedback_IncludeEmailAddre
 //-------------------------------------------------------------------------------------------------
 // Private static data
 //-------------------------------------------------------------------------------------------------
-static DFWindowController* s_singleton = nil;
+static DFFeedbackWindowController* s_singleton = nil;
 static NSString* s_feedbackURL = nil;
 
 //-------------------------------------------------------------------------------------------------
-@implementation DFWindowController
+@implementation DFFeedbackWindowController
 //-------------------------------------------------------------------------------------------------
-+ (DFWindowController*)singleton
++ (DFFeedbackWindowController*)singleton
 {
 	if (s_singleton == nil)
 	{
-		s_singleton = [[DFWindowController alloc] init];
-		// make sure the NIB is loaded
-		[s_singleton window];
+        // initialize styles if not already
+        initializeDFStyles();
+        // create singleton
+		s_singleton = [[DFFeedbackWindowController alloc] init];
 	}
 	return s_singleton;
 }
@@ -362,7 +363,7 @@ static NSString* s_feedbackURL = nil;
 - (id)init 
 {
     self = [super initWithWindowNibName:NIB_NAME];
-    if (self) 
+    if (self != nil) 
 	{
 		// do nothing
     }
@@ -373,13 +374,13 @@ static NSString* s_feedbackURL = nil;
 - (void)awakeFromNib
 {
 	// initialize border
-	[[self window] setContentBorderThickness:DFWindow_bottomBarHeight forEdge: NSMinYEdge];
+	[[self window] setContentBorderThickness:DFFeedbackWindow_bottomBarHeight forEdge: NSMinYEdge];
 	
 	// initialize placeholder strings
 	[textView setPlaceholderText:NSLocalizedStringFromTable(@"DF_TEXT_PLACEHOLDER", @"DFLocalizable", nil)];
 	
 	// initialize email bounce icon
-	[emailBounceIcon setIcon:DFWindow_emailWarningImage];
+	[emailBounceIcon setIcon:DFFeedbackWindow_emailWarningImage];
 	
 	// initialize email from the address book
 	ABMutableMultiValue* emailAddresses = [[[ABAddressBook sharedAddressBook] me] valueForProperty:kABEmailProperty];
@@ -562,9 +563,6 @@ static NSString* s_feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 + (void)initializeWithFeedbackURL:(NSString*)feedbackURL
 {
-	// initialize styles
-	initializeDFStyles();
-	
 	// save params
 	[feedbackURL retain];
 	[s_feedbackURL release];

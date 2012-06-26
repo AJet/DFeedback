@@ -6,22 +6,20 @@
 #import <Cocoa/Cocoa.h>
 
 //-------------------------------------------------------------------------------------------------
-// Public constants
+// Application
 //-------------------------------------------------------------------------------------------------
-typedef enum 
-	{
-		OSVersion_Unknown = 0,
-		OSVersion_Leopard = 0x1050,
-		OSVersion_SnowLeopard = 0x1060,
-		OSVersion_Lion = 0x1070
-	} OSVersion;
+@interface DFApplication : NSApplication
+{
+    bool m_isRelaunching;
+    bool m_isPostmortem;
+}
 
 //-------------------------------------------------------------------------------------------------
-// OS version checker
+// Relaunches the app
+- (void)relaunch;
+
 //-------------------------------------------------------------------------------------------------
-@interface OSVersionChecker : NSObject 
-//-------------------------------------------------------------------------------------------------
-// Gets OS version
-+ (OSVersion)macOsVersion;
+// Flag indicating that an unhandled exception has occured and the app is in process of terminating
+- (bool)isPostmortem;
 
 @end

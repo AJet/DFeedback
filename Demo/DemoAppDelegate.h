@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------------------------
-// Copyright (c) 2008-2011 DaisyDisk Team: <http://www.daisydiskapp.com>
+// Copyright (c) 2008 DaisyDisk Team: <http://www.daisydiskapp.com>
 // Some rights reserved: <http://opensource.org/licenses/mit-license.php>
 //-------------------------------------------------------------------------------------------------
 
@@ -24,5 +24,6 @@
 - (IBAction)sendGeneralQuestion:(id)sender;
 - (IBAction)sendBugReport:(id)sender;
 - (IBAction)sendFeatureRequest:(id)sender;
-
+- (IBAction)testCrash:(id)sender;
+- (IBAction)testCrashInThread:(id)sender;
 @end

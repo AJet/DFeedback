@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------------------------
-// Copyright (c) 2008-2011 DaisyDisk Team: <http://www.daisydiskapp.com>
+// Copyright (c) 2008 DaisyDisk Team: <http://www.daisydiskapp.com>
 // Some rights reserved: <http://opensource.org/licenses/mit-license.php>
 //-------------------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self) 
+    if (self != nil) 
 	{
 		m_rootLayer = [[CALayer alloc] init];			
 		[m_rootLayer setAutoresizingMask:kCALayerWidthSizable | kCALayerHeightSizable];

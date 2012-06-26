@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------------------------
-// Copyright (c) 2008-2011 DaisyDisk Team: <http://www.daisydiskapp.com>
+// Copyright (c) 2008 DaisyDisk Team: <http://www.daisydiskapp.com>
 // Some rights reserved: <http://opensource.org/licenses/mit-license.php>
 //-------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@
 //-------------------------------------------------------------------------------------------------
 // Feedback window controller
 //-------------------------------------------------------------------------------------------------
-@interface DFWindowController : NSWindowController 
+@interface DFFeedbackWindowController : NSWindowController 
 //-------------------------------------------------------------------------------------------------
 {
 	// tab control

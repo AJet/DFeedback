@@ -10,10 +10,7 @@
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* DemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* DemoAppDelegate.m */; };
 		7C3C46261371207900AAD108 /* DFStyleSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C460E1371207900AAD108 /* DFStyleSheet.m */; };
-		7C3C46271371207900AAD108 /* DFWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C46101371207900AAD108 /* DFWindowController.m */; };
-		7C3C46281371207900AAD108 /* DFWarningIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C3C46121371207900AAD108 /* DFWarningIcon.png */; };
 		7C3C46291371207900AAD108 /* DFLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7C3C46131371207900AAD108 /* DFLocalizable.strings */; };
-		7C3C462A1371207900AAD108 /* DFWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C3C46151371207900AAD108 /* DFWindow.xib */; };
 		7C3C462B1371207900AAD108 /* DFFeedbackSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C46191371207900AAD108 /* DFFeedbackSender.m */; };
 		7C3C462C1371207900AAD108 /* DFSystemProfileFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C461B1371207900AAD108 /* DFSystemProfileFetcher.m */; };
 		7C3C462D1371207900AAD108 /* NSURLRequest+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C461E1371207900AAD108 /* NSURLRequest+Extension.m */; };
@@ -22,6 +19,26 @@
 		7C3C46331371221700AAD108 /* DFKeyTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C46321371221700AAD108 /* DFKeyTabView.m */; };
 		7C3C46C51371428900AAD108 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C3C46C41371428900AAD108 /* AddressBook.framework */; };
 		7C3C46CB137142A000AAD108 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C3C46CA137142A000AAD108 /* QuartzCore.framework */; };
+		7C8E4B461596E4A900529DCF /* DFApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C8E4B361596E4A900529DCF /* DFApplication.m */; };
+		7C8E4B471596E4A900529DCF /* DFCrashReportWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C8E4B381596E4A900529DCF /* DFCrashReportWindowController.m */; };
+		7C8E4B481596E4A900529DCF /* DFFeedbackWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C8E4B3A1596E4A900529DCF /* DFFeedbackWindowController.m */; };
+		7C8E4B491596E4A900529DCF /* DFRelaunch.sh in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B3B1596E4A900529DCF /* DFRelaunch.sh */; };
+		7C8E4B4A1596E4A900529DCF /* GTMObjC2Runtime.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C8E4B401596E4A900529DCF /* GTMObjC2Runtime.m */; };
+		7C8E4B4B1596E4A900529DCF /* GTMStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C8E4B421596E4A900529DCF /* GTMStackTrace.m */; };
+		7C8E4B4C1596E4A900529DCF /* MIT License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B431596E4A900529DCF /* MIT License.txt */; };
+		7C8E4B4D1596E4A900529DCF /* ReadMe.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B441596E4A900529DCF /* ReadMe.markdown */; };
+		7C8E4B521596E4BB00529DCF /* DFCrashReportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B4E1596E4BB00529DCF /* DFCrashReportWindow.xib */; };
+		7C8E4B531596E4BB00529DCF /* DFFeedbackWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */; };
+		7C8E4B571596E4CA00529DCF /* DFCrashReportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B4E1596E4BB00529DCF /* DFCrashReportWindow.xib */; };
+		7C8E4B581596E4CA00529DCF /* DFFeedbackWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */; };
+		7C8E4B5D1596E4D200529DCF /* DFCrashReportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B4E1596E4BB00529DCF /* DFCrashReportWindow.xib */; };
+		7C8E4B5E1596E4D200529DCF /* DFFeedbackWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */; };
+		7C8E4B631596E4D800529DCF /* DFCrashReportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B4E1596E4BB00529DCF /* DFCrashReportWindow.xib */; };
+		7C8E4B641596E4D800529DCF /* DFFeedbackWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */; };
+		7C8E4B651596E4D800529DCF /* DFWarningIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C3C46121371207900AAD108 /* DFWarningIcon.png */; };
+		7C8E4B691596E4DF00529DCF /* DFCrashReportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B4E1596E4BB00529DCF /* DFCrashReportWindow.xib */; };
+		7C8E4B6A1596E4DF00529DCF /* DFFeedbackWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */; };
+		7C8E4B731596E6A700529DCF /* OSVersionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C8E4B721596E6A700529DCF /* OSVersionChecker.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -40,11 +57,8 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		7C3C460D1371207900AAD108 /* DFStyleSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFStyleSheet.h; path = ../DFStyleSheet.h; sourceTree = SOURCE_ROOT; };
 		7C3C460E1371207900AAD108 /* DFStyleSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFStyleSheet.m; path = ../DFStyleSheet.m; sourceTree = SOURCE_ROOT; };
-		7C3C460F1371207900AAD108 /* DFWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFWindowController.h; path = ../DFWindowController.h; sourceTree = SOURCE_ROOT; };
-		7C3C46101371207900AAD108 /* DFWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFWindowController.m; path = ../DFWindowController.m; sourceTree = SOURCE_ROOT; };
 		7C3C46121371207900AAD108 /* DFWarningIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DFWarningIcon.png; sourceTree = "<group>"; };
-		7C3C46141371207900AAD108 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
-		7C3C46161371207900AAD108 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DFWindow.xib; sourceTree = "<group>"; };
+		7C3C46141371207900AAD108 /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
 		7C3C46181371207900AAD108 /* DFFeedbackSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFFeedbackSender.h; sourceTree = "<group>"; };
 		7C3C46191371207900AAD108 /* DFFeedbackSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFFeedbackSender.m; sourceTree = "<group>"; };
 		7C3C461A1371207900AAD108 /* DFSystemProfileFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFSystemProfileFetcher.h; sourceTree = "<group>"; };
@@ -59,6 +73,37 @@
 		7C3C46321371221700AAD108 /* DFKeyTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFKeyTabView.m; sourceTree = "<group>"; };
 		7C3C46C41371428900AAD108 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		7C3C46CA137142A000AAD108 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		7C8E4B351596E4A900529DCF /* DFApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFApplication.h; path = ../DFApplication.h; sourceTree = "<group>"; };
+		7C8E4B361596E4A900529DCF /* DFApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFApplication.m; path = ../DFApplication.m; sourceTree = "<group>"; };
+		7C8E4B371596E4A900529DCF /* DFCrashReportWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFCrashReportWindowController.h; path = ../DFCrashReportWindowController.h; sourceTree = "<group>"; };
+		7C8E4B381596E4A900529DCF /* DFCrashReportWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFCrashReportWindowController.m; path = ../DFCrashReportWindowController.m; sourceTree = "<group>"; };
+		7C8E4B391596E4A900529DCF /* DFFeedbackWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFFeedbackWindowController.h; path = ../DFFeedbackWindowController.h; sourceTree = "<group>"; };
+		7C8E4B3A1596E4A900529DCF /* DFFeedbackWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFFeedbackWindowController.m; path = ../DFFeedbackWindowController.m; sourceTree = "<group>"; };
+		7C8E4B3B1596E4A900529DCF /* DFRelaunch.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = DFRelaunch.sh; path = ../DFRelaunch.sh; sourceTree = "<group>"; };
+		7C8E4B3D1596E4A900529DCF /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
+		7C8E4B3E1596E4A900529DCF /* GTMGarbageCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMGarbageCollection.h; sourceTree = "<group>"; };
+		7C8E4B3F1596E4A900529DCF /* GTMObjC2Runtime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMObjC2Runtime.h; sourceTree = "<group>"; };
+		7C8E4B401596E4A900529DCF /* GTMObjC2Runtime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMObjC2Runtime.m; sourceTree = "<group>"; };
+		7C8E4B411596E4A900529DCF /* GTMStackTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMStackTrace.h; sourceTree = "<group>"; };
+		7C8E4B421596E4A900529DCF /* GTMStackTrace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMStackTrace.m; sourceTree = "<group>"; };
+		7C8E4B431596E4A900529DCF /* MIT License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "MIT License.txt"; path = "../MIT License.txt"; sourceTree = "<group>"; };
+		7C8E4B441596E4A900529DCF /* ReadMe.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ReadMe.markdown; path = ../ReadMe.markdown; sourceTree = "<group>"; };
+		7C8E4B4F1596E4BB00529DCF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DFCrashReportWindow.xib; sourceTree = "<group>"; };
+		7C8E4B511596E4BB00529DCF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DFFeedbackWindow.xib; sourceTree = "<group>"; };
+		7C8E4B541596E4CA00529DCF /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/DFCrashReportWindow.xib; sourceTree = "<group>"; };
+		7C8E4B551596E4CA00529DCF /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/DFFeedbackWindow.xib; sourceTree = "<group>"; };
+		7C8E4B561596E4CA00529DCF /* de */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
+		7C8E4B5A1596E4D200529DCF /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/DFCrashReportWindow.xib; sourceTree = "<group>"; };
+		7C8E4B5B1596E4D200529DCF /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/DFFeedbackWindow.xib; sourceTree = "<group>"; };
+		7C8E4B5C1596E4D200529DCF /* fr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
+		7C8E4B601596E4D800529DCF /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/DFCrashReportWindow.xib; sourceTree = "<group>"; };
+		7C8E4B611596E4D800529DCF /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/DFFeedbackWindow.xib; sourceTree = "<group>"; };
+		7C8E4B621596E4D800529DCF /* it */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
+		7C8E4B661596E4DF00529DCF /* ru */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ru; path = ru.lproj/DFCrashReportWindow.xib; sourceTree = "<group>"; };
+		7C8E4B671596E4DF00529DCF /* ru */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ru; path = ru.lproj/DFFeedbackWindow.xib; sourceTree = "<group>"; };
+		7C8E4B681596E4DF00529DCF /* ru */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
+		7C8E4B711596E6A700529DCF /* OSVersionChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSVersionChecker.h; sourceTree = "<group>"; };
+		7C8E4B721596E6A700529DCF /* OSVersionChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSVersionChecker.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Demo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Demo-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -117,7 +162,7 @@
 		29B97314FDCFA39411CA2CEA /* Demo */ = {
 			isa = PBXGroup;
 			children = (
-				7C8D263A137004D300AB9F8D /* DaisyDisk Feedback */,
+				7C8D263A137004D300AB9F8D /* DFeedback */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -158,9 +203,10 @@
 		7C3C46111371207900AAD108 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7C8E4B4E1596E4BB00529DCF /* DFCrashReportWindow.xib */,
+				7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */,
 				7C3C46121371207900AAD108 /* DFWarningIcon.png */,
 				7C3C46131371207900AAD108 /* DFLocalizable.strings */,
-				7C3C46151371207900AAD108 /* DFWindow.xib */,
 			);
 			name = Resources;
 			path = ../Resources;
@@ -169,6 +215,8 @@
 		7C3C46171371207900AAD108 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				7C8E4B711596E6A700529DCF /* OSVersionChecker.h */,
+				7C8E4B721596E6A700529DCF /* OSVersionChecker.m */,
 				7C3C46181371207900AAD108 /* DFFeedbackSender.h */,
 				7C3C46191371207900AAD108 /* DFFeedbackSender.m */,
 				7C3C461A1371207900AAD108 /* DFSystemProfileFetcher.h */,
@@ -194,18 +242,40 @@
 			path = ../Views;
 			sourceTree = SOURCE_ROOT;
 		};
-		7C8D263A137004D300AB9F8D /* DaisyDisk Feedback */ = {
+		7C8D263A137004D300AB9F8D /* DFeedback */ = {
 			isa = PBXGroup;
 			children = (
+				7C8E4B351596E4A900529DCF /* DFApplication.h */,
+				7C8E4B361596E4A900529DCF /* DFApplication.m */,
+				7C8E4B371596E4A900529DCF /* DFCrashReportWindowController.h */,
+				7C8E4B381596E4A900529DCF /* DFCrashReportWindowController.m */,
+				7C8E4B391596E4A900529DCF /* DFFeedbackWindowController.h */,
+				7C8E4B3A1596E4A900529DCF /* DFFeedbackWindowController.m */,
+				7C8E4B3B1596E4A900529DCF /* DFRelaunch.sh */,
+				7C8E4B431596E4A900529DCF /* MIT License.txt */,
+				7C8E4B441596E4A900529DCF /* ReadMe.markdown */,
 				7C3C460D1371207900AAD108 /* DFStyleSheet.h */,
 				7C3C460E1371207900AAD108 /* DFStyleSheet.m */,
-				7C3C460F1371207900AAD108 /* DFWindowController.h */,
-				7C3C46101371207900AAD108 /* DFWindowController.m */,
 				7C3C46111371207900AAD108 /* Resources */,
-				7C3C46171371207900AAD108 /* Utils */,
 				7C3C461F1371207900AAD108 /* Views */,
+				7C3C46171371207900AAD108 /* Utils */,
+				7C8E4B3C1596E4A900529DCF /* Google Toolbox */,
 			);
-			name = "DaisyDisk Feedback";
+			name = DFeedback;
+			sourceTree = "<group>";
+		};
+		7C8E4B3C1596E4A900529DCF /* Google Toolbox */ = {
+			isa = PBXGroup;
+			children = (
+				7C8E4B3D1596E4A900529DCF /* GTMDefines.h */,
+				7C8E4B3E1596E4A900529DCF /* GTMGarbageCollection.h */,
+				7C8E4B3F1596E4A900529DCF /* GTMObjC2Runtime.h */,
+				7C8E4B401596E4A900529DCF /* GTMObjC2Runtime.m */,
+				7C8E4B411596E4A900529DCF /* GTMStackTrace.h */,
+				7C8E4B421596E4A900529DCF /* GTMStackTrace.m */,
+			);
+			name = "Google Toolbox";
+			path = "../Google Toolbox";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,6 +314,10 @@
 				French,
 				German,
 				en,
+				de,
+				fr,
+				it,
+				ru,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Demo */;
 			projectDirPath = "";
@@ -261,9 +335,21 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
-				7C3C46281371207900AAD108 /* DFWarningIcon.png in Resources */,
 				7C3C46291371207900AAD108 /* DFLocalizable.strings in Resources */,
-				7C3C462A1371207900AAD108 /* DFWindow.xib in Resources */,
+				7C8E4B491596E4A900529DCF /* DFRelaunch.sh in Resources */,
+				7C8E4B4C1596E4A900529DCF /* MIT License.txt in Resources */,
+				7C8E4B4D1596E4A900529DCF /* ReadMe.markdown in Resources */,
+				7C8E4B521596E4BB00529DCF /* DFCrashReportWindow.xib in Resources */,
+				7C8E4B531596E4BB00529DCF /* DFFeedbackWindow.xib in Resources */,
+				7C8E4B571596E4CA00529DCF /* DFCrashReportWindow.xib in Resources */,
+				7C8E4B581596E4CA00529DCF /* DFFeedbackWindow.xib in Resources */,
+				7C8E4B5D1596E4D200529DCF /* DFCrashReportWindow.xib in Resources */,
+				7C8E4B5E1596E4D200529DCF /* DFFeedbackWindow.xib in Resources */,
+				7C8E4B631596E4D800529DCF /* DFCrashReportWindow.xib in Resources */,
+				7C8E4B641596E4D800529DCF /* DFFeedbackWindow.xib in Resources */,
+				7C8E4B651596E4D800529DCF /* DFWarningIcon.png in Resources */,
+				7C8E4B691596E4DF00529DCF /* DFCrashReportWindow.xib in Resources */,
+				7C8E4B6A1596E4DF00529DCF /* DFFeedbackWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,13 +363,18 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* DemoAppDelegate.m in Sources */,
 				7C3C46261371207900AAD108 /* DFStyleSheet.m in Sources */,
-				7C3C46271371207900AAD108 /* DFWindowController.m in Sources */,
 				7C3C462B1371207900AAD108 /* DFFeedbackSender.m in Sources */,
 				7C3C462C1371207900AAD108 /* DFSystemProfileFetcher.m in Sources */,
 				7C3C462D1371207900AAD108 /* NSURLRequest+Extension.m in Sources */,
 				7C3C462E1371207900AAD108 /* DFBounceIconView.m in Sources */,
 				7C3C462F1371207900AAD108 /* DFPlaceholderTextView.m in Sources */,
 				7C3C46331371221700AAD108 /* DFKeyTabView.m in Sources */,
+				7C8E4B461596E4A900529DCF /* DFApplication.m in Sources */,
+				7C8E4B471596E4A900529DCF /* DFCrashReportWindowController.m in Sources */,
+				7C8E4B481596E4A900529DCF /* DFFeedbackWindowController.m in Sources */,
+				7C8E4B4A1596E4A900529DCF /* GTMObjC2Runtime.m in Sources */,
+				7C8E4B4B1596E4A900529DCF /* GTMStackTrace.m in Sources */,
+				7C8E4B731596E6A700529DCF /* OSVersionChecker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,16 +401,36 @@
 			isa = PBXVariantGroup;
 			children = (
 				7C3C46141371207900AAD108 /* en */,
+				7C8E4B561596E4CA00529DCF /* de */,
+				7C8E4B5C1596E4D200529DCF /* fr */,
+				7C8E4B621596E4D800529DCF /* it */,
+				7C8E4B681596E4DF00529DCF /* ru */,
 			);
 			name = DFLocalizable.strings;
 			sourceTree = "<group>";
 		};
-		7C3C46151371207900AAD108 /* DFWindow.xib */ = {
+		7C8E4B4E1596E4BB00529DCF /* DFCrashReportWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				7C3C46161371207900AAD108 /* en */,
+				7C8E4B4F1596E4BB00529DCF /* en */,
+				7C8E4B541596E4CA00529DCF /* de */,
+				7C8E4B5A1596E4D200529DCF /* fr */,
+				7C8E4B601596E4D800529DCF /* it */,
+				7C8E4B661596E4DF00529DCF /* ru */,
 			);
-			name = DFWindow.xib;
+			name = DFCrashReportWindow.xib;
+			sourceTree = "<group>";
+		};
+		7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7C8E4B511596E4BB00529DCF /* en */,
+				7C8E4B551596E4CA00529DCF /* de */,
+				7C8E4B5B1596E4D200529DCF /* fr */,
+				7C8E4B611596E4D800529DCF /* it */,
+				7C8E4B671596E4DF00529DCF /* ru */,
+			);
+			name = DFFeedbackWindow.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

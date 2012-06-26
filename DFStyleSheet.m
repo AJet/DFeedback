@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------------------------
-// Copyright (c) 2008-2011 DaisyDisk Team: <http://www.daisydiskapp.com>
+// Copyright (c) 2008 DaisyDisk Team: <http://www.daisydiskapp.com>
 // Some rights reserved: <http://opensource.org/licenses/mit-license.php>
 //-------------------------------------------------------------------------------------------------
 
@@ -31,13 +31,22 @@ void			initializeDFPlaceholderTextViewStyles()
 }
 
 //-------------------------------------------------------------------------------------------------
-// Window
-CGFloat			DFWindow_bottomBarHeight = 45.0;
-NSImage*		DFWindow_emailWarningImage = nil;
+// Feedback window
+CGFloat			DFFeedbackWindow_bottomBarHeight = 45.0;
+NSImage*		DFFeedbackWindow_emailWarningImage = nil;
 void			initializeDFFeedbackWindow()
 {
-	DFWindow_emailWarningImage = [[NSImage imageNamed:@"DFWarningIcon"] retain];
+	DFFeedbackWindow_emailWarningImage = [[NSImage imageNamed:@"DFWarningIcon"] retain];
 }
+
+//-------------------------------------------------------------------------------------------------
+// Crash report window
+CGFloat         DFCrashReportWindow_bottomBarHeight = 45.0;
+void			initializeDFCrashReportWindow()
+{
+    // do nothing
+}
+
 
 //-------------------------------------------------------------------------------------------------
 void initializeDFStyles()
@@ -50,9 +59,12 @@ void initializeDFStyles()
 		// placeholder text view
 		initializeDFPlaceholderTextViewStyles();
 	
-		// window
+		// feedback window
 		initializeDFFeedbackWindow();
-		
+
+        // crash report window
+		initializeDFCrashReportWindow();
+
 		// save state
 		s_isInitialized = true;
 	}

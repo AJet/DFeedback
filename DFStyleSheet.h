@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------------------------------
-// Copyright (c) 2008-2011 DaisyDisk Team: <http://www.daisydiskapp.com>
+// Copyright (c) 2008 DaisyDisk Team: <http://www.daisydiskapp.com>
 // Some rights reserved: <http://opensource.org/licenses/mit-license.php>
 //-------------------------------------------------------------------------------------------------
 
@@ -18,9 +18,13 @@ extern NSTimeInterval	DFBounceIcon_fadeDuration;
 extern NSDictionary*	DFPlaceholderTextView_placeholderTextAttributes;
 
 //-------------------------------------------------------------------------------------------------
-// Window
-extern CGFloat			DFWindow_bottomBarHeight;
-extern NSImage*			DFWindow_emailWarningImage;
+// Feedback window
+extern CGFloat			DFFeedbackWindow_bottomBarHeight;
+extern NSImage*			DFFeedbackWindow_emailWarningImage;
+
+//-------------------------------------------------------------------------------------------------
+// Crash report window
+extern CGFloat          DFCrashReportWindow_bottomBarHeight;
 
 //-------------------------------------------------------------------------------------------------
 // Initialization

@@ -3,3 +3,9 @@ Demo/build/*
 *.pch
 *.pbxuser
 *.mode1v3
+
+Demo/Demo.xcodeproj/xcuserdata/*
+Demo/Demo.xcodeproj/project.xcworkspace/xcuserdata/*
+
+Demo/Demo.xcodeproj/project.xcworkspace/xcuserdata/oleg.xcuserdatad/UserInterfaceState.xcuserstate
+Demo/Demo.xcodeproj/xcuserdata/oleg.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist

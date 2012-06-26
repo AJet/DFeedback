@@ -163,6 +163,8 @@
 			isa = PBXGroup;
 			children = (
 				7C8D263A137004D300AB9F8D /* DFeedback */,
+				7C8E4B431596E4A900529DCF /* MIT License.txt */,
+				7C8E4B441596E4A900529DCF /* ReadMe.markdown */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -252,8 +254,6 @@
 				7C8E4B391596E4A900529DCF /* DFFeedbackWindowController.h */,
 				7C8E4B3A1596E4A900529DCF /* DFFeedbackWindowController.m */,
 				7C8E4B3B1596E4A900529DCF /* DFRelaunch.sh */,
-				7C8E4B431596E4A900529DCF /* MIT License.txt */,
-				7C8E4B441596E4A900529DCF /* ReadMe.markdown */,
 				7C3C460D1371207900AAD108 /* DFStyleSheet.h */,
 				7C3C460E1371207900AAD108 /* DFStyleSheet.m */,
 				7C3C46111371207900AAD108 /* Resources */,

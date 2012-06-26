@@ -132,6 +132,10 @@ static NSString* s_feedbackURL = nil;
 
 	[[self window] setContentBorderThickness:DFCrashReportWindow_bottomBarHeight forEdge: NSMinYEdge];
 	
+	NSString* windowTitle = [[self window] title];
+	windowTitle = [NSString stringWithFormat:windowTitle, [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]]; 
+	[[self window] setTitle:windowTitle];
+
     [iconImageView setImage:s_icon];
     
 	[commentsTextView setPlaceholderText:NSLocalizedStringFromTable(@"DF_TEXT_PLACEHOLDER", @"DFLocalizable", nil)];

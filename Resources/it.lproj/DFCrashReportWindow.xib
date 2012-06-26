@@ -48,7 +48,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{196, 28}, {558, 453}}</string>
 				<int key="NSWTFlags">536870912</int>
-				<string key="NSWindowTitle">Problemi con DaisyDisk</string>
+				<string key="NSWindowTitle">Problemi con %@</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
@@ -62,6 +62,7 @@
 							<string key="NSFrame">{{407, 9}, {131, 25}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="986293014">
 								<int key="NSCellFlags">67239424</int>
@@ -1163,30 +1164,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 				<object class="IBPartialClassDescription">
 					<string key="className">DFCrashReportWindowController</string>
 					<string key="superclassName">NSWindowController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="cancel:">id</string>
-						<string key="expandCollapseCommentsBox:">id</string>
-						<string key="expandCollapseDetailsBox:">id</string>
-						<string key="sendReport:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="cancel:">
-							<string key="name">cancel:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="expandCollapseCommentsBox:">
-							<string key="name">expandCollapseCommentsBox:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="expandCollapseDetailsBox:">
-							<string key="name">expandCollapseDetailsBox:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="sendReport:">
-							<string key="name">sendReport:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="anonymousLabel">NSTextField</string>
 						<string key="commentsBoxView">NSView</string>

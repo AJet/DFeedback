@@ -23,22 +23,23 @@ The API is simple:
  - Use -[DFApplication isPortmortem] flag:
   a) In your -[NSApplicationDelegate applicationShouldTerminateAfterLastWindowClosed:], if your app should normally quit on last window closed, but not so after a crash, when the crash reporter will forcedly close all windows and show the report window, like this: 
         
-        - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication*)application
-        {
-            // don't quit at this point and allow the crash reporter to show first
-            return ![(DFApplication*)NSApp isPostmortem];
-        }
+          - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication*)application
+          {
+              // don't quit at this point and allow the crash reporter to show first
+              return ![(DFApplication*)NSApp isPostmortem];
+          }
+        
   b) In your -[NSUserInterfaceValidations validateUserInterfaceItem:], in order to disable all (or some) menu items while the app is being terminated due to an uncaught exception, like this:
         
-        - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)item
-        {
-            // disable all menu items while showing the crash reporter
-            if ([(DFApplication*)NSApp isPostmortem])
-            {
-                return NO;
-            }
-            ...
-        }
+          - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)item
+          {
+              // disable all menu items while showing the crash reporter
+              if ([(DFApplication*)NSApp isPostmortem])
+              {
+                  return NO;
+              }
+              ...
+          }
 
 
 The two above components are independent on each other, you can use any or both of them.

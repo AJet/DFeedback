@@ -21,7 +21,6 @@ The API is simple:
  - First, call +[DFCrashReporterWindowController initializeWithFeedbackURL:icon:] once to initialize the component and provide a URL for sending the feedback. (For example, in your -[NSApplicationDelegate applicationWillFinishLaunching:])
  - Specify DFApplication class as the principle class in your application's Info.plist file. Or, if you already use your own application principal class subclassed from NSApplication, subclass it from the DFApplication class instead. 
  - Use -[DFApplication isPortmortem] flag:
-  
   * In your -[NSApplicationDelegate applicationShouldTerminateAfterLastWindowClosed:], if your app should normally quit on last window closed, but not so after a crash, when the crash reporter will forcedly close all windows and show the report window, like this: 
           
           - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication*)application
@@ -29,7 +28,6 @@ The API is simple:
               // don't quit at this point and allow the crash reporter to show first
               return ![(DFApplication*)NSApp isPostmortem];
           }
-          
   * In your -[NSUserInterfaceValidations validateUserInterfaceItem:], in order to disable all (or some) menu items while the app is being terminated due to an uncaught exception, like this:
           
           - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)item

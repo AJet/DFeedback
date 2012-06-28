@@ -28,4 +28,4 @@ extern CGFloat          DFCrashReportWindow_bottomBarHeight;
 
 //-------------------------------------------------------------------------------------------------
 // Initialization
-void initializeDFStyles();
+void initializeDFStyles(void);

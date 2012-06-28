@@ -194,7 +194,7 @@ static NSString *GTMStackTraceFromAddressDescriptors(struct GTMAddressDescriptor
 // register) isn't always stored on the stack.
 //   
 #ifdef GTM_MACOS_SDK  // currently not supported on iPhone
-NSUInteger GTMGetStackProgramCounters(void *outPcs[], NSUInteger count) {
+static NSUInteger GTMGetStackProgramCounters(void *outPcs[], NSUInteger count) {
 	if (!outPcs || (count < 1)) return 0;
 	
 	struct GTMStackFrame *fp;

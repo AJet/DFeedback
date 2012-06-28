@@ -15,7 +15,7 @@ static bool s_isInitialized = false;
 CGFloat			DFBounceIcon_bounceFactor = 1.5;
 NSTimeInterval	DFBounceIcon_bounceHalfDuration = 0.15;
 NSTimeInterval	DFBounceIcon_fadeDuration = 0.25;
-void			initializeDFBounceIconStyles()
+static void		initializeDFBounceIconStyles(void)
 {
 	// do nothing
 }
@@ -23,7 +23,7 @@ void			initializeDFBounceIconStyles()
 //-------------------------------------------------------------------------------------------------
 // Placeholder text view
 NSDictionary*	DFPlaceholderTextView_placeholderTextAttributes = nil;
-void			initializeDFPlaceholderTextViewStyles()
+static void		initializeDFPlaceholderTextViewStyles(void)
 {
 	DFPlaceholderTextView_placeholderTextAttributes = [[NSDictionary dictionaryWithObjectsAndKeys:[NSColor colorWithDeviceRed:128.0/255.0 green:128.0/255.0 blue:145.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
 														[NSFont userFontOfSize:12], NSFontAttributeName,
@@ -34,7 +34,7 @@ void			initializeDFPlaceholderTextViewStyles()
 // Feedback window
 CGFloat			DFFeedbackWindow_bottomBarHeight = 45.0;
 NSImage*		DFFeedbackWindow_emailWarningImage = nil;
-void			initializeDFFeedbackWindow()
+static void		initializeDFFeedbackWindow(void)
 {
 	DFFeedbackWindow_emailWarningImage = [[NSImage imageNamed:@"DFWarningIcon"] retain];
 }
@@ -42,14 +42,14 @@ void			initializeDFFeedbackWindow()
 //-------------------------------------------------------------------------------------------------
 // Crash report window
 CGFloat         DFCrashReportWindow_bottomBarHeight = 45.0;
-void			initializeDFCrashReportWindow()
+static void		initializeDFCrashReportWindow(void)
 {
     // do nothing
 }
 
 
 //-------------------------------------------------------------------------------------------------
-void initializeDFStyles()
+void initializeDFStyles(void)
 {
 	if (!s_isInitialized)
 	{

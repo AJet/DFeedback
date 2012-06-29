@@ -64,7 +64,10 @@
 	@try
 	{
 		[m_scriptTask launch];
-		[[m_scriptPipe fileHandleForReading] readToEndOfFileInBackgroundAndNotify];
+		[[m_scriptPipe fileHandleForReading] readToEndOfFileInBackgroundAndNotifyForModes:[NSArray arrayWithObjects:
+                                                                                           NSDefaultRunLoopMode, 
+                                                                                           NSModalPanelRunLoopMode,
+                                                                                           nil]];
 	}
 	@catch (NSException* exception)
 	{

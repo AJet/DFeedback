@@ -28,7 +28,7 @@ The API is simple:
                     // don't quit at this point and allow the crash reporter to show first
                     return ![(DFApplication*)NSApp isPostmortem];
                 }
-        * In your -[NSUserInterfaceValidations validateUserInterfaceItem:], in order to disable all (or some) menu items while the app is being terminated due to an uncaught exception, like this:
+        * In your application delegate's -[NSUserInterfaceValidations validateUserInterfaceItem:], in order to disable all (or some) menu items while the app is being terminated due to an uncaught exception (no need to do the same in window delegates, because all windows will be forcedly closed by the crash reporter), like this:
 
                 - (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)item
                 {

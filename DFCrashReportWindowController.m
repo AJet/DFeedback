@@ -171,7 +171,7 @@ static NSString* s_feedbackURL = nil;
 	
 	// show window
 	[[self singleton] initializeControls];
-	[[self singleton] showWindow:nil];
+    [NSApp runModalForWindow:[[self singleton] window]];
 }
 
 //-------------------------------------------------------------------------------------------------

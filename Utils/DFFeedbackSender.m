@@ -48,7 +48,10 @@
 	// create request
     NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:url] postForm:form];
 	// begin sending the data
-	m_connection = [[NSURLConnection connectionWithRequest:request delegate:self] retain];
+	m_connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
+    [m_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [m_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSModalPanelRunLoopMode];
+    [m_connection start];
 }
 
 //-------------------------------------------------------------------------------------------------

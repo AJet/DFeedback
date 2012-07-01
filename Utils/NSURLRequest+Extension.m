@@ -16,7 +16,7 @@
 //-------------------------------------------------------------------------------------------------
 + (void)appendFormat:(NSString*)format arg:(NSString*)arg toData:(NSMutableData*)data
 {
-	NSString *string = [NSString stringWithFormat:format, arg];
+	NSString* string = [NSString stringWithFormat:format, arg];
     [self appendString:string toData:data];
 }
 
@@ -27,7 +27,7 @@
     CFUUIDRef uuidRef = CFUUIDCreate(NULL);
     CFStringRef uuidStringRef = CFUUIDCreateString(NULL, uuidRef);
     CFRelease(uuidRef);
-    NSString* uuid = [(NSString *)uuidStringRef autorelease];
+    NSString* uuid = [(NSString*)uuidStringRef autorelease];
     NSString* boundary = [NSString stringWithFormat:@"x-mime-boundary://%@", uuid];
     
     // create the form

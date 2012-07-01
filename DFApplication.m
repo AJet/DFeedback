@@ -44,7 +44,7 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
 						  bundlePath,
 						  processIdentifier,
 						  nil];
-	NSTask *task = [[[NSTask alloc] init] autorelease];
+	NSTask* task = [[[NSTask alloc] init] autorelease];
 	[task setLaunchPath:@"/bin/bash"];
 	[task setArguments:arguments];
 	[task launch];	

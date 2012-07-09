@@ -19,9 +19,9 @@ static NSString* const NIB_NAME = @"DFCrashReportWindow";
 //-------------------------------------------------------------------------------------------------
 // Private static data
 //-------------------------------------------------------------------------------------------------
-static DFCrashReportWindowController* s_singleton = nil;
-static NSImage* s_icon = nil;
-static NSString* s_feedbackURL = nil;
+static DFCrashReportWindowController* _singleton = nil;
+static NSImage* _icon = nil;
+static NSString* _feedbackURL = nil;
 
 //-------------------------------------------------------------------------------------------------
 @implementation DFCrashReportWindowController
@@ -30,24 +30,24 @@ static NSString* s_feedbackURL = nil;
                              icon:(NSImage*)icon
 {
     [icon retain];
-    [s_icon release];
-    s_icon = icon;
+    [_icon release];
+    _icon = icon;
     
     [feedbackURL retain];
-    [s_feedbackURL release];
-    s_feedbackURL = feedbackURL;
+    [_feedbackURL release];
+    _feedbackURL = feedbackURL;
 }
 
 //-------------------------------------------------------------------------------------------------
 + (DFCrashReportWindowController*)singleton
 {
-	if (s_singleton == nil)
+	if (_singleton == nil)
 	{
         initializeDFStyles();
 
-		s_singleton = [[DFCrashReportWindowController alloc] init];
+		_singleton = [[DFCrashReportWindowController alloc] init];
 	}
-	return s_singleton;
+	return _singleton;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ static NSString* s_feedbackURL = nil;
     self = [super initWithWindowNibName:NIB_NAME];
     if (self != nil) 
 	{
-		m_systemProfileFetcher = [[DFSystemProfileFetcher alloc] initWithCallbackTarget:self action:@selector(systemProfileDidFetch:)];
+		_systemProfileFetcher = [[DFSystemProfileFetcher alloc] initWithCallbackTarget:self action:@selector(systemProfileDidFetch:)];
     }
     return self;
 }
@@ -64,19 +64,19 @@ static NSString* s_feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 - (void)setException:(NSException*)exception
 {
-    [m_exceptionMessage release];
-    m_exceptionMessage = [[exception reason] retain];
-    [m_exceptionStackTrace release];
-    m_exceptionStackTrace = [GTMStackTraceFromException(exception) retain];
+    [_exceptionMessage release];
+    _exceptionMessage = [[exception reason] retain];
+    [_exceptionStackTrace release];
+    _exceptionStackTrace = [GTMStackTraceFromException(exception) retain];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)expandOrCollapseBox:(NSView*)box 
 				   textView:(NSView*)textView 
 			   alternateBox:(NSView*)alternateBox 
-	 shouldCollapseOrExpand:(bool)shouldCollapseOrExpand
-			 isLowerOrUpper:(bool)isLowerOrUpper
-			  withAnimation:(bool)withAnimation
+	 shouldCollapseOrExpand:(BOOL)shouldCollapseOrExpand
+			 isLowerOrUpper:(BOOL)isLowerOrUpper
+			  withAnimation:(BOOL)withAnimation
 {
 	// window frames
 	NSRect sourceWindowFrame = [[self window] frame];
@@ -121,14 +121,14 @@ static NSString* s_feedbackURL = nil;
 {
     [fetchingSystemProfileProgressLabel setHidden:NO];
 	[progressIndicator startAnimation:nil];
-	[m_systemProfileFetcher fetch];
+	[_systemProfileFetcher fetch];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)initializeControls
 {
-	m_sendButtonWasClicked = false;
-	m_cancelButtonWasClicked = false;
+	_sendButtonWasClicked = NO;
+	_cancelButtonWasClicked = NO;
 
 	[[self window] setContentBorderThickness:DFCrashReportWindow_bottomBarHeight forEdge: NSMinYEdge];
 	
@@ -136,22 +136,22 @@ static NSString* s_feedbackURL = nil;
 	windowTitle = [NSString stringWithFormat:windowTitle, [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]]; 
 	[[self window] setTitle:windowTitle];
 
-    [iconImageView setImage:s_icon];
+    [iconImageView setImage:_icon];
     
 	[commentsTextView setPlaceholderText:NSLocalizedStringFromTable(@"DF_TEXT_PLACEHOLDER", @"DFLocalizable", nil)];
 
-	[sendButton setEnabled:true];
+	[sendButton setEnabled:YES];
 
-    NSString* details = [NSString stringWithFormat:@"MESSAGE:\n%@\n\nSTACK TRACE:\n%@", m_exceptionMessage, m_exceptionStackTrace];
+    NSString* details = [NSString stringWithFormat:@"MESSAGE:\n%@\n\nSTACK TRACE:\n%@", _exceptionMessage, _exceptionStackTrace];
 	[[detailsTextView textStorage] setAttributedString:[[[NSAttributedString alloc] initWithString:details] autorelease]];
 
     [detailsDisclosureButton setState:NSOffState];
 	[self expandOrCollapseBox:detailsBoxView 
 					 textView:detailsScrollView 
 				 alternateBox:commentsBoxView 
-	   shouldCollapseOrExpand:false
-			   isLowerOrUpper:false
-				withAnimation:false];
+	   shouldCollapseOrExpand:NO
+			   isLowerOrUpper:NO
+				withAnimation:NO];
 
     [self beginFetchingSystemProfile];
 }
@@ -177,20 +177,20 @@ static NSString* s_feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 - (void)cancelPendingStuff
 {
-	[m_systemProfileFetcher cancel];
-	[m_systemProfileFetcher release];
-	m_systemProfileFetcher = nil;
-	[m_feedbackSender cancel];
-	[m_feedbackSender release];
-	m_feedbackSender = nil;
+	[_systemProfileFetcher cancel];
+	[_systemProfileFetcher release];
+	_systemProfileFetcher = nil;
+	[_feedbackSender cancel];
+	[_feedbackSender release];
+	_feedbackSender = nil;
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)dealloc
 {
 	[self cancelPendingStuff];
-    [m_exceptionMessage release];
-    [m_exceptionStackTrace release];
+    [_exceptionMessage release];
+    [_exceptionStackTrace release];
 	[super dealloc];
 }
 
@@ -202,20 +202,20 @@ static NSString* s_feedbackURL = nil;
 	[progressIndicator startAnimation:nil];
 	[progressIndicator setHidden:NO];
 	[sendingReportProgressLabel setHidden:NO];
-	[sendButton setEnabled:false];
+	[sendButton setEnabled:NO];
 
 	// begin sending feedback
     NSString* feedbackText = [NSString stringWithFormat:@"MESSAGE:\n%@\n\nCOMMENTS:\n%@\n\nSTACK TRACE:\n%@", 
-                              m_exceptionMessage, 
+                              _exceptionMessage, 
                               [[commentsTextView textStorage] string], 
-                              m_exceptionStackTrace];
-    [m_feedbackSender cancel];
-    [m_feedbackSender release];
-	m_feedbackSender = [[DFFeedbackSender alloc] initWithCallbackTarget:self action:@selector(feedbackSenderDidComplete:)];
-	[m_feedbackSender sendFeedbackToURL:s_feedbackURL
+                              _exceptionStackTrace];
+    [_feedbackSender cancel];
+    [_feedbackSender release];
+	_feedbackSender = [[DFFeedbackSender alloc] initWithCallbackTarget:self action:@selector(feedbackSenderDidComplete:)];
+	[_feedbackSender sendFeedbackToURL:_feedbackURL
 							feedbackText:feedbackText
 							feedbackType:@"Crash"
-						   systemProfile:[m_systemProfileFetcher profile]
+						   systemProfile:[_systemProfileFetcher profile]
 							   userEmail:nil];
 }
 
@@ -223,14 +223,14 @@ static NSString* s_feedbackURL = nil;
 - (IBAction)sendReport:(id)sender
 {
 	// fetching system profile should be complete at the moment
-	if ([m_systemProfileFetcher isDoneFetching])
+	if ([_systemProfileFetcher isDoneFetching])
 	{
 		[self beginSendingFeedback];
 	}
 	else
 	{
-		[sendButton setEnabled:false];
-		m_sendButtonWasClicked = true;
+		[sendButton setEnabled:NO];
+		_sendButtonWasClicked = YES;
 	}
 }
 
@@ -244,8 +244,8 @@ static NSString* s_feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 - (void)feedbackSenderDidComplete:(NSError*)error
 {
-	[m_feedbackSender release];
-	m_feedbackSender = nil;
+	[_feedbackSender release];
+	_feedbackSender = nil;
 	[self dismiss];
 	[(DFApplication*)NSApp relaunch];
 }
@@ -253,16 +253,16 @@ static NSString* s_feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 - (void)systemProfileDidFetch:(DFSystemProfileFetcher*)profileFetcher
 {
-	if (profileFetcher == m_systemProfileFetcher)
+	if (profileFetcher == _systemProfileFetcher)
 	{
 		[progressIndicator stopAnimation:nil];
 		[progressIndicator setHidden:YES];
 		[fetchingSystemProfileProgressLabel setHidden:YES];
 		[anonymousLabel setHidden:NO];
-		NSString* profileString = [NSString stringWithFormat:@"\n\nSYSTEM PROFILE:\n\n%@", [m_systemProfileFetcher profile]];
+		NSString* profileString = [NSString stringWithFormat:@"\n\nSYSTEM PROFILE:\n\n%@", [_systemProfileFetcher profile]];
 		[[detailsTextView textStorage] appendAttributedString:[[[NSAttributedString alloc] initWithString:profileString] autorelease]];
 
-		if (m_sendButtonWasClicked)
+		if (_sendButtonWasClicked)
 		{
 			[self beginSendingFeedback];
 		}
@@ -272,7 +272,7 @@ static NSString* s_feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 - (void)windowWillClose:(NSNotification*)notification 
 {
-	if (!m_sendButtonWasClicked && !m_cancelButtonWasClicked)
+	if (!_sendButtonWasClicked && !_cancelButtonWasClicked)
 	{
         [self dismiss];
         // on close just terminate without relaunching and sending the report
@@ -284,7 +284,7 @@ static NSString* s_feedbackURL = nil;
 - (IBAction)cancel:(id)sender
 {
 	// relaunch without sending report
-	m_cancelButtonWasClicked = true;
+	_cancelButtonWasClicked = YES;
 	[self dismiss];
 	[(DFApplication*)NSApp relaunch];
 }
@@ -298,25 +298,25 @@ static NSString* s_feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 - (IBAction)expandCollapseCommentsBox:(id)sender
 {
-	bool shouldCollapseOrExpand = ([commentsDisclosureButton state] == NSOnState);
+	BOOL shouldCollapseOrExpand = ([commentsDisclosureButton state] == NSOnState);
 	[self expandOrCollapseBox:commentsBoxView 
 					 textView:commentsScrollView 
 				 alternateBox:detailsBoxView 
 	   shouldCollapseOrExpand:shouldCollapseOrExpand
-			   isLowerOrUpper:true
-				withAnimation:true];
+			   isLowerOrUpper:YES
+				withAnimation:YES];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (IBAction)expandCollapseDetailsBox:(id)sender
 {
-	bool shouldCollapseOrExpand = ([detailsDisclosureButton state] == NSOnState);
+	BOOL shouldCollapseOrExpand = ([detailsDisclosureButton state] == NSOnState);
 	[self expandOrCollapseBox:detailsBoxView 
 					 textView:detailsScrollView 
 				 alternateBox:commentsBoxView 
 	   shouldCollapseOrExpand:shouldCollapseOrExpand
-			   isLowerOrUpper:false
-				withAnimation:true];
+			   isLowerOrUpper:NO
+				withAnimation:YES];
 }
 
 @end

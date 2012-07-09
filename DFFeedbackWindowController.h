@@ -53,9 +53,9 @@
 	IBOutlet NSTextField* detailsProgressLabel;
 	
 	// workers
-	DFSystemProfileFetcher* m_systemProfileFetcher;
-	DFFeedbackSender* m_feedbackSender;
-	bool m_isSendingReport;
+	DFSystemProfileFetcher* _systemProfileFetcher;
+	DFFeedbackSender* _feedbackSender;
+	BOOL _isSendingReport;
 }
 
 //-------------------------------------------------------------------------------------------------

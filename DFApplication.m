@@ -33,7 +33,7 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
 //-------------------------------------------------------------------------------------------------
 - (void)launchAnotherInstanceAndWaitForTermination
 {
-    m_isRelaunching = true;
+    _isRelaunching = YES;
     
 	// launch a script that waits for the app to exit and then relaunches it
 	NSString* scriptPath = [[NSBundle mainBundle] pathForResource:@"DFRelaunch" ofType:@"sh"];
@@ -66,7 +66,7 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
 - (void)terminate:(id)sender
 {
 	// abnormal termination
-	if (m_isPostmortem && m_isRelaunching)
+	if (_isPostmortem && _isRelaunching)
 	{
         // save sequential crash count
 		NSUInteger crashSequenceCount = [[NSUserDefaults standardUserDefaults] integerForKey:USER_DEFAULT_CRASH_SEQUENCE_COUNT];
@@ -88,21 +88,21 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
 }
 
 //-------------------------------------------------------------------------------------------------
-- (bool)shouldIgnoreException:(NSException*)exception
+- (BOOL)shouldIgnoreException:(NSException*)exception
 {   
 	NSString* exceptionName = [exception name];
 	NSString* exceptionMessage = [exception reason];
 	
     // accessibility exceptions are a normal mode of operation, should be ignored
-	bool isAccessibilityException = [exceptionName isEqualToString:NSAccessibilityException];
+	BOOL isAccessibilityException = [exceptionName isEqualToString:NSAccessibilityException];
 	
     // Sparkle Update bugs should be ignored
-	bool isSparkleException = [exceptionMessage rangeOfString:@"SUUpdater"].location != NSNotFound
+	BOOL isSparkleException = [exceptionMessage rangeOfString:@"SUUpdater"].location != NSNotFound
     || [exceptionMessage rangeOfString:@"SUHost"].location != NSNotFound
     || [exceptionMessage rangeOfString:@"SUBasicUpdateDriver"].location != NSNotFound;
     
     // Simble exceptions should be ignored
-	bool isSimbleException = [exceptionMessage rangeOfString:@"SIMBL"].location != NSNotFound;
+	BOOL isSimbleException = [exceptionMessage rangeOfString:@"SIMBL"].location != NSNotFound;
 	
 	return isAccessibilityException || isSparkleException || isSimbleException;
 }
@@ -110,13 +110,13 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
 //-------------------------------------------------------------------------------------------------
 - (void)reportExceptionInMainThread:(NSException*)exception
 {
-    bool isFatal = false;
+    BOOL isFatal = NO;
     @try
     {
-        if (!m_isPostmortem)
+        if (!_isPostmortem)
         {
             // prevent endless loop
-            m_isPostmortem = true;
+            _isPostmortem = YES;
             
             NSLog(@"Reporting exception: %@", [exception reason]);
             
@@ -133,7 +133,7 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
     @catch (NSException* fatalException)
     {
         // the exception occurred during exception handling - considered fatal
-        isFatal = true;
+        isFatal = YES;
     }
     
     if (isFatal)
@@ -167,9 +167,9 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
 }
 
 //-------------------------------------------------------------------------------------------------
-- (bool)isPostmortem
+- (BOOL)isPostmortem
 {
-    return m_isPostmortem;
+    return _isPostmortem;
 }
 
 @end

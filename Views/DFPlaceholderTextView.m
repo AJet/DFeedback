@@ -22,22 +22,22 @@
 //-------------------------------------------------------------------------------------------------
 - (void)dealloc
 {
-	[m_placeholderText release];
+	[_placeholderText release];
 	[super dealloc];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (NSString*)placeholderText
 {
-	return m_placeholderText;
+	return _placeholderText;
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)setPlaceholderText:(NSString*)value
 {
 	[value retain];
-	[m_placeholderText release];
-	m_placeholderText = value;
+	[_placeholderText release];
+	_placeholderText = value;
 	[self setNeedsDisplay:YES];
 }
 
@@ -64,11 +64,11 @@
 {
 	[super didChangeText];
 	// clear explicitly, or otherwise the placeholder text will sometimes leave some dirty pixels
-	if (m_shouldInvalidateOnChange)
+	if (_shouldInvalidateOnChange)
 	{
 		[self setNeedsDisplay:YES];
 	}
-	m_shouldInvalidateOnChange = ([self string] == nil || [[self string] isEqualToString:@""]);
+	_shouldInvalidateOnChange = ([self string] == nil || [[self string] isEqualToString:@""]);
 }
 
 //-------------------------------------------------------------------------------------------------

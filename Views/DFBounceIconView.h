@@ -14,10 +14,10 @@
 @interface DFBounceIconView : NSView 
 //-------------------------------------------------------------------------------------------------
 {
-	CALayer* m_rootLayer;
-	CALayer* m_iconLayer;
-	bool m_isShowing;
-	NSImage* m_icon;
+	CALayer* _rootLayer;
+	CALayer* _iconLayer;
+	BOOL _isShowing;
+	NSImage* _icon;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -36,7 +36,7 @@
 
 //-------------------------------------------------------------------------------------------------
 // Currently showing flag
-- (bool)isShowing;
+- (BOOL)isShowing;
 
 //-------------------------------------------------------------------------------------------------
 // Bounces the icon

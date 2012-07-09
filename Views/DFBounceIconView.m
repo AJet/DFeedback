@@ -14,11 +14,11 @@
     self = [super initWithFrame:frame];
     if (self != nil) 
 	{
-		m_rootLayer = [[CALayer alloc] init];			
-		[m_rootLayer setAutoresizingMask:kCALayerWidthSizable | kCALayerHeightSizable];
-		[m_rootLayer setFrame:NSRectToCGRect([self bounds])];
-		[m_rootLayer setAnchorPoint:CGPointZero];
-		[self setLayer:m_rootLayer];
+		_rootLayer = [[CALayer alloc] init];			
+		[_rootLayer setAutoresizingMask:kCALayerWidthSizable | kCALayerHeightSizable];
+		[_rootLayer setFrame:NSRectToCGRect([self bounds])];
+		[_rootLayer setAnchorPoint:CGPointZero];
+		[self setLayer:_rootLayer];
 	}
     return self;
 }
@@ -26,9 +26,9 @@
 //-------------------------------------------------------------------------------------------------
 - (void)dealloc
 {
-	[m_rootLayer release];
-	[m_iconLayer release];
-	[m_icon release];
+	[_rootLayer release];
+	[_iconLayer release];
+	[_icon release];
 	[super dealloc];
 }
 
@@ -47,29 +47,29 @@
 //-------------------------------------------------------------------------------------------------
 - (void)setIcon:(NSImage*)icon
 {
-	if (icon != m_icon)
+	if (icon != _icon)
 	{
 		[icon retain];
-		[m_icon release];
-		m_icon = icon;
+		[_icon release];
+		_icon = icon;
 		
 		// replace icon layer without animation
 		[CATransaction begin];
-		[CATransaction setDisableActions:true];
+		[CATransaction setDisableActions:YES];
 		
-		CGFloat opacity = [m_iconLayer opacity];
-		[m_iconLayer removeFromSuperlayer];
-		[m_iconLayer release];
-		m_iconLayer = nil;
+		CGFloat opacity = [_iconLayer opacity];
+		[_iconLayer removeFromSuperlayer];
+		[_iconLayer release];
+		_iconLayer = nil;
 		if (icon != nil)
 		{
-			m_iconLayer = [[CALayer alloc] init];
-			[m_iconLayer setFrame:CGRectMake(0.0, 0.0, [icon size].width, [icon size].height)];
-			[m_iconLayer setAnchorPoint:CGPointMake(0.5, 0.5)];
-			[m_iconLayer setContents:icon];
-			[m_iconLayer setOpacity:opacity];
-			[m_iconLayer setPosition:CGPointMake([m_rootLayer bounds].size.width * 0.5, [m_rootLayer bounds].size.height * 0.5)];
-			[m_rootLayer addSublayer:m_iconLayer];
+			_iconLayer = [[CALayer alloc] init];
+			[_iconLayer setFrame:CGRectMake(0.0, 0.0, [icon size].width, [icon size].height)];
+			[_iconLayer setAnchorPoint:CGPointMake(0.5, 0.5)];
+			[_iconLayer setContents:icon];
+			[_iconLayer setOpacity:opacity];
+			[_iconLayer setPosition:CGPointMake([_rootLayer bounds].size.width * 0.5, [_rootLayer bounds].size.height * 0.5)];
+			[_rootLayer addSublayer:_iconLayer];
 		}
 		
 		[CATransaction commit];
@@ -79,19 +79,19 @@
 //-------------------------------------------------------------------------------------------------
 - (void)animateOpacity:(CGFloat)opacity
 {
-	if (m_iconLayer != nil)
+	if (_iconLayer != nil)
 	{
 		// prepare animation
 		CABasicAnimation* opacityAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
-		[opacityAnim setFromValue:[NSNumber numberWithFloat:[(CALayer*)[m_iconLayer presentationLayer] opacity]]];
+		[opacityAnim setFromValue:[NSNumber numberWithFloat:[(CALayer*)[_iconLayer presentationLayer] opacity]]];
 		[opacityAnim setToValue:[NSNumber numberWithFloat:opacity]];
 		[opacityAnim setDuration:DFBounceIcon_fadeDuration];
 		
 		// commit value
-		[m_iconLayer setOpacity:opacity];
+		[_iconLayer setOpacity:opacity];
 		
 		// launch the animation after commit, or the animation will be overriden with the implicit one
-		[m_iconLayer addAnimation:opacityAnim forKey:@"opacity"];
+		[_iconLayer addAnimation:opacityAnim forKey:@"opacity"];
 	}
 }
 
@@ -99,30 +99,30 @@
 - (void)fadeIn
 {
 	[self animateOpacity:1.0];
-	m_isShowing = true;
+	_isShowing = YES;
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)fadeOut
 {
 	[self animateOpacity:0.0];
-	m_isShowing = false;
+	_isShowing = NO;
 }
 
 //-------------------------------------------------------------------------------------------------
-- (bool)isShowing
+- (BOOL)isShowing
 {
-	return m_isShowing;
+	return _isShowing;
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)show
 {
 	[CATransaction begin];
-    [CATransaction setDisableActions:true];
+    [CATransaction setDisableActions:YES];
 	
-	[m_iconLayer setOpacity:1.0];
-	m_isShowing = true;
+	[_iconLayer setOpacity:1.0];
+	_isShowing = YES;
 	
 	[CATransaction commit];
 }
@@ -131,10 +131,10 @@
 - (void)hide
 {
 	[CATransaction begin];
-    [CATransaction setDisableActions:true];
+    [CATransaction setDisableActions:YES];
 	
-	[m_iconLayer setOpacity:0.0];
-	m_isShowing = false;
+	[_iconLayer setOpacity:0.0];
+	_isShowing = NO;
 	
 	[CATransaction commit];
 }
@@ -142,22 +142,22 @@
 //-------------------------------------------------------------------------------------------------
 - (void)bounce
 {
-	if (m_iconLayer != nil)
+	if (_iconLayer != nil)
 	{
 		// calculate bounds
-		CGRect bouncedFrame = [m_iconLayer frame];
+		CGRect bouncedFrame = [_iconLayer frame];
 		bouncedFrame.size.width *= DFBounceIcon_bounceFactor;
 		bouncedFrame.size.height *= DFBounceIcon_bounceFactor;
 		
 		// prepare bounds animation
 		CABasicAnimation* boundsAnim = [CABasicAnimation animationWithKeyPath:@"bounds"];
-		[boundsAnim setFromValue:[NSValue valueWithRect:NSRectFromCGRect([(CALayer*)[m_iconLayer presentationLayer] bounds])]];
+		[boundsAnim setFromValue:[NSValue valueWithRect:NSRectFromCGRect([(CALayer*)[_iconLayer presentationLayer] bounds])]];
 		[boundsAnim setToValue:[NSValue valueWithRect:NSRectFromCGRect(bouncedFrame)]];
 		[boundsAnim setDuration:DFBounceIcon_bounceHalfDuration];
 		[boundsAnim setAutoreverses:YES];
 		
 		// do not commit value, will return to normal size automatically
-		[m_iconLayer addAnimation:boundsAnim forKey:@"bounds"];
+		[_iconLayer addAnimation:boundsAnim forKey:@"bounds"];
 	}
 }
 

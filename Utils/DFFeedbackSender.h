@@ -11,10 +11,10 @@
 @interface DFFeedbackSender : NSObject 
 //-------------------------------------------------------------------------------------------------
 {
-	id m_target;
-	SEL m_action;
-	bool m_isCanceled;
-	NSURLConnection* m_connection;
+	id _target;
+	SEL _action;
+	BOOL _isCanceled;
+	NSURLConnection* _connection;
 }
 
 //-------------------------------------------------------------------------------------------------

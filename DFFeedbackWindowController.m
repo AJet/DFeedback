@@ -34,22 +34,22 @@ static NSString* const STATE_INCLUDEEMAILADDRESS = @"DFeedback_IncludeEmailAddre
 //-------------------------------------------------------------------------------------------------
 // Private static data
 //-------------------------------------------------------------------------------------------------
-static DFFeedbackWindowController* s_singleton = nil;
-static NSString* s_feedbackURL = nil;
+static DFFeedbackWindowController* _singleton = nil;
+static NSString* _feedbackURL = nil;
 
 //-------------------------------------------------------------------------------------------------
 @implementation DFFeedbackWindowController
 //-------------------------------------------------------------------------------------------------
 + (DFFeedbackWindowController*)singleton
 {
-	if (s_singleton == nil)
+	if (_singleton == nil)
 	{
         // initialize styles if not already
         initializeDFStyles();
         // create singleton
-		s_singleton = [[DFFeedbackWindowController alloc] init];
+		_singleton = [[DFFeedbackWindowController alloc] init];
 	}
-	return s_singleton;
+	return _singleton;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ static NSString* s_feedbackURL = nil;
 		case DFFeedback_General:
 			return @"General Question";
 		default:
-			NSAssert (false, @"Invalid case for feedback type");
+			NSAssert (NO, @"Invalid case for feedback type");
 			break;
 	}
 	return nil;
@@ -104,7 +104,7 @@ static NSString* s_feedbackURL = nil;
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)showProgress:(bool)profilingOrSending
+- (void)showProgress:(BOOL)profilingOrSending
 {
 	// progress in the main window
 	[progressContainer setHidden:!(profilingOrSending || [self currentFeedbackType] != DFFeedback_General)];
@@ -141,33 +141,33 @@ static NSString* s_feedbackURL = nil;
 {
 	NSString* userEmail = [includeEmailCheckBox state] == NSOnState ? [emailComboBox stringValue] : nil;
 	NSString* feedbackText = [[textView textStorage] string];
-	NSString* profile = m_systemProfileFetcher != nil ? [m_systemProfileFetcher profile] : nil;
-	m_feedbackSender = [[DFFeedbackSender alloc] initWithCallbackTarget:self action:@selector(feedbackDidSend:)];
-	[m_feedbackSender sendFeedbackToURL:s_feedbackURL
+	NSString* profile = _systemProfileFetcher != nil ? [_systemProfileFetcher profile] : nil;
+	_feedbackSender = [[DFFeedbackSender alloc] initWithCallbackTarget:self action:@selector(feedbackDidSend:)];
+	[_feedbackSender sendFeedbackToURL:_feedbackURL
 							feedbackText:feedbackText 
 							feedbackType:[self feedbackTypeStringFromType:[self currentFeedbackType]]
 						   systemProfile:profile
 							   userEmail:userEmail];
-	[self showProgress:true];
+	[self showProgress:YES];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)cancelAllPendingStuff
 {
-	[m_systemProfileFetcher cancel];
-	[m_systemProfileFetcher release];
-	m_systemProfileFetcher = nil;
-	[m_feedbackSender cancel];
-	[m_feedbackSender release];
-	m_feedbackSender = nil;
+	[_systemProfileFetcher cancel];
+	[_systemProfileFetcher release];
+	_systemProfileFetcher = nil;
+	[_feedbackSender cancel];
+	[_feedbackSender release];
+	_feedbackSender = nil;
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)cancelFetchingSystemProfile
 {
-	[m_systemProfileFetcher cancel];
-	[m_systemProfileFetcher release];
-	m_systemProfileFetcher = nil;
+	[_systemProfileFetcher cancel];
+	[_systemProfileFetcher release];
+	_systemProfileFetcher = nil;
 	[detailsWindow orderOut:self];
 	[self resetProgress];
 }
@@ -175,33 +175,34 @@ static NSString* s_feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 - (void)dismiss
 {
-	if (s_singleton != nil)
+	if (_singleton != nil)
 	{
 		[self cancelAllPendingStuff];
 		[[self window] orderOut:self];
 		[detailsWindow orderOut:self];
-		[s_singleton release];
-		s_singleton = nil;
+		[_singleton release];
+		_singleton = nil;
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
-- (bool)isEmptyString:(NSString*)string
+- (BOOL)isEmptyString:(NSString*)string
 {
+    BOOL result = YES;
 	if ([string length] > 0)
 	{
 		NSString* regEx = @".*[^ \t\r\n]+.*"; 
 		NSPredicate* test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regEx]; 
 		if([test evaluateWithObject:string])
 		{
-			return false;
+			result = NO;
 		}
 	}
-	return true;
+	return result;
 }
 
 //-------------------------------------------------------------------------------------------------
-- (bool)isValidEmailAddress
+- (BOOL)isValidEmailAddress
 {
 	NSString* emailAddress = [emailComboBox stringValue];
 	if (emailAddress != nil && ![emailAddress isEqualToString:@""])
@@ -210,10 +211,10 @@ static NSString* s_feedbackURL = nil;
 		NSPredicate* emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx]; 
 		if([emailTest evaluateWithObject:emailAddress])
 		{
-			return true;
+			return YES;
 		}
 	}
-	return false;
+	return NO;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -226,16 +227,16 @@ static NSString* s_feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 - (void)systemProfileDidFetch:(DFSystemProfileFetcher*)profile
 {
-	if (profile == m_systemProfileFetcher)
+	if (profile == _systemProfileFetcher)
 	{
 		// update details window
-		[[detailsTextView textStorage] setAttributedString:[[[NSAttributedString alloc] initWithString:[m_systemProfileFetcher profile]] autorelease]];
+		[[detailsTextView textStorage] setAttributedString:[[[NSAttributedString alloc] initWithString:[_systemProfileFetcher profile]] autorelease]];
 		
 		// reset fetching progress
 		[self resetProgress];
 		
 		// begin sending immediately if the send button has been already clicked, or wait until it's clicked
-		if (m_isSendingReport)
+		if (_isSendingReport)
 		{
 			[self beginSendingFeedback];
 		}
@@ -246,8 +247,8 @@ static NSString* s_feedbackURL = nil;
 - (void)feedbackDidSend:(NSError*)error
 {
 	// cleanup
-	[m_feedbackSender release];
-	m_feedbackSender = nil;
+	[_feedbackSender release];
+	_feedbackSender = nil;
 	[self resetProgress];
 	
 	// check error
@@ -277,12 +278,12 @@ static NSString* s_feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 - (void)beginFetchingSystemProfile
 {
-	if (m_systemProfileFetcher == nil)
+	if (_systemProfileFetcher == nil)
 	{
-		m_systemProfileFetcher = [[DFSystemProfileFetcher alloc] initWithCallbackTarget:self action:@selector(systemProfileDidFetch:)];
-		[m_systemProfileFetcher fetch];
+		_systemProfileFetcher = [[DFSystemProfileFetcher alloc] initWithCallbackTarget:self action:@selector(systemProfileDidFetch:)];
+		[_systemProfileFetcher fetch];
 		
-		[self showProgress:false];
+		[self showProgress:NO];
 	}
 }
 
@@ -322,7 +323,7 @@ static NSString* s_feedbackURL = nil;
 		[textContainer setFrame:textContainerFrame];
 
 		// progress controls
-		[progressContainer setHidden:[self currentFeedbackType] == DFFeedback_General && !m_isSendingReport];
+		[progressContainer setHidden:[self currentFeedbackType] == DFFeedback_General && !_isSendingReport];
 		
 		// send button
 		[self validateSendButton];
@@ -339,10 +340,10 @@ static NSString* s_feedbackURL = nil;
 - (void)initializeControls:(DFFeedbackType)feedbackType
 {
 	// cleanup, just in case
-	[m_systemProfileFetcher cancel];
-	[m_systemProfileFetcher release];
-	m_systemProfileFetcher = nil;
-	m_isSendingReport = false;
+	[_systemProfileFetcher cancel];
+	[_systemProfileFetcher release];
+	_systemProfileFetcher = nil;
+	_isSendingReport = NO;
 	[sendButton setEnabled:YES];
 	[self resetProgress];
 	[self resetEmailWarning];
@@ -460,7 +461,7 @@ static NSString* s_feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 - (IBAction)sendReport:(id)sender
 {
-	bool shouldBlinkInvalidEmail = [includeEmailCheckBox intValue] != 0	&& ![self isValidEmailAddress];
+	BOOL shouldBlinkInvalidEmail = [includeEmailCheckBox intValue] != 0	&& ![self isValidEmailAddress];
 	if (shouldBlinkInvalidEmail)
 	{
 		[self showEmailWarning];
@@ -468,13 +469,13 @@ static NSString* s_feedbackURL = nil;
 	else
 	{
 		// change state
-		m_isSendingReport = true;
+		_isSendingReport = YES;
 		[sendButton setEnabled:NO];
 		[self resetEmailWarning];
 
 		// begin fetching system profile
-		bool isSystemProfileNeeded = [self currentFeedbackType] != DFFeedback_General && [includeSystemProfileCheckBox state] == NSOnState;
-		if (isSystemProfileNeeded && ![m_systemProfileFetcher isDoneFetching])
+		BOOL isSystemProfileNeeded = [self currentFeedbackType] != DFFeedback_General && [includeSystemProfileCheckBox state] == NSOnState;
+		if (isSystemProfileNeeded && ![_systemProfileFetcher isDoneFetching])
 		{
 			[self beginFetchingSystemProfile];
 		}
@@ -565,8 +566,8 @@ static NSString* s_feedbackURL = nil;
 {
 	// save params
 	[feedbackURL retain];
-	[s_feedbackURL release];
-	s_feedbackURL = feedbackURL;
+	[_feedbackURL release];
+	_feedbackURL = feedbackURL;
 }
 
 //-------------------------------------------------------------------------------------------------

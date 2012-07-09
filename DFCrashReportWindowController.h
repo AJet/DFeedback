@@ -41,14 +41,14 @@
 	IBOutlet NSButton* sendButton;
 	
     // workers
-	DFSystemProfileFetcher* m_systemProfileFetcher;
-	DFFeedbackSender* m_feedbackSender;
+	DFSystemProfileFetcher* _systemProfileFetcher;
+	DFFeedbackSender* _feedbackSender;
     
     // stored info and flags
-	NSString* m_exceptionMessage;
-    NSString* m_exceptionStackTrace;
-	bool m_sendButtonWasClicked;
-	bool m_cancelButtonWasClicked;
+	NSString* _exceptionMessage;
+    NSString* _exceptionStackTrace;
+	BOOL _sendButtonWasClicked;
+	BOOL _cancelButtonWasClicked;
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -11,12 +11,12 @@
 @interface DFSystemProfileFetcher : NSObject 
 //-------------------------------------------------------------------------------------------------
 {
-	id m_target;
-	SEL m_action;
-	NSTask* m_scriptTask;
-	NSPipe* m_scriptPipe;
-	NSString* m_profile;
-	bool m_isDoneFetching;
+	id _target;
+	SEL _action;
+	NSTask* _scriptTask;
+	NSPipe* _scriptPipe;
+	NSString* _profile;
+	BOOL _isDoneFetching;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -37,6 +37,6 @@
 
 //-------------------------------------------------------------------------------------------------
 // Is done fetching flag
-- (bool)isDoneFetching;
+- (BOOL)isDoneFetching;
 
 @end

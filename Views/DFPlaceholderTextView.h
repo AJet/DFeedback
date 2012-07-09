@@ -11,8 +11,8 @@
 @interface DFPlaceholderTextView : NSTextView
 //-------------------------------------------------------------------------------------------------
 {
-	NSString* m_placeholderText;
-	bool m_shouldInvalidateOnChange;
+	NSString* _placeholderText;
+	BOOL _shouldInvalidateOnChange;
 }
 
 //-------------------------------------------------------------------------------------------------

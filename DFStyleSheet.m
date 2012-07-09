@@ -8,7 +8,7 @@
 //-------------------------------------------------------------------------------------------------
 // Private static data
 //-------------------------------------------------------------------------------------------------
-static bool s_isInitialized = false;
+static BOOL _isInitialized = NO;
 
 //-------------------------------------------------------------------------------------------------
 // Bounce icon
@@ -51,7 +51,7 @@ static void		initializeDFCrashReportWindow(void)
 //-------------------------------------------------------------------------------------------------
 void initializeDFStyles(void)
 {
-	if (!s_isInitialized)
+	if (!_isInitialized)
 	{
 		// bounce icon view
 		initializeDFBounceIconStyles();
@@ -66,7 +66,7 @@ void initializeDFStyles(void)
 		initializeDFCrashReportWindow();
 
 		// save state
-		s_isInitialized = true;
+		_isInitialized = YES;
 	}
 }
 

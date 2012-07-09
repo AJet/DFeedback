@@ -10,8 +10,8 @@
 //-------------------------------------------------------------------------------------------------
 @interface DFApplication : NSApplication
 {
-    bool m_isRelaunching;
-    bool m_isPostmortem;
+    BOOL _isRelaunching;
+    BOOL _isPostmortem;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -20,6 +20,6 @@
 
 //-------------------------------------------------------------------------------------------------
 // Flag indicating that an unhandled exception has occured and the app is in process of terminating
-- (bool)isPostmortem;
+- (BOOL)isPostmortem;
 
 @end

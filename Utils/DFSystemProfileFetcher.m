@@ -13,14 +13,14 @@
 	self = [super init];
 	if (self != nil)
 	{
-		m_target = target;
-		m_action = action;
- 		m_scriptPipe = [[NSPipe pipe] retain];
-		m_scriptTask = [[NSTask alloc] init];
+		_target = target;
+		_action = action;
+ 		_scriptPipe = [[NSPipe pipe] retain];
+		_scriptTask = [[NSTask alloc] init];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(scriptPipeDidComplete:)
 													 name:NSFileHandleReadToEndOfFileCompletionNotification
-												   object:[m_scriptPipe fileHandleForReading]];	
+												   object:[_scriptPipe fileHandleForReading]];	
 		
 	}
 	return self;
@@ -31,10 +31,10 @@
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self
 													name:NSFileHandleReadToEndOfFileCompletionNotification
-												  object:[m_scriptPipe fileHandleForReading]];	
-	[m_scriptTask release];
-	[m_scriptPipe release];
-	[m_profile release];
+												  object:[_scriptPipe fileHandleForReading]];	
+	[_scriptTask release];
+	[_scriptPipe release];
+	[_profile release];
 	[super dealloc];
 }
 
@@ -46,25 +46,25 @@
 		NSData* data = [[notification userInfo] valueForKey:NSFileHandleNotificationDataItem];
 		if (data)
 		{
-			[m_profile release];
-			m_profile = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+			[_profile release];
+			_profile = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 		}
 	}
-	m_isDoneFetching = true;
-	[m_target performSelector:m_action withObject:self];
+	_isDoneFetching = YES;
+	[_target performSelector:_action withObject:self];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)fetch
 {
-	m_isDoneFetching = false;
-	[m_scriptTask setLaunchPath:@"/usr/sbin/system_profiler"];
-	[m_scriptTask setArguments:[NSArray arrayWithObjects:@"-detailLevel", @"mini", nil]];
-	[m_scriptTask setStandardOutput:m_scriptPipe];
+	_isDoneFetching = NO;
+	[_scriptTask setLaunchPath:@"/usr/sbin/system_profiler"];
+	[_scriptTask setArguments:[NSArray arrayWithObjects:@"-detailLevel", @"mini", nil]];
+	[_scriptTask setStandardOutput:_scriptPipe];
 	@try
 	{
-		[m_scriptTask launch];
-		[[m_scriptPipe fileHandleForReading] readToEndOfFileInBackgroundAndNotifyForModes:[NSArray arrayWithObjects:
+		[_scriptTask launch];
+		[[_scriptPipe fileHandleForReading] readToEndOfFileInBackgroundAndNotifyForModes:[NSArray arrayWithObjects:
                                                                                            NSDefaultRunLoopMode, 
                                                                                            NSModalPanelRunLoopMode,
                                                                                            nil]];
@@ -80,19 +80,19 @@
 //-------------------------------------------------------------------------------------------------
 - (void)cancel
 {
-	[m_scriptTask terminate];
+	[_scriptTask terminate];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (NSString*)profile
 {
-	return m_profile;
+	return _profile;
 }
 
 //-------------------------------------------------------------------------------------------------
-- (bool)isDoneFetching
+- (BOOL)isDoneFetching
 {
-	return m_isDoneFetching;
+	return _isDoneFetching;
 }
 
 @end

@@ -8,7 +8,7 @@
 //-------------------------------------------------------------------------------------------------
 // Private static data
 //-------------------------------------------------------------------------------------------------
-static OSVersion s_version = 0;
+static OSVersion _version = 0;
 
 //-------------------------------------------------------------------------------------------------
 @implementation OSVersionChecker
@@ -20,26 +20,26 @@ static OSVersion s_version = 0;
 //-------------------------------------------------------------------------------------------------
 + (OSVersion)macOsVersion
 {
-	if (s_version == OSVersion_Unknown)
+	if (_version == OSVersion_Unknown)
 	{
 		SInt32 macVersion = 0;
 		if (Gestalt(gestaltSystemVersion, &macVersion) == noErr)
 		{
 			if (macVersion >= 0x1070)
 			{
-				s_version = OSVersion_Lion;
+				_version = OSVersion_Lion;
 			}
 			else if (macVersion >= 0x1060)
 			{
-				s_version = OSVersion_SnowLeopard;
+				_version = OSVersion_SnowLeopard;
 			}
 			else if (macVersion >= 0x1050)
 			{
-				s_version = OSVersion_Leopard;
+				_version = OSVersion_Leopard;
 			}
 		}	
 	}
-	return s_version;
+	return _version;
 }
 
 @end

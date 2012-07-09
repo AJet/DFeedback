@@ -14,8 +14,8 @@
 	self = [super init];
 	if (self != nil)
 	{
-		m_target = target;
-		m_action = action;
+		_target = target;
+		_action = action;
 	}
 	return self;
 }
@@ -23,7 +23,7 @@
 //-------------------------------------------------------------------------------------------------
 - (void)dealloc
 {
-	[m_connection release];
+	[_connection release];
 	[super dealloc];
 }
 
@@ -48,34 +48,34 @@
 	// create request
     NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:url] postForm:form];
 	// begin sending the data
-	m_connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
-    [m_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [m_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSModalPanelRunLoopMode];
-    [m_connection start];
+	_connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
+    [_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSModalPanelRunLoopMode];
+    [_connection start];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
 {
-	if (!m_isCanceled)
+	if (!_isCanceled)
 	{
-		[m_target performSelectorOnMainThread:m_action withObject:error waitUntilDone:NO];
+		[_target performSelectorOnMainThread:_action withObject:error waitUntilDone:NO];
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)connectionDidFinishLoading:(NSURLConnection*)connection 
 {
-	if (!m_isCanceled)
+	if (!_isCanceled)
 	{
-		[m_target performSelectorOnMainThread:m_action withObject:nil waitUntilDone:NO];
+		[_target performSelectorOnMainThread:_action withObject:nil waitUntilDone:NO];
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)cancel
 {
-	m_isCanceled = true;
+	_isCanceled = YES;
 }
 
 @end

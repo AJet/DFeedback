@@ -31,19 +31,19 @@
 //-------------------------------------------------------------------------------------------------
 - (IBAction)sendGeneralQuestion:(id)sender
 {
-	[DFFeedbackWindowController showGeneralQuestion];
+	[[DFFeedbackWindowController singleton] showGeneralQuestion];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (IBAction)sendBugReport:(id)sender
 {
-	[DFFeedbackWindowController showBugReport];
+	[[DFFeedbackWindowController singleton] showBugReport];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (IBAction)sendFeatureRequest:(id)sender
 {
-	[DFFeedbackWindowController showFeatureRequest];
+	[[DFFeedbackWindowController singleton] showFeatureRequest];
 }
 
 //-------------------------------------------------------------------------------------------------

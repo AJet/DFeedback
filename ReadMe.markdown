@@ -15,7 +15,7 @@ The API is simple:
 
 1. The feedback window:
     - First, call +[DFFeedbackWindowController initializeWithFeedbackURL:] once to initialize the component and provide a URL for sending the feedback. (For example, in your -[NSApplicationDelegate applicationWillFinishLaunching:])
-    - Call one of +[DFFeedbackWindowController show*] methods to display the feedback dialog.
+    - Call one of -[DFFeedbackWindowController show*] methods to display the feedback dialog.
 
 2. The crash reporter:
     - First, call +[DFCrashReporterWindowController initializeWithFeedbackURL:icon:] once to initialize the component and provide a URL for sending the feedback. (For example, in your -[NSApplicationDelegate applicationWillFinishLaunching:])

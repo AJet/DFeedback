@@ -127,7 +127,7 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
             }
             
             // show problem report window
-            [DFCrashReportWindowController showReportForException:exception];
+            [[DFCrashReportWindowController singleton] showReportForException:exception];
         }
     }
     @catch (NSException* fatalException)

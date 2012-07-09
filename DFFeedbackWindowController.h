@@ -63,11 +63,17 @@
 + (void)initializeWithFeedbackURL:(NSString*)feedbackURL;
 
 //-------------------------------------------------------------------------------------------------
+// Singleton
++ (DFFeedbackWindowController*)singleton;
+
+//-------------------------------------------------------------------------------------------------
 // Shows the feedback window on the specified tab
-+ (void)showGeneralQuestion;
-+ (void)showBugReport;
-+ (void)showFeatureRequest;
+- (void)showGeneralQuestion;
+- (void)showBugReport;
+- (void)showFeatureRequest;
 // default first page
-+ (void)show;
+- (void)show;
+
+
 
 @end

@@ -571,46 +571,45 @@ static NSString* _feedbackURL = nil;
 }
 
 //-------------------------------------------------------------------------------------------------
-+ (void)showFeedback:(DFFeedbackType)feedbackType
+- (void)showFeedback:(DFFeedbackType)feedbackType
 {
-	
 	// center the window
-	NSWindow* window = [[self singleton] window];
+	NSWindow* window = [self window];
 	if (![window isVisible])
 	{
 		[window center];
 	}
 	
 	// initialize
-	[[self singleton] initializeControls:feedbackType];
+	[self initializeControls:feedbackType];
 	
 	// show window non-modally
-	[[self singleton] showWindow:nil];
+	[self showWindow:nil];
 	
 	// initialize first responder
-	[[self singleton] initializeFirstResponder];
+	[self initializeFirstResponder];
 }
 
 //-------------------------------------------------------------------------------------------------
-+ (void)showGeneralQuestion
+- (void)showGeneralQuestion
 {
 	[self showFeedback:DFFeedback_General];
 }
 
 //-------------------------------------------------------------------------------------------------
-+ (void)showBugReport
+- (void)showBugReport
 {
 	[self showFeedback:DFFeedback_Bug];
 }
 
 //-------------------------------------------------------------------------------------------------
-+ (void)showFeatureRequest
+- (void)showFeatureRequest
 {
 	[self showFeedback:DFFeedback_Feature];
 }
 
 //-------------------------------------------------------------------------------------------------
-+ (void)show
+- (void)show
 {
 	[self showFeedback:DFFeedback_General];
 }

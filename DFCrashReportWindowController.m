@@ -157,21 +157,21 @@ static NSString* _feedbackURL = nil;
 }
 
 //-------------------------------------------------------------------------------------------------
-+ (void)showReportForException:(NSException*)exception
+- (void)showReportForException:(NSException*)exception
 {
     // save exception
-    [[self singleton] setException:exception];
+    [self setException:exception];
 	
 	// center the window
-	NSWindow* window = [[self singleton] window];
+	NSWindow* window = [self window];
 	if (![window isVisible])
 	{
 		[window center];
 	}
 	
 	// show window
-	[[self singleton] initializeControls];
-    [NSApp runModalForWindow:[[self singleton] window]];
+	[self initializeControls];
+    [NSApp runModalForWindow:window];
 }
 
 //-------------------------------------------------------------------------------------------------

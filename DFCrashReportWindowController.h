@@ -59,8 +59,12 @@
                              icon:(NSImage*)icon;
 
 //-------------------------------------------------------------------------------------------------
+// Singleton
++ (DFCrashReportWindowController*)singleton;
+
+//-------------------------------------------------------------------------------------------------
 // Shows the crash report window for the specified exception
-+ (void)showReportForException:(NSException*)exception;
+- (void)showReportForException:(NSException*)exception;
 
 
 @end

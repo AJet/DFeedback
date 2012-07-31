@@ -17,7 +17,7 @@
 // Private constants
 //-------------------------------------------------------------------------------------------------
 static NSString* const NIB_NAME = @"DFFeedbackWindow";
-typedef enum
+typedef enum DFFeedbackType : NSUInteger
 {
 	DFFeedback_General = 0,
 	DFFeedback_Feature = 1,

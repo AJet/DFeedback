@@ -8,13 +8,13 @@
 //-------------------------------------------------------------------------------------------------
 // Public constants
 //-------------------------------------------------------------------------------------------------
-typedef enum 
-	{
-		OSVersion_Unknown = 0,
-		OSVersion_Leopard = 0x1050,
-		OSVersion_SnowLeopard = 0x1060,
-		OSVersion_Lion = 0x1070
-	} OSVersion;
+typedef enum OSVersion : NSUInteger
+{
+    OSVersion_Unknown = 0,
+    OSVersion_Leopard = 0x1050,
+    OSVersion_SnowLeopard = 0x1060,
+    OSVersion_Lion = 0x1070
+} OSVersion;
 
 //-------------------------------------------------------------------------------------------------
 // OS version checker

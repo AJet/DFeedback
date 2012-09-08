@@ -25,7 +25,11 @@ static OSVersion _version = 0;
 		SInt32 macVersion = 0;
 		if (Gestalt(gestaltSystemVersion, &macVersion) == noErr)
 		{
-			if (macVersion >= 0x1070)
+			if (macVersion >= 0x1080)
+			{
+				_version = OSVersion_MountainLion;
+			}
+			else if (macVersion >= 0x1070)
 			{
 				_version = OSVersion_Lion;
 			}

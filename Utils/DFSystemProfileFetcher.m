@@ -57,6 +57,8 @@
 //-------------------------------------------------------------------------------------------------
 - (void)fetch
 {
+    BOOL success = NO;
+    NSString* failureReason = nil;
 	_isDoneFetching = NO;
 	[_scriptTask setLaunchPath:@"/usr/sbin/system_profiler"];
 	[_scriptTask setArguments:[NSArray arrayWithObjects:@"-detailLevel", @"mini", nil]];
@@ -64,17 +66,31 @@
 	@try
 	{
 		[_scriptTask launch];
-		[[_scriptPipe fileHandleForReading] readToEndOfFileInBackgroundAndNotifyForModes:[NSArray arrayWithObjects:
-                                                                                           NSDefaultRunLoopMode, 
-                                                                                           NSModalPanelRunLoopMode,
-                                                                                           nil]];
+        NSFileHandle* handle = [_scriptPipe fileHandleForReading];
+        if (handle == nil)
+        {
+            failureReason = @"Invalid file handle";
+        }
+        else
+        {
+            [handle readToEndOfFileInBackgroundAndNotifyForModes:[NSArray arrayWithObjects:
+                                                                  NSDefaultRunLoopMode,
+                                                                  NSModalPanelRunLoopMode,
+                                                                  nil]];
+            success = YES;
+        }
 	}
 	@catch (NSException* exception)
 	{
-		NSLog(@"Failed to fetch system profile: %@", [exception reason]);
-		// emulate async completion
-		[self scriptPipeDidComplete:nil];
+        failureReason = [exception reason];
 	}
+    
+    if (!success)
+    {
+        NSLog(@"Failed to fetch system profile: %@", failureReason);
+        // emulate async completion
+        [self scriptPipeDidComplete:nil];
+    }
 }
 
 //-------------------------------------------------------------------------------------------------

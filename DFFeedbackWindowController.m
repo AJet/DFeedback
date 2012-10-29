@@ -12,6 +12,7 @@
 #import "DFBounceIconView.h"
 #import "DFKeyTabView.h"
 #import "OSVersionChecker.h"
+#import "DFApplicationSandboxInfo.h"
 
 //-------------------------------------------------------------------------------------------------
 // Private constants
@@ -38,7 +39,50 @@ static DFFeedbackWindowController* _singleton = nil;
 static NSString* _feedbackURL = nil;
 
 //-------------------------------------------------------------------------------------------------
+// Private static functions
+//-------------------------------------------------------------------------------------------------
+static BOOL IsEmptyMessage(NSString* string)
+{
+    BOOL result = YES;
+	if ([string length] > 0)
+	{
+		NSString* regEx = @".*[^ \t\r\n]+.*";
+		NSPredicate* test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regEx];
+		if([test evaluateWithObject:string])
+		{
+			result = NO;
+		}
+	}
+	return result;
+}
+
+//-------------------------------------------------------------------------------------------------
+static BOOL IsValidEmailAddress(NSString* emailAddress)
+{
+	if (emailAddress != nil && ![emailAddress isEqualToString:@""])
+	{
+		NSString* emailRegEx = @"[ ]*[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}[ ]*";
+		NSPredicate* emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx];
+		if([emailTest evaluateWithObject:emailAddress])
+		{
+			return YES;
+		}
+	}
+	return NO;
+}
+
+
+//-------------------------------------------------------------------------------------------------
 @implementation DFFeedbackWindowController
+//-------------------------------------------------------------------------------------------------
++ (void)initializeWithFeedbackURL:(NSString*)feedbackURL
+{
+	// save params
+	[feedbackURL retain];
+	[_feedbackURL release];
+	_feedbackURL = feedbackURL;
+}
+
 //-------------------------------------------------------------------------------------------------
 + (DFFeedbackWindowController*)singleton
 {
@@ -51,6 +95,166 @@ static NSString* _feedbackURL = nil;
 	}
 	return _singleton;
 }
+
+
+//-------------------------------------------------------------------------------------------------
+- (id)init
+{
+    self = [super initWithWindowNibName:NIB_NAME];
+    if (self != nil)
+	{
+		// do nothing
+    }
+    return self;
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)dealloc
+{
+	[self cancelAllPendingStuff];
+	[super dealloc];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)restoreState:(NSCoder*)state
+{
+	DFFeedbackType feedbackType = DFFeedback_General;
+	if ([state containsValueForKey:STATE_FEEDBACKTYPE])
+	{
+		feedbackType = (DFFeedbackType)[state decodeIntForKey:STATE_FEEDBACKTYPE];
+	}
+	[self initializeControlsForFeedbackType:feedbackType];
+    
+	NSString* message = [state decodeObjectForKey:STATE_MESSAGE];
+	if (message != nil)
+	{
+		[textView setString:message];
+	}
+	NSString* emailAddress = [state decodeObjectForKey:STATE_EMAILADDRESS];
+	if (emailAddress != nil)
+	{
+		[emailComboBox setStringValue:emailAddress];
+	}
+	if ([state containsValueForKey:STATE_INCLUDEEMAILADDRESS])
+	{
+		BOOL includeEmailAddress = [state decodeBoolForKey:STATE_INCLUDEEMAILADDRESS];
+		[includeEmailCheckBox setState:includeEmailAddress ? NSOnState : NSOffState];
+	}
+	if ([state containsValueForKey:STATE_INCLUDESYSTEMPROFILE])
+	{
+		BOOL includeSystemProfile = [state decodeBoolForKey:STATE_INCLUDESYSTEMPROFILE];
+		[includeSystemProfileCheckBox setState:includeSystemProfile ? NSOnState : NSOffState];
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
++ (void)restoreWindowWithIdentifier:(NSString*)identifier state:(NSCoder*)state completionHandler:(void (^)(NSWindow*, NSError*))completionHandler
+{
+	[[self singleton] restoreState:state];
+	completionHandler([[self singleton] window], nil);
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)window:(NSWindow*)window willEncodeRestorableState:(NSCoder*)state
+{
+	[state encodeObject:[textView string] forKey:STATE_MESSAGE];
+	[state encodeObject:[emailComboBox stringValue] forKey:STATE_EMAILADDRESS];
+	[state encodeInt:[self currentFeedbackType] forKey:STATE_FEEDBACKTYPE];
+	[state encodeBool:[includeEmailCheckBox state] == NSOnState forKey:STATE_INCLUDEEMAILADDRESS];
+	[state encodeBool:[includeSystemProfileCheckBox state] == NSOnState forKey:STATE_INCLUDESYSTEMPROFILE];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)awakeFromNib
+{
+	// initialize border
+	[[self window] setContentBorderThickness:DFFeedbackWindow_bottomBarHeight forEdge: NSMinYEdge];
+	
+	// initialize placeholder strings
+	[textView setPlaceholderText:NSLocalizedStringFromTable(@"DF_TEXT_PLACEHOLDER", @"DFLocalizable", nil)];
+	
+	// initialize email bounce icon
+	[emailBounceIcon setIcon:DFFeedbackWindow_emailWarningImage];
+	
+	// initialize email from the address book
+    // unless the app is sandboxed and doesn't have the entitlement
+    // or if we are on 10.8 - we don't want the user to see the dreaded message box
+    if ([self shouldAccessContacts])
+    {
+        ABMutableMultiValue* emailAddresses = [[[ABAddressBook sharedAddressBook] me] valueForProperty:kABEmailProperty];
+        for (NSUInteger addrIndex = 0; addrIndex < [emailAddresses count]; addrIndex++)
+        {
+            [emailComboBox addItemWithObjectValue:[emailAddresses valueAtIndex:addrIndex]];
+        }
+        if ([emailComboBox numberOfItems] > 0)
+        {
+            [emailComboBox selectItemAtIndex:0];
+        }
+    }
+	
+	// restoration
+	if ([OSVersionChecker macOsVersion] >= OSVersion_Lion)
+	{
+		[[self window] performSelector:@selector(setRestorable:) withObject:(id)(NSUInteger)YES];
+		[[self window] performSelector:@selector(setRestorationClass:) withObject:[self class]];
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)initializeControlsForFeedbackType:(DFFeedbackType)feedbackType
+{
+	// cleanup, just in case
+	[_systemProfileFetcher cancel];
+	[_systemProfileFetcher release];
+	_systemProfileFetcher = nil;
+	_isSendingReport = NO;
+	[sendButton setEnabled:YES];
+	[self resetProgress];
+	[self resetEmailWarning];
+	
+	// window title
+	NSString* windowTitle = [[self window] title];
+	windowTitle = [NSString stringWithFormat:windowTitle, [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]];
+	[[self window] setTitle:windowTitle];
+	
+	// select tab
+	NSUInteger tabIndex = [self tabIndexFromFeedbackType:feedbackType];
+	[tabsSegmentedControl setSelectedSegment:tabIndex];
+	[tabView selectTabViewItemAtIndex:tabIndex];
+	[self tabView:tabView didSelectTabViewItem:[tabView tabViewItemAtIndex:tabIndex]];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)initializeFirstResponder
+{
+	// this is needed to prevent the focus ring to appear on the tab buttons, each time the window is shown
+	[[self window] makeFirstResponder:tabView];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (BOOL)shouldAccessContacts
+{
+    BOOL result = YES;
+    if ([OSVersionChecker macOsVersion] >= OSVersion_MountainLion)
+    {
+        // we don't want the dreaded dialog that the app wants to access your contacts
+        result = NO;
+    }
+    else
+    {
+        // check if sandboxed at all
+        if ([DFApplicationSandboxInfo isSandboxed])
+        {
+            // check if has address book access
+            if (![DFApplicationSandboxInfo hasAddressBookDataEntitlement])
+            {
+                result = NO;
+            }
+        }
+    }
+    return result;
+}
+
 
 //-------------------------------------------------------------------------------------------------
 - (NSUInteger)tabIndexFromFeedbackType:(DFFeedbackType)feedbackType
@@ -137,91 +341,15 @@ static NSString* _feedbackURL = nil;
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)beginSendingFeedback
+- (void)beginFetchingSystemProfile
 {
-	NSString* userEmail = [includeEmailCheckBox state] == NSOnState ? [emailComboBox stringValue] : nil;
-	NSString* feedbackText = [[textView textStorage] string];
-	NSString* profile = _systemProfileFetcher != nil ? [_systemProfileFetcher profile] : nil;
-	_feedbackSender = [[DFFeedbackSender alloc] initWithCallbackTarget:self action:@selector(feedbackDidSend:)];
-	[_feedbackSender sendFeedbackToURL:_feedbackURL
-							feedbackText:feedbackText 
-							feedbackType:[self feedbackTypeStringFromType:[self currentFeedbackType]]
-						   systemProfile:profile
-							   userEmail:userEmail];
-	[self showProgress:YES];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)cancelAllPendingStuff
-{
-	[_systemProfileFetcher cancel];
-	[_systemProfileFetcher release];
-	_systemProfileFetcher = nil;
-	[_feedbackSender cancel];
-	[_feedbackSender release];
-	_feedbackSender = nil;
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)cancelFetchingSystemProfile
-{
-	[_systemProfileFetcher cancel];
-	[_systemProfileFetcher release];
-	_systemProfileFetcher = nil;
-	[detailsWindow orderOut:self];
-	[self resetProgress];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)dismiss
-{
-	if (_singleton != nil)
+	if (_systemProfileFetcher == nil)
 	{
-		[self cancelAllPendingStuff];
-		[[self window] orderOut:self];
-		[detailsWindow orderOut:self];
-		[_singleton release];
-		_singleton = nil;
+		_systemProfileFetcher = [[DFSystemProfileFetcher alloc] initWithCallbackTarget:self action:@selector(systemProfileDidFetch:)];
+		[_systemProfileFetcher fetch];
+		
+		[self showProgress:NO];
 	}
-}
-
-//-------------------------------------------------------------------------------------------------
-- (BOOL)isEmptyString:(NSString*)string
-{
-    BOOL result = YES;
-	if ([string length] > 0)
-	{
-		NSString* regEx = @".*[^ \t\r\n]+.*"; 
-		NSPredicate* test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regEx]; 
-		if([test evaluateWithObject:string])
-		{
-			result = NO;
-		}
-	}
-	return result;
-}
-
-//-------------------------------------------------------------------------------------------------
-- (BOOL)isValidEmailAddress
-{
-	NSString* emailAddress = [emailComboBox stringValue];
-	if (emailAddress != nil && ![emailAddress isEqualToString:@""])
-	{
-		NSString* emailRegEx = @"[ ]*[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}[ ]*"; 
-		NSPredicate* emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx]; 
-		if([emailTest evaluateWithObject:emailAddress])
-		{
-			return YES;
-		}
-	}
-	return NO;
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)validateSendButton
-{
-	NSString* message = [[textView textStorage] string];
-	[sendButton setEnabled:![self isEmptyString:message]];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -241,6 +369,31 @@ static NSString* _feedbackURL = nil;
 			[self beginSendingFeedback];
 		}
 	}
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)cancelFetchingSystemProfile
+{
+	[_systemProfileFetcher cancel];
+	[_systemProfileFetcher release];
+	_systemProfileFetcher = nil;
+	[detailsWindow orderOut:self];
+	[self resetProgress];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)beginSendingFeedback
+{
+	NSString* userEmail = [includeEmailCheckBox state] == NSOnState ? [emailComboBox stringValue] : nil;
+	NSString* feedbackText = [[textView textStorage] string];
+	NSString* profile = _systemProfileFetcher != nil ? [_systemProfileFetcher profile] : nil;
+	_feedbackSender = [[DFFeedbackSender alloc] initWithCallbackTarget:self action:@selector(feedbackDidSend:)];
+	[_feedbackSender sendFeedbackToURL:_feedbackURL
+                          feedbackText:feedbackText
+                          feedbackType:[self feedbackTypeStringFromType:[self currentFeedbackType]]
+                         systemProfile:profile
+                             userEmail:userEmail];
+	[self showProgress:YES];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -269,22 +422,21 @@ static NSString* _feedbackURL = nil;
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)initializeFirstResponder
+- (void)cancelAllPendingStuff
 {
-	// this is needed to prevent the focus ring to appear on the tab buttons, each time the window is shown
-	[[self window] makeFirstResponder:tabView];
+	[_systemProfileFetcher cancel];
+	[_systemProfileFetcher release];
+	_systemProfileFetcher = nil;
+	[_feedbackSender cancel];
+	[_feedbackSender release];
+	_feedbackSender = nil;
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)beginFetchingSystemProfile
+- (void)validateSendButton
 {
-	if (_systemProfileFetcher == nil)
-	{
-		_systemProfileFetcher = [[DFSystemProfileFetcher alloc] initWithCallbackTarget:self action:@selector(systemProfileDidFetch:)];
-		[_systemProfileFetcher fetch];
-		
-		[self showProgress:NO];
-	}
+	NSString* message = [[textView textStorage] string];
+	[sendButton setEnabled:!IsEmptyMessage(message)];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -337,131 +489,9 @@ static NSString* _feedbackURL = nil;
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)initializeControls:(DFFeedbackType)feedbackType
-{
-	// cleanup, just in case
-	[_systemProfileFetcher cancel];
-	[_systemProfileFetcher release];
-	_systemProfileFetcher = nil;
-	_isSendingReport = NO;
-	[sendButton setEnabled:YES];
-	[self resetProgress];
-	[self resetEmailWarning];
-	
-	// window title
-	NSString* windowTitle = [[self window] title];
-	windowTitle = [NSString stringWithFormat:windowTitle, [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]]; 
-	[[self window] setTitle:windowTitle];
-	
-	// select tab
-	NSUInteger tabIndex = [self tabIndexFromFeedbackType:feedbackType];
-	[tabsSegmentedControl setSelectedSegment:tabIndex];
-	[tabView selectTabViewItemAtIndex:tabIndex];
-	[self tabView:tabView didSelectTabViewItem:[tabView tabViewItemAtIndex:tabIndex]];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (id)init 
-{
-    self = [super initWithWindowNibName:NIB_NAME];
-    if (self != nil) 
-	{
-		// do nothing
-    }
-    return self;
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)awakeFromNib
-{
-	// initialize border
-	[[self window] setContentBorderThickness:DFFeedbackWindow_bottomBarHeight forEdge: NSMinYEdge];
-	
-	// initialize placeholder strings
-	[textView setPlaceholderText:NSLocalizedStringFromTable(@"DF_TEXT_PLACEHOLDER", @"DFLocalizable", nil)];
-	
-	// initialize email bounce icon
-	[emailBounceIcon setIcon:DFFeedbackWindow_emailWarningImage];
-	
-	// initialize email from the address book
-	ABMutableMultiValue* emailAddresses = [[[ABAddressBook sharedAddressBook] me] valueForProperty:kABEmailProperty];
-    for (NSUInteger addrIndex = 0; addrIndex < [emailAddresses count]; addrIndex++) 
-	{
-        [emailComboBox addItemWithObjectValue:[emailAddresses valueAtIndex:addrIndex]];
-    }
-	if ([emailComboBox numberOfItems] > 0)
-	{
-		[emailComboBox selectItemAtIndex:0];
-	}
-	
-	// restoration
-	if ([OSVersionChecker macOsVersion] >= OSVersion_Lion)
-	{
-		[[self window] performSelector:@selector(setRestorable:) withObject:(id)(NSUInteger)YES];
-		[[self window] performSelector:@selector(setRestorationClass:) withObject:[self class]];
-	}
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)dealloc
-{
-	[self cancelAllPendingStuff];
-	[super dealloc];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)restoreState:(NSCoder*)state
-{
-	DFFeedbackType feedbackType = DFFeedback_General;
-	if ([state containsValueForKey:STATE_FEEDBACKTYPE])
-	{
-		feedbackType = (DFFeedbackType)[state decodeIntForKey:STATE_FEEDBACKTYPE];
-	}
-	[self initializeControls:feedbackType];
-
-	NSString* message = [state decodeObjectForKey:STATE_MESSAGE];
-	if (message != nil)
-	{
-		[textView setString:message];
-	}
-	NSString* emailAddress = [state decodeObjectForKey:STATE_EMAILADDRESS];
-	if (emailAddress != nil)
-	{
-		[emailComboBox setStringValue:emailAddress];
-	}
-	if ([state containsValueForKey:STATE_INCLUDEEMAILADDRESS])
-	{
-		BOOL includeEmailAddress = [state decodeBoolForKey:STATE_INCLUDEEMAILADDRESS];
-		[includeEmailCheckBox setState:includeEmailAddress ? NSOnState : NSOffState];
-	}
-	if ([state containsValueForKey:STATE_INCLUDESYSTEMPROFILE])
-	{
-		BOOL includeSystemProfile = [state decodeBoolForKey:STATE_INCLUDESYSTEMPROFILE];
-		[includeSystemProfileCheckBox setState:includeSystemProfile ? NSOnState : NSOffState];
-	}
-}
-
-//-------------------------------------------------------------------------------------------------
-+ (void)restoreWindowWithIdentifier:(NSString*)identifier state:(NSCoder*)state completionHandler:(void (^)(NSWindow*, NSError*))completionHandler
-{
-	[[self singleton] restoreState:state];
-	completionHandler([[self singleton] window], nil);
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)window:(NSWindow*)window willEncodeRestorableState:(NSCoder*)state
-{
-	[state encodeObject:[textView string] forKey:STATE_MESSAGE];
-	[state encodeObject:[emailComboBox stringValue] forKey:STATE_EMAILADDRESS];
-	[state encodeInt:[self currentFeedbackType] forKey:STATE_FEEDBACKTYPE];
-	[state encodeBool:[includeEmailCheckBox state] == NSOnState forKey:STATE_INCLUDEEMAILADDRESS];
-	[state encodeBool:[includeSystemProfileCheckBox state] == NSOnState forKey:STATE_INCLUDESYSTEMPROFILE];
-}
-
-//-------------------------------------------------------------------------------------------------
 - (IBAction)sendReport:(id)sender
 {
-	BOOL shouldBlinkInvalidEmail = [includeEmailCheckBox intValue] != 0	&& ![self isValidEmailAddress];
+	BOOL shouldBlinkInvalidEmail = [includeEmailCheckBox intValue] != 0	&& !IsValidEmailAddress([emailComboBox stringValue]);
 	if (shouldBlinkInvalidEmail)
 	{
 		[self showEmailWarning];
@@ -490,24 +520,6 @@ static NSString* _feedbackURL = nil;
 			[self beginSendingFeedback];
 		}
 	}
-}
-
-//-------------------------------------------------------------------------------------------------
-- (IBAction)close:(id)sender
-{
-	[self dismiss];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)windowWillClose:(NSNotification*)notification 
-{
-	[self dismiss];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (IBAction)cancel:(id)sender
-{
-	[self dismiss];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -562,16 +574,7 @@ static NSString* _feedbackURL = nil;
 }
 
 //-------------------------------------------------------------------------------------------------
-+ (void)initializeWithFeedbackURL:(NSString*)feedbackURL
-{
-	// save params
-	[feedbackURL retain];
-	[_feedbackURL release];
-	_feedbackURL = feedbackURL;
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)showFeedback:(DFFeedbackType)feedbackType
+- (void)showForFeedbackType:(DFFeedbackType)feedbackType
 {
 	// center the window
 	NSWindow* window = [self window];
@@ -581,7 +584,7 @@ static NSString* _feedbackURL = nil;
 	}
 	
 	// initialize
-	[self initializeControls:feedbackType];
+	[self initializeControlsForFeedbackType:feedbackType];
 	
 	// show window non-modally
 	[self showWindow:nil];
@@ -593,25 +596,58 @@ static NSString* _feedbackURL = nil;
 //-------------------------------------------------------------------------------------------------
 - (void)showGeneralQuestion
 {
-	[self showFeedback:DFFeedback_General];
+	[self showForFeedbackType:DFFeedback_General];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)showBugReport
 {
-	[self showFeedback:DFFeedback_Bug];
+	[self showForFeedbackType:DFFeedback_Bug];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)showFeatureRequest
 {
-	[self showFeedback:DFFeedback_Feature];
+	[self showForFeedbackType:DFFeedback_Feature];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)show
 {
-	[self showFeedback:DFFeedback_General];
+	[self showForFeedbackType:DFFeedback_General];
 }
 
+//-------------------------------------------------------------------------------------------------
+- (void)dismiss
+{
+	if (_singleton != nil)
+	{
+		[self cancelAllPendingStuff];
+		[[self window] orderOut:self];
+		[detailsWindow orderOut:self];
+		[_singleton release];
+		_singleton = nil;
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+- (IBAction)close:(id)sender
+{
+	[self dismiss];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (IBAction)cancel:(id)sender
+{
+	[self dismiss];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)windowWillClose:(NSNotification*)notification
+{
+	[self dismiss];
+}
+
+
 @end
+

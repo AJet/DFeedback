@@ -66,6 +66,8 @@
 			_iconLayer = [[CALayer alloc] init];
 			[_iconLayer setFrame:CGRectMake(0.0, 0.0, [icon size].width, [icon size].height)];
 			[_iconLayer setAnchorPoint:CGPointMake(0.5, 0.5)];
+            // retina support
+            [_iconLayer setContentsScale:[_rootLayer contentsScale]];
 			[_iconLayer setContents:icon];
 			[_iconLayer setOpacity:opacity];
 			[_iconLayer setPosition:CGPointMake([_rootLayer bounds].size.width * 0.5, [_rootLayer bounds].size.height * 0.5)];
@@ -159,6 +161,17 @@
 		// do not commit value, will return to normal size automatically
 		[_iconLayer addAnimation:boundsAnim forKey:@"bounds"];
 	}
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)viewDidChangeBackingProperties
+{
+    if (self.window != nil)
+    {
+        // retina support
+        [_rootLayer setContentsScale:[[self window] backingScaleFactor]];
+        [_iconLayer setContentsScale:[[self window] backingScaleFactor]];
+    }
 }
 
 @end

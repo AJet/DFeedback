@@ -255,6 +255,23 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
     return result;
 }
 
+//-------------------------------------------------------------------------------------------------
+- (BOOL)shouldFetchSystemProfile
+{
+    BOOL result = YES;
+    // on 10.8, system profile seems to work somehow, even in sandbox, but not on 10.7 in sandbox
+    if ([OSVersionChecker macOsVersion] < OSVersion_MountainLion)
+    {
+        if ([DFApplicationSandboxInfo isSandboxed])
+        {
+            // currently, this would require a temporary exception entitlement, don't rely on it
+            // maybe later implement it using xpc then check the corresponding entitlement here
+            result = NO;
+        }
+    }
+    return result;
+}
+
 
 //-------------------------------------------------------------------------------------------------
 - (NSUInteger)tabIndexFromFeedbackType:(DFFeedbackType)feedbackType
@@ -445,14 +462,16 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	if (sender == tabView)
 	{
 		// switch variants of the window when the system profile is visible/hidden
-
+        BOOL isSystemProfileAvailable = [self currentFeedbackType] != DFFeedback_General && [self shouldFetchSystemProfile];
+        
+        
 		// system profile controls
-		[systemProfileContainer setHidden:[self currentFeedbackType] == DFFeedback_General];
+		[systemProfileContainer setHidden:!isSystemProfileAvailable];
 
 		// text container
 		NSRect textContainerFrame = [textContainer frame];
 		NSRect systemProfileFrame = [systemProfileContainer frame];
-		if ([self currentFeedbackType] == DFFeedback_General)
+		if (!isSystemProfileAvailable)
 		{
 			// expand text container
 			if (textContainerFrame.origin.y > systemProfileFrame.origin.y)
@@ -475,13 +494,13 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 		[textContainer setFrame:textContainerFrame];
 
 		// progress controls
-		[progressContainer setHidden:[self currentFeedbackType] == DFFeedback_General && !_isSendingReport];
+		[progressContainer setHidden:!isSystemProfileAvailable && !_isSendingReport];
 		
 		// send button
 		[self validateSendButton];
 		
 		// begin fetching profile immediately after switching to a page that contains it
-		if ([self currentFeedbackType] != DFFeedback_General)
+		if (isSystemProfileAvailable)
 		{
 			[self beginFetchingSystemProfile];
 		}

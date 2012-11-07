@@ -142,7 +142,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	}
 	if ([state containsValueForKey:STATE_INCLUDESYSTEMPROFILE])
 	{
-		BOOL includeSystemProfile = [state decodeBoolForKey:STATE_INCLUDESYSTEMPROFILE];
+		BOOL includeSystemProfile = [state decodeBoolForKey:STATE_INCLUDESYSTEMPROFILE] && [self shouldFetchSystemProfile];
 		[includeSystemProfileCheckBox setState:includeSystemProfile ? NSOnState : NSOffState];
 	}
 }
@@ -523,7 +523,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 		[self resetEmailWarning];
 
 		// begin fetching system profile
-		BOOL isSystemProfileNeeded = [self currentFeedbackType] != DFFeedback_General && [includeSystemProfileCheckBox state] == NSOnState;
+		BOOL isSystemProfileNeeded = [self currentFeedbackType] != DFFeedback_General && [self shouldFetchSystemProfile] && [includeSystemProfileCheckBox state] == NSOnState;
 		if (isSystemProfileNeeded && ![_systemProfileFetcher isDoneFetching])
 		{
 			[self beginFetchingSystemProfile];

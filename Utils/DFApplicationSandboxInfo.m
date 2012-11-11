@@ -56,7 +56,7 @@ static DFApplicationSandboxInfo* _singleton = nil;
     NSMutableArray* newEntitlementCodes = [NSMutableArray arrayWithCapacity:[entitlementCodes count]];
     for (NSString* entitlementCode in entitlementCodes)
     {
-        NSNumber* entitlementValue = [_queriedEntitlements objectForKey:entitlementCode];
+        NSNumber* entitlementValue = _queriedEntitlements[entitlementCode];
         if (entitlementValue == nil)
         {
             [newEntitlementCodes addObject:entitlementCode];
@@ -100,7 +100,7 @@ static DFApplicationSandboxInfo* _singleton = nil;
                 CFRelease(bundleStaticCode);
             }
             // save result
-            [_queriedEntitlements setObject:[NSNumber numberWithBool:entitlementResult] forKey:entitlementCode];
+            _queriedEntitlements[entitlementCode] = @(entitlementResult);
             
             // if at least one entitlement failed, the entire result failed
             if (!entitlementResult)
@@ -117,13 +117,13 @@ static DFApplicationSandboxInfo* _singleton = nil;
 //-------------------------------------------------------------------------------------------------
 + (BOOL)hasAddressBookDataEntitlement
 {
-    return [[self singleton] hasEntitlements:[NSArray arrayWithObjects:ENTITLEMENT_SANDBOX, ENTITLEMENT_ADDRESSBOOK_DATA, nil]];
+    return [[self singleton] hasEntitlements:@[ENTITLEMENT_SANDBOX, ENTITLEMENT_ADDRESSBOOK_DATA]];
 }
 
 //-------------------------------------------------------------------------------------------------
 + (BOOL)isSandboxed
 {
-    return [[self singleton] hasEntitlements:[NSArray arrayWithObject:ENTITLEMENT_SANDBOX]];
+    return [[self singleton] hasEntitlements:@[ENTITLEMENT_SANDBOX]];
 }
 
 

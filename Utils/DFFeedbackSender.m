@@ -36,15 +36,13 @@
 				 
 {
 	// create dictionary of fields to be transmitted using http POST
-    NSDictionary* form = [NSDictionary dictionaryWithObjectsAndKeys:
-						  feedbackType, @"feedbackType",
-                          feedbackText, @"feedback",
-                          userEmail != nil ? userEmail : @"<email suppressed>", @"email",
-                          [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"], @"appName",
-                          [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"], @"bundleID",
-                          [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"], @"version",
-                          systemProfile != nil ? systemProfile : @"<system profile suppressed>", @"systemProfile",
-                          nil];
+    NSDictionary* form = @{@"feedbackType": feedbackType,
+                          @"feedback": feedbackText,
+                          @"email": userEmail != nil ? userEmail : @"<email suppressed>",
+                          @"appName": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"],
+                          @"bundleID": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"],
+                          @"version": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"],
+                          @"systemProfile": systemProfile != nil ? systemProfile : @"<system profile suppressed>"};
 	// create request
     NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:url] postForm:form];
 	// begin sending the data

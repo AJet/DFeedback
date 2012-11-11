@@ -268,7 +268,7 @@ NSString *GTMStackTraceFromException(NSException *e) {
 	if (addresses == nil || [addresses count] == 0)
 	{
 		// the call stack is located in user info dictionary
-		NSString* addressesString = [[e userInfo] objectForKey:@"NSStackTraceKey"];
+		NSString* addressesString = [e userInfo][@"NSStackTraceKey"];
 		if (addressesString != nil)
 		{
 			// strip extra spaces
@@ -289,7 +289,7 @@ NSString *GTMStackTraceFromException(NSException *e) {
 				[scanner scanHexLongLong:&longAddress];
 				NSUInteger address = (NSUInteger)longAddress;
 				// collect
-				[mutableAddresses addObject:[NSNumber numberWithUnsignedInteger:address]];
+				[mutableAddresses addObject:@(address)];
 				// end fix by Oleg Krupnov
 			}
 			// proceed with this array instead

@@ -61,7 +61,7 @@
     NSString* failureReason = nil;
 	_isDoneFetching = NO;
 	[_scriptTask setLaunchPath:@"/usr/sbin/system_profiler"];
-	[_scriptTask setArguments:[NSArray arrayWithObjects:@"-detailLevel", @"mini", nil]];
+	[_scriptTask setArguments:@[@"-detailLevel", @"mini"]];
 	[_scriptTask setStandardOutput:_scriptPipe];
 	@try
 	{
@@ -73,10 +73,8 @@
         }
         else
         {
-            [handle readToEndOfFileInBackgroundAndNotifyForModes:[NSArray arrayWithObjects:
-                                                                  NSDefaultRunLoopMode,
-                                                                  NSModalPanelRunLoopMode,
-                                                                  nil]];
+            [handle readToEndOfFileInBackgroundAndNotifyForModes:@[NSDefaultRunLoopMode,
+                                                                  NSModalPanelRunLoopMode]];
             success = YES;
         }
 	}

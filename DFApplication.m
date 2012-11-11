@@ -39,11 +39,9 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
 	NSString* scriptPath = [[NSBundle mainBundle] pathForResource:@"DFRelaunch" ofType:@"sh"];
 	NSString* bundlePath = [NSString stringWithFormat:@"%s", [[[NSBundle mainBundle] executablePath] fileSystemRepresentation]];
 	NSString* processIdentifier = [NSString stringWithFormat:@"%d", [[NSProcessInfo processInfo] processIdentifier]];
-	NSArray* arguments = [NSArray arrayWithObjects:
-						  scriptPath,
+	NSArray* arguments = @[scriptPath,
 						  bundlePath,
-						  processIdentifier,
-						  nil];
+						  processIdentifier];
 	NSTask* task = [[[NSTask alloc] init] autorelease];
 	[task setLaunchPath:@"/bin/bash"];
 	[task setArguments:arguments];

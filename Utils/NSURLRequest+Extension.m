@@ -36,7 +36,7 @@
 	{
         [NSURLRequest appendFormat:@"\r\n--%@\r\n" arg:boundary toData:formData];
         [NSURLRequest appendFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n" arg:key toData:formData];
-        id value = [values objectForKey:key];
+        id value = values[key];
         if ([value isKindOfClass:[NSData class]]) 
 		{
             [NSURLRequest appendString:@"\r\n" toData:formData];

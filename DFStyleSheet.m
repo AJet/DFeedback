@@ -25,9 +25,8 @@ static void		initializeDFBounceIconStyles(void)
 NSDictionary*	DFPlaceholderTextView_placeholderTextAttributes = nil;
 static void		initializeDFPlaceholderTextViewStyles(void)
 {
-	DFPlaceholderTextView_placeholderTextAttributes = [[NSDictionary dictionaryWithObjectsAndKeys:[NSColor colorWithDeviceRed:128.0/255.0 green:128.0/255.0 blue:145.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
-														[NSFont userFontOfSize:12], NSFontAttributeName,
-														nil] retain];
+	DFPlaceholderTextView_placeholderTextAttributes = [@{NSForegroundColorAttributeName: [NSColor colorWithDeviceRed:128.0/255.0 green:128.0/255.0 blue:145.0/255.0 alpha:1.0],
+														NSFontAttributeName: [NSFont userFontOfSize:12]} retain];
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -85,8 +85,8 @@
 	{
 		// prepare animation
 		CABasicAnimation* opacityAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
-		[opacityAnim setFromValue:[NSNumber numberWithFloat:[(CALayer*)[_iconLayer presentationLayer] opacity]]];
-		[opacityAnim setToValue:[NSNumber numberWithFloat:opacity]];
+		[opacityAnim setFromValue:@([(CALayer*)[_iconLayer presentationLayer] opacity])];
+		[opacityAnim setToValue:@(opacity)];
 		[opacityAnim setDuration:DFBounceIcon_fadeDuration];
 		
 		// commit value

@@ -171,6 +171,9 @@
         // retina support
         [_rootLayer setContentsScale:[[self window] backingScaleFactor]];
         [_iconLayer setContentsScale:[[self window] backingScaleFactor]];
+        // force refresh icon
+        [_iconLayer setContents:nil];
+        [_iconLayer setContents:_icon];
     }
 }
 

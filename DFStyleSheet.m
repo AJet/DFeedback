@@ -35,7 +35,7 @@ CGFloat			DFFeedbackWindow_bottomBarHeight = 45.0;
 NSImage*		DFFeedbackWindow_emailWarningImage = nil;
 static void		initializeDFFeedbackWindow(void)
 {
-	DFFeedbackWindow_emailWarningImage = [[NSImage imageNamed:@"DFWarningIcon"] retain];
+	DFFeedbackWindow_emailWarningImage = [[NSImage imageNamed:@"DFWarning"] retain];
 }
 
 //-------------------------------------------------------------------------------------------------

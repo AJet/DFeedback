@@ -147,14 +147,15 @@
 	if (_iconLayer != nil)
 	{
 		// calculate bounds
-		CGRect bouncedFrame = [_iconLayer frame];
-		bouncedFrame.size.width *= DFBounceIcon_bounceFactor;
-		bouncedFrame.size.height *= DFBounceIcon_bounceFactor;
+		CGRect bouncedBounds = [_iconLayer bounds];
+		bouncedBounds.size.width *= DFBounceIcon_bounceFactor;
+		bouncedBounds.size.height *= DFBounceIcon_bounceFactor;
 		
 		// prepare bounds animation
 		CABasicAnimation* boundsAnim = [CABasicAnimation animationWithKeyPath:@"bounds"];
-		[boundsAnim setFromValue:[NSValue valueWithRect:NSRectFromCGRect([(CALayer*)[_iconLayer presentationLayer] bounds])]];
-		[boundsAnim setToValue:[NSValue valueWithRect:NSRectFromCGRect(bouncedFrame)]];
+        CGRect fromBounds = [_iconLayer presentationLayer] != nil ? [(CALayer*)[_iconLayer presentationLayer] bounds] : [_iconLayer bounds];
+		[boundsAnim setFromValue:[NSValue valueWithRect:NSRectFromCGRect(fromBounds)]];
+		[boundsAnim setToValue:[NSValue valueWithRect:NSRectFromCGRect(bouncedBounds)]];
 		[boundsAnim setDuration:DFBounceIcon_bounceHalfDuration];
 		[boundsAnim setAutoreverses:YES];
 		

@@ -150,8 +150,12 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 //-------------------------------------------------------------------------------------------------
 + (void)restoreWindowWithIdentifier:(NSString*)identifier state:(NSCoder*)state completionHandler:(void (^)(NSWindow*, NSError*))completionHandler
 {
-	[[self singleton] restoreState:state];
-	completionHandler([[self singleton] window], nil);
+    // force nib to load
+    if ([[self singleton] window] != nil)
+    {
+        [[self singleton] restoreState:state];
+        completionHandler([[self singleton] window], nil);
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -203,25 +207,29 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 //-------------------------------------------------------------------------------------------------
 - (void)initializeControlsForFeedbackType:(DFFeedbackType)feedbackType
 {
-	// cleanup, just in case
-	[_systemProfileFetcher cancel];
-	[_systemProfileFetcher release];
-	_systemProfileFetcher = nil;
-	_isSendingReport = NO;
-	[sendButton setEnabled:YES];
-	[self resetProgress];
-	[self resetEmailWarning];
-	
-	// window title
-	NSString* windowTitle = [[self window] title];
-	windowTitle = [NSString stringWithFormat:windowTitle, [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]];
-	[[self window] setTitle:windowTitle];
-	
-	// select tab
-	NSUInteger tabIndex = [self tabIndexFromFeedbackType:feedbackType];
-	[tabsSegmentedControl setSelectedSegment:tabIndex];
-	[tabView selectTabViewItemAtIndex:tabIndex];
-	[self tabView:tabView didSelectTabViewItem:[tabView tabViewItemAtIndex:tabIndex]];
+    // force window to load
+    if ([self window] != nil)
+    {
+        // cleanup, just in case
+        [_systemProfileFetcher cancel];
+        [_systemProfileFetcher release];
+        _systemProfileFetcher = nil;
+        _isSendingReport = NO;
+        [sendButton setEnabled:YES];
+        [self resetProgress];
+        [self resetEmailWarning];
+        
+        // window title
+        NSString* windowTitle = [[self window] title];
+        windowTitle = [NSString stringWithFormat:windowTitle, [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]];
+        [[self window] setTitle:windowTitle];
+        
+        // select tab
+        NSUInteger tabIndex = [self tabIndexFromFeedbackType:feedbackType];
+        [tabsSegmentedControl setSelectedSegment:tabIndex];
+        [tabView selectTabViewItemAtIndex:tabIndex];
+        [self tabView:tabView didSelectTabViewItem:[tabView tabViewItemAtIndex:tabIndex]];
+    }
 }
 
 //-------------------------------------------------------------------------------------------------

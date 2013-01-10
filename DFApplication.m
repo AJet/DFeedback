@@ -45,7 +45,7 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
 	NSTask* task = [[[NSTask alloc] init] autorelease];
 	[task setLaunchPath:@"/bin/bash"];
 	[task setArguments:arguments];
-	[task launch];	
+	[task launch];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -108,7 +108,6 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
 //-------------------------------------------------------------------------------------------------
 - (void)reportExceptionInMainThread:(NSException*)exception
 {
-    BOOL isFatal = NO;
     @try
     {
         if (!_isPostmortem)
@@ -131,13 +130,15 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
     @catch (NSException* fatalException)
     {
         // the exception occurred during exception handling - considered fatal
-        isFatal = YES;
-    }
-    
-    if (isFatal)
-    {
         NSLog(@"Fatal error while processing exception: %@", [exception reason]);
-        [(DFApplication*)NSApp relaunch];
+        @try
+        {
+            [(DFApplication*)NSApp relaunch];
+        }
+        @catch (NSException* exception)
+        {
+            // absorb silently
+        }
     }
 }
 

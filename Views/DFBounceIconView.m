@@ -16,7 +16,7 @@
 	{
 		_rootLayer = [[CALayer alloc] init];			
 		[_rootLayer setAutoresizingMask:kCALayerWidthSizable | kCALayerHeightSizable];
-		[_rootLayer setFrame:NSRectToCGRect([self bounds])];
+		[_rootLayer setFrame:[self bounds]];
 		[_rootLayer setAnchorPoint:CGPointZero];
 		[self setLayer:_rootLayer];
 	}
@@ -154,8 +154,8 @@
 		// prepare bounds animation
 		CABasicAnimation* boundsAnim = [CABasicAnimation animationWithKeyPath:@"bounds"];
         CGRect fromBounds = [_iconLayer presentationLayer] != nil ? [(CALayer*)[_iconLayer presentationLayer] bounds] : [_iconLayer bounds];
-		[boundsAnim setFromValue:[NSValue valueWithRect:NSRectFromCGRect(fromBounds)]];
-		[boundsAnim setToValue:[NSValue valueWithRect:NSRectFromCGRect(bouncedBounds)]];
+		[boundsAnim setFromValue:[NSValue valueWithRect:fromBounds]];
+		[boundsAnim setToValue:[NSValue valueWithRect:bouncedBounds]];
 		[boundsAnim setDuration:DFBounceIcon_bounceHalfDuration];
 		[boundsAnim setAutoreverses:YES];
 		

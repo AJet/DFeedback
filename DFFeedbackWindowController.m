@@ -15,7 +15,7 @@
 #import "DFApplicationSandboxInfo.h"
 
 //-------------------------------------------------------------------------------------------------
-// Private constants
+#pragma mark - Private constants
 //-------------------------------------------------------------------------------------------------
 static NSString* const NIB_NAME = @"DFFeedbackWindow";
 typedef enum DFFeedbackType : NSUInteger
@@ -25,21 +25,20 @@ typedef enum DFFeedbackType : NSUInteger
 	DFFeedback_Bug = 2
 } DFFeedbackType;
 
-//-------------------------------------------------------------------------------------------------
 static NSString* const STATE_MESSAGE = @"DFeedback_Message";
-static NSString* const STATE_EMAILADDRESS = @"DFeedback_EmailAddress";
 static NSString* const STATE_FEEDBACKTYPE = @"DFeedback_FeedbackType";
 static NSString* const STATE_INCLUDESYSTEMPROFILE = @"DFeedback_IncludeSystemProfile";
 static NSString* const STATE_INCLUDEEMAILADDRESS = @"DFeedback_IncludeEmailAddress";
+static NSString* const STATE_EMAILADDRESS = @"DFeedback_EmailAddress";
 
 //-------------------------------------------------------------------------------------------------
-// Private static data
+#pragma mark - Private static variables
 //-------------------------------------------------------------------------------------------------
 static DFFeedbackWindowController* _singleton = nil;
 static NSString* _feedbackURL = nil;
 
 //-------------------------------------------------------------------------------------------------
-// Private static functions
+#pragma mark - Private functions
 //-------------------------------------------------------------------------------------------------
 static BOOL IsEmptyMessage(NSString* string)
 {
@@ -73,7 +72,33 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 
 
 //-------------------------------------------------------------------------------------------------
+#pragma mark - Implementation
+//-------------------------------------------------------------------------------------------------
 @implementation DFFeedbackWindowController
+{
+    
+}
+
+//-------------------------------------------------------------------------------------------------
+#pragma mark - Initialization
+//-------------------------------------------------------------------------------------------------
+- (id)init
+{
+    self = [super initWithWindowNibName:NIB_NAME];
+    if (self != nil)
+	{
+		// do nothing
+    }
+    return self;
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)dealloc
+{
+	[self cancelAllPendingStuff];
+	[super dealloc];
+}
+
 //-------------------------------------------------------------------------------------------------
 + (void)initializeWithFeedbackURL:(NSString*)feedbackURL
 {
@@ -94,78 +119,6 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 		_singleton = [[DFFeedbackWindowController alloc] init];
 	}
 	return _singleton;
-}
-
-
-//-------------------------------------------------------------------------------------------------
-- (id)init
-{
-    self = [super initWithWindowNibName:NIB_NAME];
-    if (self != nil)
-	{
-		// do nothing
-    }
-    return self;
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)dealloc
-{
-	[self cancelAllPendingStuff];
-	[super dealloc];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)restoreState:(NSCoder*)state
-{
-	DFFeedbackType feedbackType = DFFeedback_General;
-	if ([state containsValueForKey:STATE_FEEDBACKTYPE])
-	{
-		feedbackType = (DFFeedbackType)[state decodeIntForKey:STATE_FEEDBACKTYPE];
-	}
-	[self initializeControlsForFeedbackType:feedbackType];
-    
-	NSString* message = [state decodeObjectForKey:STATE_MESSAGE];
-	if (message != nil)
-	{
-		[textView setString:message];
-	}
-	NSString* emailAddress = [state decodeObjectForKey:STATE_EMAILADDRESS];
-	if (emailAddress != nil)
-	{
-		[emailComboBox setStringValue:emailAddress];
-	}
-	if ([state containsValueForKey:STATE_INCLUDEEMAILADDRESS])
-	{
-		BOOL includeEmailAddress = [state decodeBoolForKey:STATE_INCLUDEEMAILADDRESS];
-		[includeEmailCheckBox setState:includeEmailAddress ? NSOnState : NSOffState];
-	}
-	if ([state containsValueForKey:STATE_INCLUDESYSTEMPROFILE])
-	{
-		BOOL includeSystemProfile = [state decodeBoolForKey:STATE_INCLUDESYSTEMPROFILE] && [self shouldFetchSystemProfile];
-		[includeSystemProfileCheckBox setState:includeSystemProfile ? NSOnState : NSOffState];
-	}
-}
-
-//-------------------------------------------------------------------------------------------------
-+ (void)restoreWindowWithIdentifier:(NSString*)identifier state:(NSCoder*)state completionHandler:(void (^)(NSWindow*, NSError*))completionHandler
-{
-    // force nib to load
-    if ([[self singleton] window] != nil)
-    {
-        [[self singleton] restoreState:state];
-        completionHandler([[self singleton] window], nil);
-    }
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)window:(NSWindow*)window willEncodeRestorableState:(NSCoder*)state
-{
-	[state encodeObject:[textView string] forKey:STATE_MESSAGE];
-	[state encodeObject:[emailComboBox stringValue] forKey:STATE_EMAILADDRESS];
-	[state encodeInt:[self currentFeedbackType] forKey:STATE_FEEDBACKTYPE];
-	[state encodeBool:[includeEmailCheckBox state] == NSOnState forKey:STATE_INCLUDEEMAILADDRESS];
-	[state encodeBool:[includeSystemProfileCheckBox state] == NSOnState forKey:STATE_INCLUDESYSTEMPROFILE];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -229,6 +182,13 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
         [tabsSegmentedControl setSelectedSegment:tabIndex];
         [tabView selectTabViewItemAtIndex:tabIndex];
         [self tabView:tabView didSelectTabViewItem:[tabView tabViewItemAtIndex:tabIndex]];
+
+        // load previous e-mail
+        NSString* previousEmail = [[NSUserDefaults standardUserDefaults] objectForKey:STATE_EMAILADDRESS];
+        if (previousEmail != nil)
+        {
+            [emailComboBox setStringValue:previousEmail];
+        }
     }
 }
 
@@ -240,47 +200,64 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 }
 
 //-------------------------------------------------------------------------------------------------
-- (BOOL)shouldAccessContacts
+#pragma mark - Restore
+//-------------------------------------------------------------------------------------------------
++ (void)restoreWindowWithIdentifier:(NSString*)identifier
+                              state:(NSCoder*)state
+                  completionHandler:(void (^)(NSWindow*, NSError*))completionHandler
 {
-    BOOL result = YES;
-    if ([OSVersionChecker macOsVersion] >= OSVersion_MountainLion)
+    // force nib to load
+    if ([[self singleton] window] != nil)
     {
-        // we don't want the dreaded dialog that the app wants to access your contacts
-        result = NO;
+        [[self singleton] restoreState:state];
+        completionHandler([[self singleton] window], nil);
     }
-    else
-    {
-        // check if sandboxed at all
-        if ([DFApplicationSandboxInfo isSandboxed])
-        {
-            // check if has address book access
-            if (![DFApplicationSandboxInfo hasAddressBookDataEntitlement])
-            {
-                result = NO;
-            }
-        }
-    }
-    return result;
 }
 
 //-------------------------------------------------------------------------------------------------
-- (BOOL)shouldFetchSystemProfile
+- (void)restoreState:(NSCoder*)state
 {
-    BOOL result = YES;
-    // on 10.8, system profile seems to work somehow, even in sandbox, but not on 10.7 in sandbox
-    if ([OSVersionChecker macOsVersion] < OSVersion_MountainLion)
-    {
-        if ([DFApplicationSandboxInfo isSandboxed])
-        {
-            // currently, this would require a temporary exception entitlement, don't rely on it
-            // maybe later implement it using xpc then check the corresponding entitlement here
-            result = NO;
-        }
-    }
-    return result;
+	DFFeedbackType feedbackType = DFFeedback_General;
+	if ([state containsValueForKey:STATE_FEEDBACKTYPE])
+	{
+		feedbackType = (DFFeedbackType)[state decodeIntForKey:STATE_FEEDBACKTYPE];
+	}
+	[self initializeControlsForFeedbackType:feedbackType];
+    
+	NSString* message = [state decodeObjectForKey:STATE_MESSAGE];
+	if (message != nil)
+	{
+		[textView setString:message];
+	}
+	NSString* emailAddress = [state decodeObjectForKey:STATE_EMAILADDRESS];
+	if (emailAddress != nil)
+	{
+		[emailComboBox setStringValue:emailAddress];
+	}
+	if ([state containsValueForKey:STATE_INCLUDEEMAILADDRESS])
+	{
+		BOOL includeEmailAddress = [state decodeBoolForKey:STATE_INCLUDEEMAILADDRESS];
+		[includeEmailCheckBox setState:includeEmailAddress ? NSOnState : NSOffState];
+	}
+	if ([state containsValueForKey:STATE_INCLUDESYSTEMPROFILE])
+	{
+		BOOL includeSystemProfile = [state decodeBoolForKey:STATE_INCLUDESYSTEMPROFILE] && [self shouldFetchSystemProfile];
+		[includeSystemProfileCheckBox setState:includeSystemProfile ? NSOnState : NSOffState];
+	}
 }
 
+//-------------------------------------------------------------------------------------------------
+- (void)window:(NSWindow*)window willEncodeRestorableState:(NSCoder*)state
+{
+	[state encodeObject:[textView string] forKey:STATE_MESSAGE];
+	[state encodeObject:[emailComboBox stringValue] forKey:STATE_EMAILADDRESS];
+	[state encodeInt:[self currentFeedbackType] forKey:STATE_FEEDBACKTYPE];
+	[state encodeBool:[includeEmailCheckBox state] == NSOnState forKey:STATE_INCLUDEEMAILADDRESS];
+	[state encodeBool:[includeSystemProfileCheckBox state] == NSOnState forKey:STATE_INCLUDESYSTEMPROFILE];
+}
 
+//-------------------------------------------------------------------------------------------------
+#pragma mark - Tab control
 //-------------------------------------------------------------------------------------------------
 - (NSUInteger)tabIndexFromFeedbackType:(DFFeedbackType)feedbackType
 {
@@ -318,6 +295,110 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	return [self feedbackTypeFromTabIndex:tabIndex];
 }
 
+//-------------------------------------------------------------------------------------------------
+- (void)tabView:(NSTabView*)sender didSelectTabViewItem:(NSTabViewItem*)tabViewItem
+{
+	if (sender == tabView)
+	{
+		// switch variants of the window when the system profile is visible/hidden
+        BOOL isSystemProfileAvailable = [self currentFeedbackType] != DFFeedback_General && [self shouldFetchSystemProfile];
+        
+        
+		// system profile controls
+		[systemProfileContainer setHidden:!isSystemProfileAvailable];
+        
+		// text container
+		NSRect textContainerFrame = [textContainer frame];
+		NSRect systemProfileFrame = [systemProfileContainer frame];
+		if (!isSystemProfileAvailable)
+		{
+			// expand text container
+			if (textContainerFrame.origin.y > systemProfileFrame.origin.y)
+			{
+				CGFloat diffHeight = textContainerFrame.origin.y - systemProfileFrame.origin.y;
+				textContainerFrame.origin.y -= diffHeight;
+				textContainerFrame.size.height += diffHeight;
+			}
+		}
+		else
+		{
+			// shrink text container
+			if (textContainerFrame.origin.y == systemProfileFrame.origin.y)
+			{
+				CGFloat diffHeight = systemProfileFrame.size.height;
+				textContainerFrame.origin.y += diffHeight;
+				textContainerFrame.size.height -= diffHeight;
+			}
+		}
+		[textContainer setFrame:textContainerFrame];
+        
+		// progress controls
+		[progressContainer setHidden:!isSystemProfileAvailable && !_isSendingReport];
+		
+		// send button
+		[self validateSendButton];
+		
+		// begin fetching profile immediately after switching to a page that contains it
+		if (isSystemProfileAvailable)
+		{
+			[self beginFetchingSystemProfile];
+		}
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+- (IBAction)tabsSegmentedControlChanged:(id)sender
+{
+	// sync tab view with the tab buttons
+	[tabView selectTabViewItemAtIndex:[tabsSegmentedControl selectedSegment]];
+}
+
+//-------------------------------------------------------------------------------------------------
+#pragma mark - Message text view
+//-------------------------------------------------------------------------------------------------
+- (void)textViewDidChangeSelection:(NSNotification*)notification
+{
+	[self validateSendButton];
+}
+
+//-------------------------------------------------------------------------------------------------
+#pragma mark - Details button
+//-------------------------------------------------------------------------------------------------
+- (IBAction)showDetails:(id)sender
+{
+	if (![detailsWindow isVisible])
+	{
+		[detailsWindow center];
+	}
+	[detailsWindow makeKeyAndOrderFront:self];
+}
+
+
+//-------------------------------------------------------------------------------------------------
+#pragma mark - E-mail field
+//-------------------------------------------------------------------------------------------------
+- (BOOL)shouldAccessContacts
+{
+    BOOL result = YES;
+    if ([OSVersionChecker macOsVersion] >= OSVersion_MountainLion)
+    {
+        // we don't want the dreaded dialog that the app wants to access your contacts
+        result = NO;
+    }
+    else
+    {
+        // check if sandboxed at all
+        if ([DFApplicationSandboxInfo isSandboxed])
+        {
+            // check if has address book access
+            if (![DFApplicationSandboxInfo hasAddressBookDataEntitlement])
+            {
+                result = NO;
+            }
+        }
+    }
+    return result;
+}
 
 //-------------------------------------------------------------------------------------------------
 - (void)showEmailWarning
@@ -332,6 +413,87 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	[emailBounceIcon fadeOut];
 }
 
+//-------------------------------------------------------------------------------------------------
+- (IBAction)includeEmailCheckBoxChanged:(id)sender
+{
+	// hide the email warning when the user unchecks the include e-mail box
+	if ([includeEmailCheckBox intValue] == 0)
+	{
+		[self resetEmailWarning];
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+- (IBAction)emailChanged:(id)sender
+{
+	// hide the email warning when the user selects an e-mail from the dropdown
+	[self resetEmailWarning];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)controlTextDidChange:(NSNotification*)notification
+{
+	NSView* view = [notification object];
+	// hide the email warning when the user types in a valid address into the email input field
+	if (view == emailComboBox)
+	{
+		[self resetEmailWarning];
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+#pragma mark - Send button
+//-------------------------------------------------------------------------------------------------
+- (void)validateSendButton
+{
+	NSString* message = [[textView textStorage] string];
+	[sendButton setEnabled:!IsEmptyMessage(message)];
+}
+
+
+//-------------------------------------------------------------------------------------------------
+- (IBAction)sendReport:(id)sender
+{
+	BOOL shouldBlinkInvalidEmail = [includeEmailCheckBox intValue] != 0	&& !IsValidEmailAddress([emailComboBox stringValue]);
+	if (shouldBlinkInvalidEmail)
+	{
+		[self showEmailWarning];
+	}
+	else
+	{
+        // save e-mail additionally so that the next message can be sent without typing the e-mail again
+        if ([includeEmailCheckBox intValue] != 0)
+        {
+            [[NSUserDefaults standardUserDefaults] setObject:[emailComboBox stringValue] forKey:STATE_EMAILADDRESS];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+        
+		// change state
+		_isSendingReport = YES;
+		[sendButton setEnabled:NO];
+		[self resetEmailWarning];
+        
+		// begin fetching system profile
+		BOOL isSystemProfileNeeded = [self currentFeedbackType] != DFFeedback_General && [self shouldFetchSystemProfile] && [includeSystemProfileCheckBox state] == NSOnState;
+		if (isSystemProfileNeeded && ![_systemProfileFetcher isDoneFetching])
+		{
+			[self beginFetchingSystemProfile];
+		}
+		
+		// the profile already there, begin sending immediately
+		else
+		{
+			if (!isSystemProfileNeeded)
+			{
+				[self cancelFetchingSystemProfile];
+			}
+			[self beginSendingFeedback];
+		}
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+#pragma mark - Progress
 //-------------------------------------------------------------------------------------------------
 - (void)showProgress:(BOOL)profilingOrSending
 {
@@ -365,6 +527,8 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	[detailsTextContainer setHidden:NO];
 }
 
+//-------------------------------------------------------------------------------------------------
+#pragma mark - System profile fetching
 //-------------------------------------------------------------------------------------------------
 - (void)beginFetchingSystemProfile
 {
@@ -406,6 +570,25 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	[self resetProgress];
 }
 
+//-------------------------------------------------------------------------------------------------
+- (BOOL)shouldFetchSystemProfile
+{
+    BOOL result = YES;
+    // on 10.8, system profile seems to work somehow, even in sandbox, but not on 10.7 in sandbox
+    if ([OSVersionChecker macOsVersion] < OSVersion_MountainLion)
+    {
+        if ([DFApplicationSandboxInfo isSandboxed])
+        {
+            // currently, this would require a temporary exception entitlement, don't rely on it
+            // maybe later implement it using xpc then check the corresponding entitlement here
+            result = NO;
+        }
+    }
+    return result;
+}
+
+//-------------------------------------------------------------------------------------------------
+#pragma mark - Sending feedback over network
 //-------------------------------------------------------------------------------------------------
 - (void)beginSendingFeedback
 {
@@ -458,148 +641,46 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)validateSendButton
+#pragma mark - Window
+//-------------------------------------------------------------------------------------------------
+- (void)show
 {
-	NSString* message = [[textView textStorage] string];
-	[sendButton setEnabled:!IsEmptyMessage(message)];
+	[self showForFeedbackType:DFFeedback_General];
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)tabView:(NSTabView*)sender didSelectTabViewItem:(NSTabViewItem*)tabViewItem
+- (void)dismiss
 {
-	if (sender == tabView)
+	if (_singleton != nil)
 	{
-		// switch variants of the window when the system profile is visible/hidden
-        BOOL isSystemProfileAvailable = [self currentFeedbackType] != DFFeedback_General && [self shouldFetchSystemProfile];
-        
-        
-		// system profile controls
-		[systemProfileContainer setHidden:!isSystemProfileAvailable];
-
-		// text container
-		NSRect textContainerFrame = [textContainer frame];
-		NSRect systemProfileFrame = [systemProfileContainer frame];
-		if (!isSystemProfileAvailable)
-		{
-			// expand text container
-			if (textContainerFrame.origin.y > systemProfileFrame.origin.y)
-			{
-				CGFloat diffHeight = textContainerFrame.origin.y - systemProfileFrame.origin.y;
-				textContainerFrame.origin.y -= diffHeight;
-				textContainerFrame.size.height += diffHeight;
-			}
-		}
-		else
-		{
-			// shrink text container
-			if (textContainerFrame.origin.y == systemProfileFrame.origin.y)
-			{
-				CGFloat diffHeight = systemProfileFrame.size.height;
-				textContainerFrame.origin.y += diffHeight;
-				textContainerFrame.size.height -= diffHeight;
-			}
-		}
-		[textContainer setFrame:textContainerFrame];
-
-		// progress controls
-		[progressContainer setHidden:!isSystemProfileAvailable && !_isSendingReport];
-		
-		// send button
-		[self validateSendButton];
-		
-		// begin fetching profile immediately after switching to a page that contains it
-		if (isSystemProfileAvailable)
-		{
-			[self beginFetchingSystemProfile];
-		}
+		[self cancelAllPendingStuff];
+		[[self window] orderOut:self];
+		[detailsWindow orderOut:self];
+		[_singleton release];
+		_singleton = nil;
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
-- (IBAction)sendReport:(id)sender
+- (IBAction)close:(id)sender
 {
-	BOOL shouldBlinkInvalidEmail = [includeEmailCheckBox intValue] != 0	&& !IsValidEmailAddress([emailComboBox stringValue]);
-	if (shouldBlinkInvalidEmail)
-	{
-		[self showEmailWarning];
-	}
-	else
-	{
-		// change state
-		_isSendingReport = YES;
-		[sendButton setEnabled:NO];
-		[self resetEmailWarning];
-
-		// begin fetching system profile
-		BOOL isSystemProfileNeeded = [self currentFeedbackType] != DFFeedback_General && [self shouldFetchSystemProfile] && [includeSystemProfileCheckBox state] == NSOnState;
-		if (isSystemProfileNeeded && ![_systemProfileFetcher isDoneFetching])
-		{
-			[self beginFetchingSystemProfile];
-		}
-		
-		// the profile already there, begin sending immediately
-		else
-		{
-			if (!isSystemProfileNeeded)
-			{
-				[self cancelFetchingSystemProfile];
-			}
-			[self beginSendingFeedback];
-		}
-	}
+	[self dismiss];
 }
 
 //-------------------------------------------------------------------------------------------------
-- (IBAction)includeEmailCheckBoxChanged:(id)sender
+- (IBAction)cancel:(id)sender
 {
-	// hide the email warning when the user unchecks the include e-mail box
-	if ([includeEmailCheckBox intValue] == 0)
-	{
-		[self resetEmailWarning];
-	}
+	[self dismiss];
 }
 
 //-------------------------------------------------------------------------------------------------
-- (IBAction)emailChanged:(id)sender
+- (void)windowWillClose:(NSNotification*)notification
 {
-	// hide the email warning when the user selects an e-mail from the dropdown
-	[self resetEmailWarning];
+	[self dismiss];
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)controlTextDidChange:(NSNotification*)notification
-{
-	NSView* view = [notification object];
-	// hide the email warning when the user types in a valid address into the email input field
-	if (view == emailComboBox)
-	{
-		[self resetEmailWarning];
-	}
-}
-
-//-------------------------------------------------------------------------------------------------
-- (IBAction)tabsSegmentedControlChanged:(id)sender
-{
-	// sync tab view with the tab buttons
-	[tabView selectTabViewItemAtIndex:[tabsSegmentedControl selectedSegment]];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (IBAction)showDetails:(id)sender
-{
-	if (![detailsWindow isVisible])
-	{
-		[detailsWindow center];
-	}
-	[detailsWindow makeKeyAndOrderFront:self];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)textViewDidChangeSelection:(NSNotification*)notification
-{
-	[self validateSendButton];
-}
-
+#pragma mark - Show API
 //-------------------------------------------------------------------------------------------------
 - (void)showForFeedbackType:(DFFeedbackType)feedbackType
 {
@@ -636,43 +717,6 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 - (void)showFeatureRequest
 {
 	[self showForFeedbackType:DFFeedback_Feature];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)show
-{
-	[self showForFeedbackType:DFFeedback_General];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)dismiss
-{
-	if (_singleton != nil)
-	{
-		[self cancelAllPendingStuff];
-		[[self window] orderOut:self];
-		[detailsWindow orderOut:self];
-		[_singleton release];
-		_singleton = nil;
-	}
-}
-
-//-------------------------------------------------------------------------------------------------
-- (IBAction)close:(id)sender
-{
-	[self dismiss];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (IBAction)cancel:(id)sender
-{
-	[self dismiss];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)windowWillClose:(NSNotification*)notification
-{
-	[self dismiss];
 }
 
 

@@ -34,7 +34,7 @@
 		7C8E4B5E1596E4D200529DCF /* DFFeedbackWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */; };
 		7C8E4B631596E4D800529DCF /* DFCrashReportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B4E1596E4BB00529DCF /* DFCrashReportWindow.xib */; };
 		7C8E4B641596E4D800529DCF /* DFFeedbackWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */; };
-		7C8E4B651596E4D800529DCF /* DFWarningIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C3C46121371207900AAD108 /* DFWarningIcon.png */; };
+		7C8E4B651596E4D800529DCF /* DFWarning.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C3C46121371207900AAD108 /* DFWarning.png */; };
 		7C8E4B691596E4DF00529DCF /* DFCrashReportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B4E1596E4BB00529DCF /* DFCrashReportWindow.xib */; };
 		7C8E4B6A1596E4DF00529DCF /* DFFeedbackWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */; };
 		7C8E4B731596E6A700529DCF /* OSVersionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C8E4B721596E6A700529DCF /* OSVersionChecker.m */; };
@@ -46,6 +46,9 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		B2CC4F9A16E8C17A000CC50E /* DFWarning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B2CC4F9916E8C17A000CC50E /* DFWarning@2x.png */; };
+		B2CC4F9D16E8C1C7000CC50E /* DFApplicationSandboxInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CC4F9C16E8C1C7000CC50E /* DFApplicationSandboxInfo.m */; };
+		B2CC4F9F16E8C2EF000CC50E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2CC4F9E16E8C2EF000CC50E /* Security.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,7 +64,7 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		7C3C460D1371207900AAD108 /* DFStyleSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFStyleSheet.h; path = ../DFStyleSheet.h; sourceTree = SOURCE_ROOT; };
 		7C3C460E1371207900AAD108 /* DFStyleSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFStyleSheet.m; path = ../DFStyleSheet.m; sourceTree = SOURCE_ROOT; };
-		7C3C46121371207900AAD108 /* DFWarningIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DFWarningIcon.png; sourceTree = "<group>"; };
+		7C3C46121371207900AAD108 /* DFWarning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DFWarning.png; sourceTree = "<group>"; };
 		7C3C46181371207900AAD108 /* DFFeedbackSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFFeedbackSender.h; sourceTree = "<group>"; };
 		7C3C46191371207900AAD108 /* DFFeedbackSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFFeedbackSender.m; sourceTree = "<group>"; };
 		7C3C461A1371207900AAD108 /* DFSystemProfileFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFSystemProfileFetcher.h; sourceTree = "<group>"; };
@@ -110,6 +113,10 @@
 		7CF621DF15AB0E91008BDEFB /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Demo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Demo-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2CC4F9916E8C17A000CC50E /* DFWarning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DFWarning@2x.png"; sourceTree = "<group>"; };
+		B2CC4F9B16E8C1C7000CC50E /* DFApplicationSandboxInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFApplicationSandboxInfo.h; sourceTree = "<group>"; };
+		B2CC4F9C16E8C1C7000CC50E /* DFApplicationSandboxInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFApplicationSandboxInfo.m; sourceTree = "<group>"; };
+		B2CC4F9E16E8C2EF000CC50E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = ../../../../../../../System/Library/Frameworks/Security.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +127,7 @@
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				7C3C46C51371428900AAD108 /* AddressBook.framework in Frameworks */,
 				7C3C46CB137142A000AAD108 /* QuartzCore.framework in Frameworks */,
+				B2CC4F9F16E8C2EF000CC50E /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +174,7 @@
 		29B97314FDCFA39411CA2CEA /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				B2CC4F9E16E8C2EF000CC50E /* Security.framework */,
 				7C8D263A137004D300AB9F8D /* DFeedback */,
 				7C8E4B431596E4A900529DCF /* MIT License.txt */,
 				7C8E4B441596E4A900529DCF /* ReadMe.markdown */,
@@ -212,7 +221,8 @@
 				7CF621D615AB0D64008BDEFB /* DFLocalizable.strings */,
 				7C8E4B4E1596E4BB00529DCF /* DFCrashReportWindow.xib */,
 				7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */,
-				7C3C46121371207900AAD108 /* DFWarningIcon.png */,
+				7C3C46121371207900AAD108 /* DFWarning.png */,
+				B2CC4F9916E8C17A000CC50E /* DFWarning@2x.png */,
 			);
 			name = Resources;
 			path = ../Resources;
@@ -221,6 +231,8 @@
 		7C3C46171371207900AAD108 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				B2CC4F9B16E8C1C7000CC50E /* DFApplicationSandboxInfo.h */,
+				B2CC4F9C16E8C1C7000CC50E /* DFApplicationSandboxInfo.m */,
 				7C8E4B711596E6A700529DCF /* OSVersionChecker.h */,
 				7C8E4B721596E6A700529DCF /* OSVersionChecker.m */,
 				7C3C46181371207900AAD108 /* DFFeedbackSender.h */,
@@ -349,8 +361,9 @@
 				7C8E4B5D1596E4D200529DCF /* DFCrashReportWindow.xib in Resources */,
 				7C8E4B5E1596E4D200529DCF /* DFFeedbackWindow.xib in Resources */,
 				7C8E4B631596E4D800529DCF /* DFCrashReportWindow.xib in Resources */,
+				7C8E4B651596E4D800529DCF /* DFWarning.png in Resources */,
+				B2CC4F9A16E8C17A000CC50E /* DFWarning@2x.png in Resources */,
 				7C8E4B641596E4D800529DCF /* DFFeedbackWindow.xib in Resources */,
-				7C8E4B651596E4D800529DCF /* DFWarningIcon.png in Resources */,
 				7C8E4B691596E4DF00529DCF /* DFCrashReportWindow.xib in Resources */,
 				7C8E4B6A1596E4DF00529DCF /* DFFeedbackWindow.xib in Resources */,
 				7CF621D815AB0D64008BDEFB /* DFLocalizable.strings in Resources */,
@@ -383,6 +396,7 @@
 				7C8E4B4A1596E4A900529DCF /* GTMObjC2Runtime.m in Sources */,
 				7C8E4B4B1596E4A900529DCF /* GTMStackTrace.m in Sources */,
 				7C8E4B731596E6A700529DCF /* OSVersionChecker.m in Sources */,
+				B2CC4F9D16E8C1C7000CC50E /* DFApplicationSandboxInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,7 +499,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = "";
 			};
 			name = Debug;
 		};
@@ -497,7 +511,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = "";
 			};
 			name = Release;
 		};

@@ -49,7 +49,7 @@
         } 
 		else 
 		{
-            NSAssert1(NO, @"unknown value class: %@", [value className]);
+            NSAssert(NO, @"unknown value class: %@", [value className]);
         }
     }
     [NSURLRequest appendFormat:@"\r\n--%@--\r\n" arg:boundary toData:formData];

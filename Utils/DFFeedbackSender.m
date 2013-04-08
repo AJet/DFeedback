@@ -8,14 +8,19 @@
 
 //-------------------------------------------------------------------------------------------------
 @implementation DFFeedbackSender
+{
+	BOOL _isCanceled;
+	NSURLConnection* _connection;
+    void (^_completionBlock)(NSError* error);
+}
+
 //-------------------------------------------------------------------------------------------------
-- (id)initWithCallbackTarget:(id)target action:(SEL)action
+- (id)initWithCompletionBlock:(void (^)(NSError* error))completionBlock
 {
 	self = [super init];
 	if (self != nil)
 	{
-		_target = target;
-		_action = action;
+        _completionBlock = [completionBlock copy];
 	}
 	return self;
 }
@@ -23,12 +28,13 @@
 //-------------------------------------------------------------------------------------------------
 - (void)dealloc
 {
+    [_completionBlock release];
 	[_connection release];
 	[super dealloc];
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)sendFeedbackToURL:(NSString*)url
+- (void)sendFeedbackToUrl:(NSString*)url
 			 feedbackText:(NSString*)feedbackText 
 			 feedbackType:(NSString*)feedbackType
 			systemProfile:(NSString*)systemProfile
@@ -44,7 +50,7 @@
                           @"version": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"],
                           @"systemProfile": systemProfile != nil ? systemProfile : @"<system profile suppressed>"};
 	// create request
-    NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:url] postForm:form];
+    NSURLRequest* request = [NSURLRequest requestWithUrl:[NSURL URLWithString:url] postForm:form];
 	// begin sending the data
 	_connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
     [_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
@@ -57,7 +63,10 @@
 {
 	if (!_isCanceled)
 	{
-		[_target performSelectorOnMainThread:_action withObject:error waitUntilDone:NO];
+        if (_completionBlock != nil)
+        {
+            _completionBlock(error);
+        }
 	}
 }
 
@@ -66,7 +75,10 @@
 {
 	if (!_isCanceled)
 	{
-		[_target performSelectorOnMainThread:_action withObject:nil waitUntilDone:NO];
+        if (_completionBlock != nil)
+        {
+            _completionBlock(nil);
+        }
 	}
 }
 

@@ -8,6 +8,13 @@
 
 //-------------------------------------------------------------------------------------------------
 @implementation DFBounceIconView
+{
+	CALayer* _rootLayer;
+	CALayer* _iconLayer;
+	BOOL _isShowing;
+	NSImage* _icon;
+}
+
 //-------------------------------------------------------------------------------------------------
 - (id)initWithFrame:(NSRect)frame
 {
@@ -15,10 +22,10 @@
     if (self != nil) 
 	{
 		_rootLayer = [[CALayer alloc] init];			
-		[_rootLayer setAutoresizingMask:kCALayerWidthSizable | kCALayerHeightSizable];
-		[_rootLayer setFrame:[self bounds]];
-		[_rootLayer setAnchorPoint:CGPointZero];
-		[self setLayer:_rootLayer];
+		_rootLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
+		_rootLayer.frame = self.bounds;
+		_rootLayer.anchorPoint = CGPointZero;
+		self.layer = _rootLayer;
 	}
     return self;
 }
@@ -57,20 +64,20 @@
 		[CATransaction begin];
 		[CATransaction setDisableActions:YES];
 		
-		CGFloat opacity = [_iconLayer opacity];
+		CGFloat opacity = _iconLayer.opacity;
 		[_iconLayer removeFromSuperlayer];
 		[_iconLayer release];
 		_iconLayer = nil;
 		if (icon != nil)
 		{
 			_iconLayer = [[CALayer alloc] init];
-			[_iconLayer setFrame:CGRectMake(0.0, 0.0, [icon size].width, [icon size].height)];
-			[_iconLayer setAnchorPoint:CGPointMake(0.5, 0.5)];
+			_iconLayer.frame = CGRectMake(0.0, 0.0, icon.size.width, icon.size.height);
+			_iconLayer.anchorPoint = CGPointMake(0.5, 0.5);
             // retina support
-            [_iconLayer setContentsScale:[_rootLayer contentsScale]];
-			[_iconLayer setContents:icon];
-			[_iconLayer setOpacity:opacity];
-			[_iconLayer setPosition:CGPointMake([_rootLayer bounds].size.width * 0.5, [_rootLayer bounds].size.height * 0.5)];
+            _iconLayer.contentsScale = _rootLayer.contentsScale;
+			_iconLayer.contents = icon;
+			_iconLayer.opacity = opacity;
+			_iconLayer.position = CGPointMake(_rootLayer.bounds.size.width * 0.5, _rootLayer.bounds.size.height * 0.5);
 			[_rootLayer addSublayer:_iconLayer];
 		}
 		
@@ -84,13 +91,14 @@
 	if (_iconLayer != nil)
 	{
 		// prepare animation
+        CALayer* opacityLayer = _iconLayer.presentationLayer != nil ? _iconLayer.presentationLayer : _iconLayer;
 		CABasicAnimation* opacityAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
-		[opacityAnim setFromValue:@([(CALayer*)[_iconLayer presentationLayer] opacity])];
-		[opacityAnim setToValue:@(opacity)];
-		[opacityAnim setDuration:DFBounceIcon_fadeDuration];
+		opacityAnim.fromValue = @(opacityLayer.opacity);
+		opacityAnim.toValue = @(opacity);
+		opacityAnim.duration = DFBounceIcon_fadeDuration;
 		
-		// commit value
-		[_iconLayer setOpacity:opacity];
+		// commit to-value
+		_iconLayer.opacity = opacity;
 		
 		// launch the animation after commit, or the animation will be overriden with the implicit one
 		[_iconLayer addAnimation:opacityAnim forKey:@"opacity"];
@@ -112,18 +120,12 @@
 }
 
 //-------------------------------------------------------------------------------------------------
-- (BOOL)isShowing
-{
-	return _isShowing;
-}
-
-//-------------------------------------------------------------------------------------------------
 - (void)show
 {
 	[CATransaction begin];
     [CATransaction setDisableActions:YES];
 	
-	[_iconLayer setOpacity:1.0];
+	_iconLayer.opacity = 1.0;
 	_isShowing = YES;
 	
 	[CATransaction commit];
@@ -135,7 +137,7 @@
 	[CATransaction begin];
     [CATransaction setDisableActions:YES];
 	
-	[_iconLayer setOpacity:0.0];
+	_iconLayer.opacity = 0.0;
 	_isShowing = NO;
 	
 	[CATransaction commit];
@@ -147,17 +149,18 @@
 	if (_iconLayer != nil)
 	{
 		// calculate bounds
-		CGRect bouncedBounds = [_iconLayer bounds];
+		CGRect bouncedBounds = _iconLayer.bounds;
 		bouncedBounds.size.width *= DFBounceIcon_bounceFactor;
 		bouncedBounds.size.height *= DFBounceIcon_bounceFactor;
 		
 		// prepare bounds animation
+        CALayer* boundsLayer = _iconLayer.presentationLayer != nil ? _iconLayer.presentationLayer : _iconLayer;
 		CABasicAnimation* boundsAnim = [CABasicAnimation animationWithKeyPath:@"bounds"];
-        CGRect fromBounds = [_iconLayer presentationLayer] != nil ? [(CALayer*)[_iconLayer presentationLayer] bounds] : [_iconLayer bounds];
-		[boundsAnim setFromValue:[NSValue valueWithRect:fromBounds]];
-		[boundsAnim setToValue:[NSValue valueWithRect:bouncedBounds]];
-		[boundsAnim setDuration:DFBounceIcon_bounceHalfDuration];
-		[boundsAnim setAutoreverses:YES];
+        CGRect fromBounds = boundsLayer.bounds;
+		boundsAnim.fromValue = [NSValue valueWithRect:fromBounds];
+		boundsAnim.toValue = [NSValue valueWithRect:bouncedBounds];
+		boundsAnim.duration = DFBounceIcon_bounceHalfDuration;
+		boundsAnim.autoreverses = YES;
 		
 		// do not commit value, will return to normal size automatically
 		[_iconLayer addAnimation:boundsAnim forKey:@"bounds"];
@@ -170,11 +173,11 @@
     if (self.window != nil)
     {
         // retina support
-        [_rootLayer setContentsScale:[[self window] backingScaleFactor]];
-        [_iconLayer setContentsScale:[[self window] backingScaleFactor]];
+        _rootLayer.contentsScale = self.window.backingScaleFactor;
+        _iconLayer.contentsScale = self.window.backingScaleFactor;
         // force refresh icon
-        [_iconLayer setContents:nil];
-        [_iconLayer setContents:_icon];
+        _iconLayer.contents = nil;
+        _iconLayer.contents = _icon;
     }
 }
 

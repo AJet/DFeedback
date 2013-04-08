@@ -7,29 +7,18 @@
 
 //-------------------------------------------------------------------------------------------------
 // Encapsulates asynchronous feedback sending
-//-------------------------------------------------------------------------------------------------
-@interface DFFeedbackSender : NSObject 
-//-------------------------------------------------------------------------------------------------
-{
-	id _target;
-	SEL _action;
-	BOOL _isCanceled;
-	NSURLConnection* _connection;
-}
+@interface DFFeedbackSender : NSObject
 
-//-------------------------------------------------------------------------------------------------
-// Initializers
-- (id)initWithCallbackTarget:(id)target action:(SEL)action;
+// Initializer
+- (id)initWithCompletionBlock:(void (^)(NSError* error))completionBlock;
 
-//-------------------------------------------------------------------------------------------------
 // Begins sending feedback, completes asynchronously
-- (void)sendFeedbackToURL:(NSString*)url
+- (void)sendFeedbackToUrl:(NSString*)url
 			 feedbackText:(NSString*)feedbackText 
 			 feedbackType:(NSString*)feedbackType
 			systemProfile:(NSString*)systemProfile
 				userEmail:(NSString*)userEmail;
 
-//-------------------------------------------------------------------------------------------------
 // Cancels pending request
 - (void)cancel;
 

@@ -10,35 +10,24 @@
 // A custom view that displays a bouncing icon to visually attract user's attention to an input error
 // Core Animation-hosting view 
 // NOTE: The view needs to be slightly larger than its icon, to allow room for bouncing
-//-------------------------------------------------------------------------------------------------
-@interface DFBounceIconView : NSView 
-//-------------------------------------------------------------------------------------------------
-{
-	CALayer* _rootLayer;
-	CALayer* _iconLayer;
-	BOOL _isShowing;
-	NSImage* _icon;
-}
+@interface DFBounceIconView : NSView
 
-//-------------------------------------------------------------------------------------------------
-// Sets the icon
-- (void)setIcon:(NSImage*)icon;
+// The icon
+@property (nonatomic, retain) NSImage* icon;
 
-//-------------------------------------------------------------------------------------------------
 // Shows/hides without animation
 - (void)show;
+
 - (void)hide;
 
-//-------------------------------------------------------------------------------------------------
 // Shows hides with fade in/out animation
 - (void)fadeIn;
+
 - (void)fadeOut;
 
-//-------------------------------------------------------------------------------------------------
 // Currently showing flag
-- (BOOL)isShowing;
+@property (nonatomic, readonly) BOOL isShowing;
 
-//-------------------------------------------------------------------------------------------------
 // Bounces the icon
 - (void)bounce;
 

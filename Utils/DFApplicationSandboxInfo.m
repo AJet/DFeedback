@@ -8,32 +8,36 @@
 #import "DFApplicationSandboxInfo.h"
 
 //-------------------------------------------------------------------------------------------------
-static NSString* const ENTITLEMENT_SANDBOX = @"com.apple.security.app-sandbox";
-static NSString* const ENTITLEMENT_ADDRESSBOOK_DATA = @"com.apple.security.personal-information.addressbook";
-
+static NSString* const kEntitlementSandbox = @"com.apple.security.app-sandbox";
+static NSString* const kEntitlementAddressBookData = @"com.apple.security.personal-information.addressbook";
 
 //-------------------------------------------------------------------------------------------------
 static DFApplicationSandboxInfo* _singleton = nil;
 
 //-------------------------------------------------------------------------------------------------
 @implementation DFApplicationSandboxInfo
+{
+    NSURL* _bundleUrl;
+    NSMutableDictionary* _queriedEntitlements;
+}
+
 //-------------------------------------------------------------------------------------------------
 + (DFApplicationSandboxInfo*)singleton
 {
     if (_singleton == nil)
     {
-        _singleton = [[DFApplicationSandboxInfo alloc] initWithBundleURL:[[NSBundle mainBundle] bundleURL]];
+        _singleton = [[DFApplicationSandboxInfo alloc] initWithBundleUrl:[NSBundle mainBundle].bundleURL];
     }
     return _singleton;
 }
 
 //-------------------------------------------------------------------------------------------------
-- (id)initWithBundleURL:(NSURL*)bundleURL
+- (id)initWithBundleUrl:(NSURL*)bundleUrl
 {
     self = [super init];
     if (self != nil)
     {
-        _bundleURL = [bundleURL retain];
+        _bundleUrl = [bundleUrl retain];
         _queriedEntitlements = [[NSMutableDictionary alloc] initWithCapacity:1];
     }
     return self;
@@ -42,7 +46,7 @@ static DFApplicationSandboxInfo* _singleton = nil;
 //-------------------------------------------------------------------------------------------------
 - (void)dealloc
 {
-    [_bundleURL release];
+    [_bundleUrl release];
     [_queriedEntitlements release];
     [super dealloc];
 }
@@ -53,7 +57,7 @@ static DFApplicationSandboxInfo* _singleton = nil;
     BOOL result = YES;
     
     // filter those codes that have already been queried
-    NSMutableArray* newEntitlementCodes = [NSMutableArray arrayWithCapacity:[entitlementCodes count]];
+    NSMutableArray* newEntitlementCodes = [NSMutableArray arrayWithCapacity:entitlementCodes.count];
     for (NSString* entitlementCode in entitlementCodes)
     {
         NSNumber* entitlementValue = _queriedEntitlements[entitlementCode];
@@ -64,7 +68,7 @@ static DFApplicationSandboxInfo* _singleton = nil;
         else
         {
             // if at least one entitlement failed, the entire result failed
-            if (![entitlementValue boolValue])
+            if (!entitlementValue.boolValue)
             {
                 result = NO;
                 break;
@@ -80,7 +84,7 @@ static DFApplicationSandboxInfo* _singleton = nil;
             BOOL entitlementResult = NO;
             // create static code object for the bundle
             SecStaticCodeRef bundleStaticCode = NULL;
-            SecStaticCodeCreateWithPath((CFURLRef)_bundleURL, kSecCSDefaultFlags, &bundleStaticCode);
+            SecStaticCodeCreateWithPath((CFURLRef)_bundleUrl, kSecCSDefaultFlags, &bundleStaticCode);
             if (bundleStaticCode != NULL)
             {
                 // create requirement
@@ -117,13 +121,13 @@ static DFApplicationSandboxInfo* _singleton = nil;
 //-------------------------------------------------------------------------------------------------
 + (BOOL)hasAddressBookDataEntitlement
 {
-    return [[self singleton] hasEntitlements:@[ENTITLEMENT_SANDBOX, ENTITLEMENT_ADDRESSBOOK_DATA]];
+    return [self.singleton hasEntitlements:@[kEntitlementSandbox, kEntitlementAddressBookData]];
 }
 
 //-------------------------------------------------------------------------------------------------
 + (BOOL)isSandboxed
 {
-    return [[self singleton] hasEntitlements:@[ENTITLEMENT_SANDBOX]];
+    return [self.singleton hasEntitlements:@[kEntitlementSandbox]];
 }
 
 

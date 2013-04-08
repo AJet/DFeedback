@@ -3,9 +3,6 @@
 /* Some rights reserved: <http://opensource.org/licenses/mit-license.php> */
 /*-------------------------------------------------------------------------------------------------*/
 
-/*-------------------------------------------------------------------------------------------------*/
-/* English UI strings */
-/*-------------------------------------------------------------------------------------------------*/
 "DF_ALERT_SENDFAILED_TITLE" = "Failed to send the feedback";
 "DF_ALERT_SENDFAILED_MESSAGE" = "The following error has occurred: %@";
 "DF_ALERT_SENDFAILED_DISMISS_BUTTON_TITLE" = "Dismiss";

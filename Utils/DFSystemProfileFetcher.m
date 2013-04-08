@@ -7,20 +7,27 @@
 
 //-------------------------------------------------------------------------------------------------
 @implementation DFSystemProfileFetcher
+{
+    void (^_completionBlock)(void);
+	NSTask* _scriptTask;
+	NSPipe* _scriptPipe;
+	NSString* _profile;
+	BOOL _isDoneFetching;
+}
+
 //-------------------------------------------------------------------------------------------------
-- (id)initWithCallbackTarget:(id)target action:(SEL)action
+- (id)initWithCompletionBlock:(void (^)(void))completionBlock
 {
 	self = [super init];
 	if (self != nil)
 	{
-		_target = target;
-		_action = action;
+        _completionBlock = [completionBlock copy];
  		_scriptPipe = [[NSPipe pipe] retain];
 		_scriptTask = [[NSTask alloc] init];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(scriptPipeDidComplete:)
 													 name:NSFileHandleReadToEndOfFileCompletionNotification
-												   object:[_scriptPipe fileHandleForReading]];	
+												   object:_scriptPipe.fileHandleForReading];
 		
 	}
 	return self;
@@ -31,10 +38,11 @@
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self
 													name:NSFileHandleReadToEndOfFileCompletionNotification
-												  object:[_scriptPipe fileHandleForReading]];	
+												  object:_scriptPipe.fileHandleForReading];
 	[_scriptTask release];
 	[_scriptPipe release];
 	[_profile release];
+    [_completionBlock release];
 	[super dealloc];
 }
 
@@ -43,7 +51,7 @@
 {
 	if (notification != nil)
 	{
-		NSData* data = [[notification userInfo] valueForKey:NSFileHandleNotificationDataItem];
+		NSData* data = notification.userInfo[NSFileHandleNotificationDataItem];
 		if (data)
 		{
 			[_profile release];
@@ -51,7 +59,10 @@
 		}
 	}
 	_isDoneFetching = YES;
-	[_target performSelector:_action withObject:self];
+    if (_completionBlock != nil)
+    {
+        _completionBlock();
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -60,13 +71,13 @@
     BOOL success = NO;
     NSString* failureReason = nil;
 	_isDoneFetching = NO;
-	[_scriptTask setLaunchPath:@"/usr/sbin/system_profiler"];
-	[_scriptTask setArguments:@[@"-detailLevel", @"mini"]];
-	[_scriptTask setStandardOutput:_scriptPipe];
+	_scriptTask.launchPath = @"/usr/sbin/system_profiler";
+	_scriptTask.arguments = @[@"-detailLevel", @"mini"];
+	_scriptTask.standardOutput = _scriptPipe;
 	@try
 	{
 		[_scriptTask launch];
-        NSFileHandle* handle = [_scriptPipe fileHandleForReading];
+        NSFileHandle* handle = _scriptPipe.fileHandleForReading;
         if (handle == nil)
         {
             failureReason = @"Invalid file handle";
@@ -80,7 +91,7 @@
 	}
 	@catch (NSException* exception)
 	{
-        failureReason = [exception reason];
+        failureReason = exception.reason;
 	}
     
     if (!success)
@@ -95,18 +106,6 @@
 - (void)cancel
 {
 	[_scriptTask terminate];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (NSString*)profile
-{
-	return _profile;
-}
-
-//-------------------------------------------------------------------------------------------------
-- (BOOL)isDoneFetching
-{
-	return _isDoneFetching;
 }
 
 @end

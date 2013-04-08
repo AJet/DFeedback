@@ -7,13 +7,16 @@
 #import "DFCrashReportWindowController.h"
 
 //-------------------------------------------------------------------------------------------------
-// Private constants
-//-------------------------------------------------------------------------------------------------
-static NSString* const USER_DEFAULT_CRASH_SEQUENCE_COUNT = @"DFApplication_crashSequenceCount";
-static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
+static NSString* const kUserDefaultCrashSequenceCount = @"DFApplication_crashSequenceCount";
+static NSUInteger const kCrashSequenceCountMax = 3;
 
 //-------------------------------------------------------------------------------------------------
 @implementation DFApplication
+{
+    BOOL _isRelaunching;
+    BOOL _isPostmortem;
+}
+
 //-------------------------------------------------------------------------------------------------
 - (id)init
 {
@@ -37,14 +40,14 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
     
 	// launch a script that waits for the app to exit and then relaunches it
 	NSString* scriptPath = [[NSBundle mainBundle] pathForResource:@"DFRelaunch" ofType:@"sh"];
-	NSString* bundlePath = [NSString stringWithFormat:@"%s", [[[NSBundle mainBundle] executablePath] fileSystemRepresentation]];
-	NSString* processIdentifier = [NSString stringWithFormat:@"%d", [[NSProcessInfo processInfo] processIdentifier]];
+	NSString* bundlePath = [NSString stringWithFormat:@"%s", [NSBundle mainBundle].executablePath.fileSystemRepresentation];
+	NSString* processIdentifier = [NSString stringWithFormat:@"%d", [NSProcessInfo processInfo].processIdentifier];
 	NSArray* arguments = @[scriptPath,
 						  bundlePath,
 						  processIdentifier];
 	NSTask* task = [[[NSTask alloc] init] autorelease];
-	[task setLaunchPath:@"/bin/bash"];
-	[task setArguments:arguments];
+	task.launchPath = @"/bin/bash";
+	task.arguments = arguments;
 	[task launch];
 }
 
@@ -52,8 +55,8 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
 - (void)relaunch
 {
 	// prevent endless loop of relaunch and crash
-	NSUInteger crashSequenceCount = [[NSUserDefaults standardUserDefaults] integerForKey:USER_DEFAULT_CRASH_SEQUENCE_COUNT];
-	if (crashSequenceCount < CRASH_SEQUENCE_COUNT_MAX - 1)
+	NSUInteger crashSequenceCount = [[NSUserDefaults standardUserDefaults] integerForKey:kUserDefaultCrashSequenceCount];
+	if (crashSequenceCount < kCrashSequenceCountMax - 1)
 	{
 		[self launchAnotherInstanceAndWaitForTermination];
 	}
@@ -67,10 +70,10 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
 	if (_isPostmortem && _isRelaunching)
 	{
         // save sequential crash count
-		NSUInteger crashSequenceCount = [[NSUserDefaults standardUserDefaults] integerForKey:USER_DEFAULT_CRASH_SEQUENCE_COUNT];
+		NSUInteger crashSequenceCount = [[NSUserDefaults standardUserDefaults] integerForKey:kUserDefaultCrashSequenceCount];
         ++crashSequenceCount;
         [[NSUserDefaults standardUserDefaults] setInteger:crashSequenceCount 
-                                                   forKey:USER_DEFAULT_CRASH_SEQUENCE_COUNT];
+                                                   forKey:kUserDefaultCrashSequenceCount];
         [[NSUserDefaults standardUserDefaults] synchronize];
 		
 	}
@@ -78,7 +81,7 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
 	else
 	{
         // reset crash counter
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_DEFAULT_CRASH_SEQUENCE_COUNT];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultCrashSequenceCount];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	// do terminate
@@ -88,8 +91,8 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
 //-------------------------------------------------------------------------------------------------
 - (BOOL)shouldIgnoreException:(NSException*)exception
 {   
-	NSString* exceptionName = [exception name];
-	NSString* exceptionMessage = [exception reason];
+	NSString* exceptionName = exception.name;
+	NSString* exceptionMessage = exception.reason;
 	
     // accessibility exceptions are a normal mode of operation, should be ignored
 	BOOL isAccessibilityException = [exceptionName isEqualToString:NSAccessibilityException];
@@ -115,7 +118,7 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
             // prevent endless loop
             _isPostmortem = YES;
             
-            NSLog(@"Reporting exception: %@", [exception reason]);
+            NSLog(@"Reporting exception: %@", exception.reason);
             
             // hide all windows
             for (NSWindow* window in [NSApp windows])
@@ -130,7 +133,7 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
     @catch (NSException* fatalException)
     {
         // the exception occurred during exception handling - considered fatal
-        NSLog(@"Fatal error while processing exception: %@", [exception reason]);
+        NSLog(@"Fatal error while processing exception: %@", exception.reason);
         @try
         {
             [(DFApplication*)NSApp relaunch];
@@ -158,17 +161,13 @@ static const NSUInteger CRASH_SEQUENCE_COUNT_MAX = 3;
         else
         {
             // handle on main thread
-            [self performSelectorOnMainThread:@selector(reportExceptionInMainThread:) withObject:exception waitUntilDone:NO];
+            [self performSelectorOnMainThread:@selector(reportExceptionInMainThread:)
+                                   withObject:exception
+                                waitUntilDone:NO];
             // exit immediately, or will crash the app
             [NSThread exit];
         }
     }
-}
-
-//-------------------------------------------------------------------------------------------------
-- (BOOL)isPostmortem
-{
-    return _isPostmortem;
 }
 
 @end

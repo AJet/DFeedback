@@ -7,19 +7,12 @@
 
 //-------------------------------------------------------------------------------------------------
 // Application
-//-------------------------------------------------------------------------------------------------
 @interface DFApplication : NSApplication
-{
-    BOOL _isRelaunching;
-    BOOL _isPostmortem;
-}
 
-//-------------------------------------------------------------------------------------------------
 // Relaunches the app
 - (void)relaunch;
 
-//-------------------------------------------------------------------------------------------------
 // Flag indicating that an unhandled exception has occured and the app is in process of terminating
-- (BOOL)isPostmortem;
+@property (nonatomic, readonly) BOOL isPostmortem;
 
 @end

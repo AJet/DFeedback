@@ -7,6 +7,7 @@
 
 //-------------------------------------------------------------------------------------------------
 @implementation NSURLRequest(Extension)
+
 //-------------------------------------------------------------------------------------------------
 + (void)appendString:(NSString*)string toData:(NSMutableData*)data
 {
@@ -21,7 +22,7 @@
 }
 
 //-------------------------------------------------------------------------------------------------
-+ (NSURLRequest*)requestWithURL:(NSURL*)url postForm:(NSDictionary*)values 
++ (NSURLRequest*)requestWithUrl:(NSURL*)url postForm:(NSDictionary*)values
 {
     // create the mime multipart boundary
     CFUUIDRef uuidRef = CFUUIDCreate(NULL);
@@ -32,7 +33,7 @@
     
     // create the form
     NSMutableData* formData = [NSMutableData data];
-    for (NSString* key in [values allKeys]) 
+    for (NSString* key in values.allKeys)
 	{
         [NSURLRequest appendFormat:@"\r\n--%@\r\n" arg:boundary toData:formData];
         [NSURLRequest appendFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n" arg:key toData:formData];
@@ -56,10 +57,10 @@
     
     // create request
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"POST"];
+    request.HTTPMethod = @"POST";
     [request setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary] forHTTPHeaderField:@"Content-Type"];
     [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[formData length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody:formData];
+    request.HTTPBody = formData;
     
     return request;
 }

@@ -8,6 +8,11 @@
 
 //-------------------------------------------------------------------------------------------------
 @implementation DFPlaceholderTextView
+{
+	NSString* _placeholderText;
+	BOOL _shouldInvalidateOnChange;
+}
+
 //-------------------------------------------------------------------------------------------------
 - (id)initWithFrame:(NSRect)frame
 {
@@ -27,18 +32,13 @@
 }
 
 //-------------------------------------------------------------------------------------------------
-- (NSString*)placeholderText
-{
-	return _placeholderText;
-}
-
-//-------------------------------------------------------------------------------------------------
 - (void)setPlaceholderText:(NSString*)value
 {
 	[value retain];
 	[_placeholderText release];
 	_placeholderText = value;
-	[self setNeedsDisplay:YES];
+
+	self.needsDisplay = YES;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -50,10 +50,10 @@
 	[NSGraphicsContext saveGraphicsState];
 
 	// draw placeholder
-	if (([self string] == nil || [[self string] isEqualToString:@""]) && self != [[self window] firstResponder])
+	if ((self.string == nil || [self.string isEqualToString:@""]) && self != self.window.firstResponder)
 	{
-		NSRect textRect = NSInsetRect([self bounds], [[self textContainer] lineFragmentPadding], 0.0);
-		[[self placeholderText] drawInRect:textRect withAttributes:DFPlaceholderTextView_placeholderTextAttributes];
+		NSRect textRect = NSInsetRect(self.bounds, self.textContainer.lineFragmentPadding, 0.0);
+		[self.placeholderText drawInRect:textRect withAttributes:DFPlaceholderTextView_placeholderTextAttributes];
 	}
 	
 	[NSGraphicsContext restoreGraphicsState];
@@ -66,22 +66,22 @@
 	// clear explicitly, or otherwise the placeholder text will sometimes leave some dirty pixels
 	if (_shouldInvalidateOnChange)
 	{
-		[self setNeedsDisplay:YES];
+		self.needsDisplay = YES;
 	}
-	_shouldInvalidateOnChange = ([self string] == nil || [[self string] isEqualToString:@""]);
+	_shouldInvalidateOnChange = (self.string == nil || [self.string isEqualToString:@""]);
 }
 
 //-------------------------------------------------------------------------------------------------
 - (BOOL)becomeFirstResponder
 {
-	[self setNeedsDisplay:YES];
+	self.needsDisplay = YES;
 	return [super becomeFirstResponder];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (BOOL)resignFirstResponder
 {
-	[self setNeedsDisplay:YES];
+	self.needsDisplay = YES;
 	return [super resignFirstResponder];
 }
 

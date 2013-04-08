@@ -7,36 +7,21 @@
 
 //-------------------------------------------------------------------------------------------------
 // Encapsulates asynchronous fetching of system profile
-//-------------------------------------------------------------------------------------------------
-@interface DFSystemProfileFetcher : NSObject 
-//-------------------------------------------------------------------------------------------------
-{
-	id _target;
-	SEL _action;
-	NSTask* _scriptTask;
-	NSPipe* _scriptPipe;
-	NSString* _profile;
-	BOOL _isDoneFetching;
-}
+@interface DFSystemProfileFetcher : NSObject
 
-//-------------------------------------------------------------------------------------------------
 // Initializer
-- (id)initWithCallbackTarget:(id)target action:(SEL)action;
+- (id)initWithCompletionBlock:(void (^)(void))completionBlock;
 
-//-------------------------------------------------------------------------------------------------
 // Begins fetching system profile, completes asynchronously
 - (void)fetch;
 
-//-------------------------------------------------------------------------------------------------
 // Cancels a pending request
 - (void)cancel;
 
-//-------------------------------------------------------------------------------------------------
 // Resulting profile
-- (NSString*)profile;
+@property (nonatomic, readonly) NSString* profile;
 
-//-------------------------------------------------------------------------------------------------
 // Is done fetching flag
-- (BOOL)isDoneFetching;
+@property (nonatomic, readonly) BOOL isDoneFetching;
 
 @end

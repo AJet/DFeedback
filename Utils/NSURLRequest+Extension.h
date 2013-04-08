@@ -7,10 +7,10 @@
 
 //-------------------------------------------------------------------------------------------------
 // Extension to NSURLRequest with utilities
-//-------------------------------------------------------------------------------------------------
 @interface NSURLRequest (Extension)
-//-------------------------------------------------------------------------------------------------
+
 // Create request with HTTP POST form
-+ (NSURLRequest*)requestWithURL:(NSURL*)url postForm:(NSDictionary*)values;
++ (NSURLRequest*)requestWithUrl:(NSURL*)url
+                       postForm:(NSDictionary*)values;
 
 @end

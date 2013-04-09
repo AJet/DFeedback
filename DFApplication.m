@@ -133,7 +133,7 @@ static NSUInteger const kCrashSequenceCountMax = 3;
     @catch (NSException* fatalException)
     {
         // the exception occurred during exception handling - considered fatal
-        NSLog(@"Fatal error while processing exception: %@", exception.reason);
+        NSLog(@"Fatal error:%@\nwhile processing exception: %@", fatalException.reason, exception.reason);
         @try
         {
             [(DFApplication*)NSApp relaunch];

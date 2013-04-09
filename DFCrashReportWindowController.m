@@ -7,6 +7,7 @@
 #import "DFSystemProfileFetcher.h"
 #import "DFFeedbackSender.h"
 #import "DFPlaceholderTextView.h"
+#import "DFLinkLabel.h"
 #import "DFStyleSheet.h"
 #import "DFApplication.h"
 #import "GTMStackTrace.h"
@@ -18,6 +19,7 @@ static NSString* const kNibName = @"DFCrashReportWindow";
 static DFCrashReportWindowController* _singleton = nil;
 static NSImage* _icon = nil;
 static NSString* _feedbackUrl = nil;
+static NSString* _updateUrl = nil;
 
 //-------------------------------------------------------------------------------------------------
 @interface DFCrashReportWindowController()
@@ -57,6 +59,9 @@ static NSString* _feedbackUrl = nil;
 //-------------------------------------------------------------------------------------------------
 @implementation DFCrashReportWindowController
 {
+    // runtime controls
+    DFLinkLabel* _updateLinkLabel;
+	
     // workers
 	DFSystemProfileFetcher* _systemProfileFetcher;
 	DFFeedbackSender* _feedbackSender;
@@ -68,6 +73,7 @@ static NSString* _feedbackUrl = nil;
 
 //-------------------------------------------------------------------------------------------------
 + (void)initializeWithFeedbackUrl:(NSString*)feedbackUrl
+                        updateUrl:(NSString*)updateUrl
                              icon:(NSImage*)icon
 {
     [icon retain];
@@ -77,18 +83,10 @@ static NSString* _feedbackUrl = nil;
     [feedbackUrl retain];
     [_feedbackUrl release];
     _feedbackUrl = feedbackUrl;
-}
 
-//-------------------------------------------------------------------------------------------------
-+ (DFCrashReportWindowController*)singleton
-{
-	if (_singleton == nil)
-	{
-        InitializeDFStyles();
-
-		_singleton = [[DFCrashReportWindowController alloc] init];
-	}
-	return _singleton;
+    [updateUrl retain];
+    [_updateUrl release];
+    _updateUrl = updateUrl;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -111,8 +109,22 @@ static NSString* _feedbackUrl = nil;
 	[self cancelPendingStuff];
     [_exceptionMessage release];
     [_exceptionStackTrace release];
+    [_updateLinkLabel release];
 	[super dealloc];
 }
+
+//-------------------------------------------------------------------------------------------------
++ (DFCrashReportWindowController*)singleton
+{
+	if (_singleton == nil)
+	{
+        InitializeDFStyles();
+        
+		_singleton = [[DFCrashReportWindowController alloc] init];
+	}
+	return _singleton;
+}
+
 
 //-------------------------------------------------------------------------------------------------
 - (void)initializeControls
@@ -120,6 +132,26 @@ static NSString* _feedbackUrl = nil;
 	_sendButtonWasClicked = NO;
 	_cancelButtonWasClicked = NO;
     
+	_sendButton.enabled = YES;
+    
+    NSString* details = [NSString stringWithFormat:@"MESSAGE:\n%@\n\nSTACK TRACE:\n%@", _exceptionMessage, _exceptionStackTrace];
+	_detailsTextView.textStorage.attributedString = [[[NSAttributedString alloc] initWithString:details] autorelease];
+    
+    _detailsDisclosureButton.state = NSOffState;
+    
+	[self expandOrCollapseBox:_detailsBoxView
+					 textView:_detailsScrollView
+				 alternateBox:_commentsBoxView
+	   shouldCollapseOrExpand:NO
+			   isLowerOrUpper:NO
+				withAnimation:NO];
+    
+    [self beginFetchingSystemProfile];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)awakeFromNib
+{
 	[self.window setContentBorderThickness:DFCrashReportWindow_bottomBarHeight forEdge: NSMinYEdge];
 	
 	NSString* windowTitle = self.window.title;
@@ -130,20 +162,21 @@ static NSString* _feedbackUrl = nil;
     
 	_commentsTextView.placeholderText = NSLocalizedStringFromTable(@"DF_TEXT_PLACEHOLDER", @"DFLocalizable", nil);
     
-	_sendButton.enabled = YES;
-    
-    NSString* details = [NSString stringWithFormat:@"MESSAGE:\n%@\n\nSTACK TRACE:\n%@", _exceptionMessage, _exceptionStackTrace];
-	_detailsTextView.textStorage.attributedString = [[[NSAttributedString alloc] initWithString:details] autorelease];
-    
-    _detailsDisclosureButton.state = NSOffState;
-	[self expandOrCollapseBox:_detailsBoxView
-					 textView:_detailsScrollView
-				 alternateBox:_commentsBoxView
-	   shouldCollapseOrExpand:NO
-			   isLowerOrUpper:NO
-				withAnimation:NO];
-    
-    [self beginFetchingSystemProfile];
+    // replace update label with link label
+    if (_updateLabel != nil)
+    {
+        if (_updateUrl != nil)
+        {
+            _updateLinkLabel = [[DFLinkLabel alloc] initWithTextField:_updateLabel];
+            _updateLinkLabel.delegate = self;
+            [_updateLabel.superview replaceSubview:_updateLabel with:_updateLinkLabel];
+        }
+        else
+        {
+            // no update url, simply remove
+            [_updateLabel removeFromSuperview];
+        }
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -363,5 +396,19 @@ static NSString* _feedbackUrl = nil;
 	}
 }
 
+//-------------------------------------------------------------------------------------------------
+- (void)linkLabel:(DFLinkLabel*)sender didClickLinkNo:(NSUInteger)linkIndex
+{
+    if (_updateUrl != nil)
+    {
+        if (sender == _updateLinkLabel)
+        {
+            if (linkIndex == 0)
+            {
+                [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:_updateUrl]];
+            }
+        }
+    }
+}
 
 @end

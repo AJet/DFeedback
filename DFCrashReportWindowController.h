@@ -4,13 +4,15 @@
 //-------------------------------------------------------------------------------------------------
 
 #import <Cocoa/Cocoa.h>
+#import "DFLinkLabelDelegate.h"
 
 //-------------------------------------------------------------------------------------------------
 // Crash report window controller
-@interface DFCrashReportWindowController : NSWindowController
+@interface DFCrashReportWindowController : NSWindowController<DFLinkLabelDelegate>
 
 // Initialization, call before first use
 + (void)initializeWithFeedbackUrl:(NSString*)feedbackUrl
+                        updateUrl:(NSString*)updateUrl
                              icon:(NSImage*)icon;
 
 // Singleton

@@ -23,5 +23,11 @@ extern NSImage*			DFFeedbackWindow_emailWarningImage;
 // Crash report window
 extern CGFloat          DFCrashReportWindow_bottomBarHeight;
 
+// Link label
+extern NSFont*          DFLinkLabel_font;
+extern NSColor*         DFLinkLabel_normalColor;
+extern NSColor*         DFLinkLabel_linkColor;
+extern BOOL             DFLinkLabel_linkUnderlined;
+
 // Initialization
 extern void InitializeDFStyles(void);

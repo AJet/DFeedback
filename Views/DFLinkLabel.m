@@ -22,22 +22,35 @@
 }
 
 //-------------------------------------------------------------------------------------------------
-- (id)initWithTextField:(NSTextField*)textField
+- (id)initWithFrame:(NSRect)frameRect
 {
-    self = [super initWithFrame:textField.frame];
+    self = [super initWithFrame:frameRect];
     if (self != nil)
     {
         _text = [[NSTextStorage alloc] init];
-        _textContainer = [[NSTextContainer alloc] initWithContainerSize:NSMakeSize(self.bounds.size.width, FLT_MAX)];
+        _textContainer = [[NSTextContainer alloc] initWithContainerSize:NSMakeSize(frameRect.size.width, FLT_MAX)];
         _textLayoutManager = [[NSLayoutManager alloc] init];
         [_textLayoutManager addTextContainer:_textContainer];
         [_text addLayoutManager:_textLayoutManager];
         _textContainer.lineFragmentPadding = 0.0;
+        // this is necessary to match layout of the standard text field
+        _textLayoutManager.typesetterBehavior = NSTypesetterBehavior_10_2_WithCompatibility;
         _linkRanges = [[NSMutableArray alloc] init];
         _linkRectArrays = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+//-------------------------------------------------------------------------------------------------
+- (id)initWithTextField:(NSTextField*)textField
+{
+    self = [self initWithFrame:textField.frame];
+    if (self != nil)
+    {
+        // save font and color
         _font = [textField.font retain];
         _textColor = [textField.textColor retain];
-        
+        // initialize value
         [self setStringValue:textField.stringValue];
     }
     return self;
@@ -82,13 +95,12 @@
     
     if (value != nil)
     {
-        // attributes
         NSDictionary* normalTextAttrs = @{NSFontAttributeName : (_font != nil ? _font : DFLinkLabel_font),
                                           NSForegroundColorAttributeName : (_textColor != nil ? _textColor : DFLinkLabel_normalColor)};
-
+        
         NSDictionary* linkTextAttrs = @{NSFontAttributeName : (_font != nil ? _font : DFLinkLabel_font),
                                         NSForegroundColorAttributeName : DFLinkLabel_linkColor,
-                                        NSUnderlineStyleAttributeName : DFLinkLabel_linkUnderlined ? @(NSUnderlinePatternSolid | NSSingleUnderlineStyle) : @(NSUnderlineStyleNone)};
+                                        NSUnderlineStyleAttributeName : (DFLinkLabel_linkUnderlined ? @(NSUnderlinePatternSolid | NSSingleUnderlineStyle) : @(NSUnderlineStyleNone))};
 
         // split into attributed ranges
         NSUInteger openBracketLocation = NSNotFound;

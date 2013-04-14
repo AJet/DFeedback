@@ -18,12 +18,19 @@
 #pragma mark - Private constants
 //-------------------------------------------------------------------------------------------------
 static NSString* const NIB_NAME = @"DFFeedbackWindow";
-typedef enum DFFeedbackType : NSUInteger
+typedef enum : NSUInteger
 {
 	DFFeedback_General = 0,
 	DFFeedback_Feature = 1,
 	DFFeedback_Bug = 2
 } DFFeedbackType;
+
+typedef enum : NSUInteger
+{
+    DFProgress_None = 0,
+    DFProgress_Profiling,
+    DFProgress_Sending
+} DFProgressMode;
 
 static NSString* const kStateMessage = @"DFeedback_Message";
 static NSString* const kStateFeedbackType = @"DFeedback_FeedbackType";
@@ -76,37 +83,38 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 @interface DFFeedbackWindowController()
 
 // tab control
-@property(nonatomic, assign) IBOutlet NSSegmentedControl* tabsSegmentedControl;
-@property(nonatomic, assign) IBOutlet DFKeyTabView* tabView;
+@property (nonatomic, assign) IBOutlet NSSegmentedControl* tabsSegmentedControl;
+@property (nonatomic, assign) IBOutlet DFKeyTabView* tabView;
 
 // text view
-@property(nonatomic, assign) IBOutlet NSView* textContainer;
-@property(nonatomic, assign) IBOutlet DFPlaceholderTextView* textView;
+@property (nonatomic, assign) IBOutlet NSView* textContainer;
+@property (nonatomic, assign) IBOutlet DFPlaceholderTextView* textView;
 
 // system profile controls
-@property(nonatomic, assign) IBOutlet NSView* systemProfileContainer;
-@property(nonatomic, assign) IBOutlet NSButton* includeSystemProfileCheckBox;
+@property (nonatomic, assign) IBOutlet NSView* systemProfileContainer;
+@property (nonatomic, assign) IBOutlet NSButton* includeSystemProfileCheckBox;
 
 // email controls
-@property(nonatomic, assign) IBOutlet NSButton* includeEmailCheckBox;
-@property(nonatomic, assign) IBOutlet NSComboBox* emailComboBox;
-@property(nonatomic, assign) IBOutlet DFBounceIconView* emailBounceIcon;
+@property (nonatomic, assign) IBOutlet NSButton* includeEmailCheckBox;
+@property (nonatomic, assign) IBOutlet NSComboBox* emailComboBox;
+@property (nonatomic, assign) IBOutlet DFBounceIconView* emailBounceIcon;
 
 // progress controls
-@property(nonatomic, assign) IBOutlet NSView* progressContainer;
-@property(nonatomic, assign) IBOutlet NSProgressIndicator* progressIndicator;
-@property(nonatomic, assign) IBOutlet NSTextField* sendingProgressLabel;
-@property(nonatomic, assign) IBOutlet NSTextField* profilingProgressLabel;
+@property (nonatomic, assign) IBOutlet NSView* progressContainer;
+@property (nonatomic, assign) IBOutlet NSProgressIndicator* progressIndicator;
+@property (nonatomic, assign) IBOutlet NSTextField* sendingProgressLabel;
+@property (nonatomic, assign) IBOutlet NSTextField* profilingProgressLabel;
+@property (nonatomic) DFProgressMode progressMode;
 
 // footer controls
 @property(nonatomic, assign) IBOutlet NSButton* sendButton;
 
 // details window controls
-@property(nonatomic, assign) IBOutlet NSWindow* detailsWindow;
-@property(nonatomic, assign) IBOutlet NSView* detailsTextContainer;
-@property(nonatomic, assign) IBOutlet NSTextView* detailsTextView;
-@property(nonatomic, assign) IBOutlet NSProgressIndicator* detailsProgressIndicator;
-@property(nonatomic, assign) IBOutlet NSTextField* detailsProgressLabel;
+@property (nonatomic, assign) IBOutlet NSWindow* detailsWindow;
+@property (nonatomic, assign) IBOutlet NSView* detailsTextContainer;
+@property (nonatomic, assign) IBOutlet NSTextView* detailsTextView;
+@property (nonatomic, assign) IBOutlet NSProgressIndicator* detailsProgressIndicator;
+@property (nonatomic, assign) IBOutlet NSTextField* detailsProgressLabel;
 
 @end
 
@@ -115,10 +123,10 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 //-------------------------------------------------------------------------------------------------
 @implementation DFFeedbackWindowController
 {
-	// workers
 	DFSystemProfileFetcher* _systemProfileFetcher;
 	DFFeedbackSender* _feedbackSender;
 	BOOL _isSendingReport;
+    BOOL _isFetchingSystemProfile;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -214,7 +222,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
         _systemProfileFetcher = nil;
         _isSendingReport = NO;
         _sendButton.enabled = YES;
-        [self resetProgress];
+        self.progressMode = DFProgress_None;
         [self resetEmailWarning];
         
         // window title
@@ -345,9 +353,8 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 {
 	if (sender == _tabView)
 	{
-		// switch variants of the window when the system profile is visible/hidden
+		// switch window views when the system profile is visible/hidden
         BOOL isSystemProfileAvailable = self.currentFeedbackType != DFFeedback_General && self.shouldFetchSystemProfile;
-        
         
 		// system profile controls
 		_systemProfileContainer.hidden = !isSystemProfileAvailable;
@@ -376,10 +383,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 			}
 		}
 		_textContainer.frame = textContainerFrame;
-        
-		// progress controls
-		_progressContainer.hidden = !isSystemProfileAvailable && !_isSendingReport;
-		
+
 		// send button
 		[self validateSendButton];
 		
@@ -388,6 +392,8 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 		{
 			[self beginFetchingSystemProfile];
 		}
+        
+        [self updateProgressMode];
 	}
 }
 
@@ -534,46 +540,127 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 			}
 			[self beginSendingFeedback];
 		}
+        
+        [self updateProgressMode];
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
 #pragma mark - Progress
 //-------------------------------------------------------------------------------------------------
-- (void)showProgress:(BOOL)profilingOrSending
+- (void)setProgressMode:(DFProgressMode)value
 {
-	// progress in the main window
-	_progressContainer.hidden = !(profilingOrSending || self.currentFeedbackType != DFFeedback_General);
-	_progressIndicator.hidden = NO;
-	[_progressIndicator startAnimation:self];
-	_profilingProgressLabel.hidden = profilingOrSending;
-	_sendingProgressLabel.hidden = !profilingOrSending;
-	
-	// progress in the details window
-	_detailsProgressLabel.hidden = NO;
-	[_detailsProgressIndicator startAnimation:self];
-	_detailsProgressIndicator.hidden = NO;
-	_detailsTextContainer.hidden = YES;
+    _progressMode = value;
+    
+    // progress in main window
+    switch (_progressMode)
+    {
+        case DFProgress_None:
+
+            _progressContainer.hidden = YES;
+            [_progressIndicator stopAnimation:self];
+            
+            break;
+        
+        case DFProgress_Profiling:
+
+            _progressContainer.hidden = NO;
+            _profilingProgressLabel.hidden = NO;
+            _sendingProgressLabel.hidden = YES;
+            [_progressIndicator startAnimation:self];
+            
+            break;
+
+        case DFProgress_Sending:
+
+            _progressContainer.hidden = NO;
+            _profilingProgressLabel.hidden = YES;
+            _sendingProgressLabel.hidden = NO;
+            [_progressIndicator startAnimation:self];
+            
+            break;
+
+        default:
+            NSAssert(NO, @"Invalid case for progress mode %lu", _progressMode);
+            break;
+    }
+    
+    // progress in details window
+    switch (_progressMode)
+    {
+        case DFProgress_None:
+        case DFProgress_Sending:
+
+            _detailsProgressLabel.hidden = YES;
+            [_detailsProgressIndicator stopAnimation:self];
+            _detailsProgressIndicator.hidden = YES;
+            _detailsTextContainer.hidden = NO;
+            
+            break;
+            
+        case DFProgress_Profiling:
+            
+            _detailsProgressLabel.hidden = NO;
+            [_detailsProgressIndicator startAnimation:self];
+            _detailsProgressIndicator.hidden = NO;
+            _detailsTextContainer.hidden = YES;
+            
+            break;
+            
+        default:
+            NSAssert(NO, @"Invalid case for progress mode %lu", _progressMode);
+            break;
+    }
+    
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)resetProgress
+- (void)updateProgressMode
 {
-	// progress in the main window
-	[_progressIndicator stopAnimation:self];
-	_progressIndicator.hidden = YES;
-	_profilingProgressLabel.hidden = YES;
-	_sendingProgressLabel.hidden = YES;
-	
-	// progress in the details window
-	_detailsProgressLabel.hidden = YES;
-	[_detailsProgressIndicator stopAnimation:self];
-	_detailsProgressIndicator.hidden = YES;
-	_detailsTextContainer.hidden = NO;
+    DFProgressMode result = DFProgress_None;
+    if (_isSendingReport)
+    {
+        result = DFProgress_Sending;
+    }
+    else if (_isFetchingSystemProfile)
+    {
+        BOOL isSystemProfileAvailable = self.shouldFetchSystemProfile && self.currentFeedbackType != DFFeedback_General && _includeSystemProfileCheckBox.state == NSOnState;
+        if (isSystemProfileAvailable)
+        {
+            result = DFProgress_Profiling;
+        }
+    }
+    self.progressMode = result;
 }
 
 //-------------------------------------------------------------------------------------------------
 #pragma mark - System profile fetching
+//-------------------------------------------------------------------------------------------------
+- (IBAction)includeSystemProfileCheckBoxDidChange:(id)sender
+{
+    if (_includeSystemProfileCheckBox.state == NSOnState)
+    {
+        // begin fetching if not done already
+        if (!_isFetchingSystemProfile && !_systemProfileFetcher.isDoneFetching)
+        {
+            [self beginFetchingSystemProfile];
+        }
+    }
+    else if (_includeSystemProfileCheckBox.state == NSOffState)
+    {
+        // don't stop fetching system profile, the user may have change his mind
+        
+        // begin sending immediately if the send button has been already clicked, or wait until it's clicked
+        if (_isSendingReport)
+        {
+            [self beginSendingFeedback];
+        }
+    }
+    
+    [self updateProgressMode];
+
+}
+
 //-------------------------------------------------------------------------------------------------
 - (void)beginFetchingSystemProfile
 {
@@ -585,7 +672,9 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
                                  }];
 		[_systemProfileFetcher fetch];
 		
-		[self showProgress:NO];
+        _isFetchingSystemProfile = YES;
+        
+		[self updateProgressMode];
 	}
 }
 
@@ -596,13 +685,15 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
     _detailsTextView.textStorage.attributedString = [[[NSAttributedString alloc] initWithString:_systemProfileFetcher.profile] autorelease];
     
     // reset fetching progress
-    [self resetProgress];
+    _isFetchingSystemProfile = NO;
     
     // begin sending immediately if the send button has been already clicked, or wait until it's clicked
     if (_isSendingReport)
     {
         [self beginSendingFeedback];
     }
+    
+    [self updateProgressMode];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -611,8 +702,9 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	[_systemProfileFetcher cancel];
 	[_systemProfileFetcher release];
 	_systemProfileFetcher = nil;
+    _isFetchingSystemProfile = NO;
 	[_detailsWindow orderOut:self];
-	[self resetProgress];
+	[self updateProgressMode];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -649,7 +741,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
                           feedbackType:[self feedbackTypeStringFromType:self.currentFeedbackType]
                          systemProfile:profile
                              userEmail:userEmail];
-	[self showProgress:YES];
+	[self updateProgressMode];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -658,7 +750,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	// cleanup
 	[_feedbackSender release];
 	_feedbackSender = nil;
-	[self resetProgress];
+	[self updateProgressMode];
 	
 	// check error
 	if (error == nil)
@@ -686,9 +778,11 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	[_systemProfileFetcher cancel];
 	[_systemProfileFetcher release];
 	_systemProfileFetcher = nil;
+    _isFetchingSystemProfile = NO;
 	[_feedbackSender cancel];
 	[_feedbackSender release];
 	_feedbackSender = nil;
+    _isSendingReport = NO;
 }
 
 //-------------------------------------------------------------------------------------------------

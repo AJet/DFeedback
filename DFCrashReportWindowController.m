@@ -69,6 +69,13 @@ static NSString* _updateUrl = nil;
     // stored info and flags
 	BOOL _sendButtonWasClicked;
 	BOOL _cancelButtonWasClicked;
+    
+    // animations
+    NSViewAnimation* _windowAnimation;
+    
+    // saved sizes
+    CGFloat _detailsTextViewDefaultHeight;
+    CGFloat _commentsTextViewDefaultHeight;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -110,6 +117,8 @@ static NSString* _updateUrl = nil;
     [_exceptionMessage release];
     [_exceptionStackTrace release];
     [_updateLinkLabel release];
+    _windowAnimation.delegate = nil;
+    [_windowAnimation release];
 	[super dealloc];
 }
 
@@ -141,6 +150,7 @@ static NSString* _updateUrl = nil;
     
 	[self expandOrCollapseBox:_detailsBoxView
 					 textView:_detailsScrollView
+        textViewDefaultHeight:_detailsTextViewDefaultHeight
 				 alternateBox:_commentsBoxView
 	   shouldCollapseOrExpand:NO
 			   isLowerOrUpper:NO
@@ -177,6 +187,14 @@ static NSString* _updateUrl = nil;
             [_updateLabel removeFromSuperview];
         }
     }
+
+    // save some sizes
+    _detailsTextViewDefaultHeight = _detailsTextView.frame.size.height;
+    _commentsTextViewDefaultHeight = _commentsTextView.frame.size.height;
+
+    
+    // make sure the key view loop is correct after all manipulations
+    [self.window recalculateKeyViewLoop];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -330,6 +348,7 @@ static NSString* _updateUrl = nil;
 	BOOL shouldCollapseOrExpand = (_commentsDisclosureButton.state == NSOnState);
 	[self expandOrCollapseBox:_commentsBoxView
 					 textView:_commentsScrollView
+        textViewDefaultHeight:_commentsTextViewDefaultHeight
 				 alternateBox:_detailsBoxView
 	   shouldCollapseOrExpand:shouldCollapseOrExpand
 			   isLowerOrUpper:YES
@@ -342,6 +361,7 @@ static NSString* _updateUrl = nil;
 	BOOL shouldCollapseOrExpand = (_detailsDisclosureButton.state == NSOnState);
 	[self expandOrCollapseBox:_detailsBoxView
 					 textView:_detailsScrollView
+        textViewDefaultHeight:_detailsTextViewDefaultHeight
 				 alternateBox:_commentsBoxView
 	   shouldCollapseOrExpand:shouldCollapseOrExpand
 			   isLowerOrUpper:NO
@@ -351,21 +371,36 @@ static NSString* _updateUrl = nil;
 //-------------------------------------------------------------------------------------------------
 - (void)expandOrCollapseBox:(NSView*)box
 				   textView:(NSView*)textView
+      textViewDefaultHeight:(CGFloat)textViewDefaultHeight
 			   alternateBox:(NSView*)alternateBox
 	 shouldCollapseOrExpand:(BOOL)shouldCollapseOrExpand
 			 isLowerOrUpper:(BOOL)isLowerOrUpper
 			  withAnimation:(BOOL)withAnimation
 {
-	// window frames
+    // reset previous animation if any
+    if (_windowAnimation != nil)
+    {
+        NSDictionary* viewAnimation = _windowAnimation.viewAnimations[0];
+        NSRect endWindowFrame = ((NSValue*)viewAnimation[NSViewAnimationEndFrameKey]).rectValue;
+        [self.window setFrame:endWindowFrame
+                      display:YES
+                      animate:NO];
+        [_windowAnimation stopAnimation];
+        _windowAnimation.delegate = nil;
+        [_windowAnimation release];
+        _windowAnimation = nil;
+    }
+
+    // window frames
 	NSRect sourceWindowFrame = self.window.frame;
-	NSRect targetWindowFrame = sourceWindowFrame;
-	
+    NSRect targetWindowFrame = sourceWindowFrame;
+
 	// expand
 	if (shouldCollapseOrExpand)
 	{
 		box.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 		alternateBox.autoresizingMask = NSViewWidthSizable | (isLowerOrUpper ? NSViewMaxYMargin : NSViewMinYMargin);
-		CGFloat heightDiff = textView.frame.size.height;
+		CGFloat heightDiff = textViewDefaultHeight;
 		targetWindowFrame.size.height += heightDiff;
 		targetWindowFrame.origin.y -= heightDiff;
 	}
@@ -375,24 +410,54 @@ static NSString* _updateUrl = nil;
 		textView.hidden = YES;
 		box.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 		alternateBox.autoresizingMask = NSViewWidthSizable | (isLowerOrUpper ? NSViewMaxYMargin : NSViewMinYMargin);
-		CGFloat heightDiff = textView.frame.size.height;
+		CGFloat heightDiff = textViewDefaultHeight;
 		targetWindowFrame.size.height -= heightDiff;
 		targetWindowFrame.origin.y += heightDiff;
 	}
     
 	// animate
-	[self.window setFrame:targetWindowFrame
-                  display:YES
-                  animate:withAnimation];
-    
-	// update visibility of controls
-	if (_commentsDisclosureButton.state == NSOnState)
+    if (withAnimation)
+    {
+        // with animation, need non-blocking mode or disclosure button animation will appear jerky
+        _windowAnimation = [[NSViewAnimation alloc] init];
+        _windowAnimation.animationBlockingMode = NSAnimationNonblocking;
+        _windowAnimation.animationCurve = NSAnimationEaseInOut;
+        _windowAnimation.duration = [self.window animationResizeTime:targetWindowFrame];
+        _windowAnimation.delegate = self;
+        NSDictionary* windowAnimDict = @{NSViewAnimationTargetKey : self.window,
+                                         NSViewAnimationStartFrameKey : [NSValue valueWithRect:sourceWindowFrame],
+                                         NSViewAnimationEndFrameKey : [NSValue valueWithRect:targetWindowFrame]};
+        _windowAnimation.viewAnimations = @[windowAnimDict];
+        [_windowAnimation startAnimation];
+    }
+    else
+    {
+        // without animation
+        [self.window setFrame:targetWindowFrame
+                      display:YES
+                      animate:NO];
+        // emulate animation ended event
+        [self animationDidEnd:_windowAnimation];
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)animationDidEnd:(NSAnimation*)animation
+{
+	if (animation == _windowAnimation)
 	{
-		_commentsScrollView.hidden = NO;
-	}
-	if (_detailsDisclosureButton.state == NSOnState)
-	{
-		_detailsScrollView.hidden = NO;
+        // update visibility of controls after animation edns
+        if (_commentsDisclosureButton.state == NSOnState)
+        {
+            _commentsScrollView.hidden = NO;
+        }
+        if (_detailsDisclosureButton.state == NSOnState)
+        {
+            _detailsScrollView.hidden = NO;
+        }
+        _windowAnimation.delegate = nil;
+        [_windowAnimation release];
+        _windowAnimation = nil;
 	}
 }
 

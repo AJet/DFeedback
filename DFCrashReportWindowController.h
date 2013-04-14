@@ -8,7 +8,7 @@
 
 //-------------------------------------------------------------------------------------------------
 // Crash report window controller
-@interface DFCrashReportWindowController : NSWindowController<DFLinkLabelDelegate>
+@interface DFCrashReportWindowController : NSWindowController<DFLinkLabelDelegate, NSAnimationDelegate>
 
 // Initialization, call before first use
 + (void)initializeWithFeedbackUrl:(NSString*)feedbackUrl

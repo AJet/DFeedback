@@ -13,6 +13,7 @@
 #import "DFKeyTabView.h"
 #import "OSVersionChecker.h"
 #import "DFApplicationSandboxInfo.h"
+#import "DFComboBoxCell.h"
 
 //-------------------------------------------------------------------------------------------------
 #pragma mark - Private constants
@@ -183,7 +184,8 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	
 	// initialize email bounce icon
 	_emailBounceIcon.icon = DFFeedbackWindow_emailWarningImage;
-	
+    self.emailComboBoxCell.rightMargin = _emailComboBox.frame.origin.x + _emailComboBox.frame.size.width - _emailBounceIcon.frame.origin.x - _emailBounceIcon.frame.size.width + DFFeedbackWindow_emailWarningImageMargin;
+
 	// initialize email from the address book
     // unless the app is sandboxed and doesn't have the entitlement
     // or if we are on 10.8 - we don't want the user to see the dreaded message box
@@ -462,6 +464,12 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 - (void)resetEmailWarning
 {
 	[_emailBounceIcon fadeOut];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (DFComboBoxCell*)emailComboBoxCell
+{
+    return (DFComboBoxCell*)_emailComboBox.cell;
 }
 
 //-------------------------------------------------------------------------------------------------

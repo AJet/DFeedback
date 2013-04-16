@@ -173,6 +173,22 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 }
 
 //-------------------------------------------------------------------------------------------------
+- (void)initializeEmailBounceIcon
+{
+	_emailBounceIcon.icon = DFFeedbackWindow_emailWarningImage;
+    NSRect emailBounceIconFrame = _emailBounceIcon.frame;
+    CGFloat emailBounceIconCenterX = emailBounceIconFrame.origin.x + .5 * emailBounceIconFrame.size.width;
+    CGFloat emailBounceIconCenterY = emailBounceIconFrame.origin.y + .5 * emailBounceIconFrame.size.height;
+    emailBounceIconFrame.size.width = DFFeedbackWindow_emailWarningImage.size.width + DFFeedbackWindow_emailWarningImagePadding;
+    emailBounceIconFrame.size.height = DFFeedbackWindow_emailWarningImage.size.height + DFFeedbackWindow_emailWarningImagePadding;
+    emailBounceIconFrame.origin.x = emailBounceIconCenterX - emailBounceIconFrame.size.width * .5;
+    emailBounceIconFrame.origin.y = emailBounceIconCenterY - emailBounceIconFrame.size.height * .5;
+    emailBounceIconFrame = [_emailBounceIcon.superview convertRectToBacking:emailBounceIconFrame];
+    _emailBounceIcon.frame = emailBounceIconFrame;
+    self.emailComboBoxCell.rightMargin = _emailBounceIcon.icon.size.width;
+}
+
+//-------------------------------------------------------------------------------------------------
 - (void)awakeFromNib
 {
 	// initialize border
@@ -183,8 +199,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	_textView.placeholderText = NSLocalizedStringFromTable(@"DF_TEXT_PLACEHOLDER", @"DFLocalizable", nil);
 	
 	// initialize email bounce icon
-	_emailBounceIcon.icon = DFFeedbackWindow_emailWarningImage;
-    self.emailComboBoxCell.rightMargin = _emailComboBox.frame.origin.x + _emailComboBox.frame.size.width - _emailBounceIcon.frame.origin.x - _emailBounceIcon.frame.size.width + DFFeedbackWindow_emailWarningImageMargin;
+    [self initializeEmailBounceIcon];
 
 	// initialize email from the address book
     // unless the app is sandboxed and doesn't have the entitlement

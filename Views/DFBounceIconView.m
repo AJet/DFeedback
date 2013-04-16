@@ -118,6 +118,7 @@
 - (void)restartAnimation
 {
     [_animation stopAnimation];
+    _animation.duration = DFBounceIcon_animationDuration;
     _suppressRefreshDuringAnimation = YES;
     _animation.currentProgress = 0.;
     _suppressRefreshDuringAnimation = NO;

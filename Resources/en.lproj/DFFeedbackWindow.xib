@@ -390,7 +390,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 												<string key="NSFrame">{{0, 3}, {466, 17}}</string>
 												<reference key="NSSuperview" ref="1001787154"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="629158971"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="310474722">
 													<int key="NSCellFlags">68157504</int>
@@ -730,7 +729,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<object class="NSCustomView" id="402117669">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">289</int>
-							<string key="NSFrame">{{442, 55}, {26, 26}}</string>
+							<string key="NSFrame">{{447, 58}, {21, 21}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="742424490"/>

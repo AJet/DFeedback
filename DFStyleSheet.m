@@ -29,7 +29,7 @@ static void		InitializeDFPlaceholderTextViewStyles(void)
 // Feedback window
 CGFloat			DFFeedbackWindow_bottomBarHeight = 45.;
 NSImage*		DFFeedbackWindow_emailWarningImage = nil;
-CGFloat         DFFeedbackWindow_emailWarningImageMargin = 3.;
+CGFloat         DFFeedbackWindow_emailWarningImagePadding = 5.;
 static void		InitializeDFFeedbackWindow(void)
 {
 	DFFeedbackWindow_emailWarningImage = [[NSImage imageNamed:@"DFWarning"] retain];

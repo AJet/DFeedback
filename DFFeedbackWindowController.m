@@ -128,6 +128,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	DFFeedbackSender* _feedbackSender;
 	BOOL _isSendingReport;
     BOOL _isFetchingSystemProfile;
+    NSRect _emailBounceIconSavedFrame;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -176,14 +177,13 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 - (void)initializeEmailBounceIcon
 {
 	_emailBounceIcon.icon = DFFeedbackWindow_emailWarningImage;
-    NSRect emailBounceIconFrame = _emailBounceIcon.frame;
+    NSRect emailBounceIconFrame = _emailBounceIconSavedFrame;
     CGFloat emailBounceIconCenterX = emailBounceIconFrame.origin.x + .5 * emailBounceIconFrame.size.width;
     CGFloat emailBounceIconCenterY = emailBounceIconFrame.origin.y + .5 * emailBounceIconFrame.size.height;
-    emailBounceIconFrame.size.width = DFFeedbackWindow_emailWarningImage.size.width + DFFeedbackWindow_emailWarningImagePadding;
-    emailBounceIconFrame.size.height = DFFeedbackWindow_emailWarningImage.size.height + DFFeedbackWindow_emailWarningImagePadding;
-    emailBounceIconFrame.origin.x = emailBounceIconCenterX - emailBounceIconFrame.size.width * .5;
-    emailBounceIconFrame.origin.y = emailBounceIconCenterY - emailBounceIconFrame.size.height * .5;
-    emailBounceIconFrame = [_emailBounceIcon.superview convertRectToBacking:emailBounceIconFrame];
+    emailBounceIconFrame.size.width = DFFeedbackWindow_emailWarningImage.size.width + DFFeedbackWindow_emailWarningImageZoomIncrement;
+    emailBounceIconFrame.size.height = DFFeedbackWindow_emailWarningImage.size.height + DFFeedbackWindow_emailWarningImageZoomIncrement;
+    emailBounceIconFrame.origin.x = round(emailBounceIconCenterX - emailBounceIconFrame.size.width * .5);
+    emailBounceIconFrame.origin.y = round(emailBounceIconCenterY - emailBounceIconFrame.size.height * .5);
     _emailBounceIcon.frame = emailBounceIconFrame;
     self.emailComboBoxCell.rightMargin = _emailBounceIcon.icon.size.width;
 }
@@ -199,6 +199,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	_textView.placeholderText = NSLocalizedStringFromTable(@"DF_TEXT_PLACEHOLDER", @"DFLocalizable", nil);
 	
 	// initialize email bounce icon
+    _emailBounceIconSavedFrame = _emailBounceIcon.frame;
     [self initializeEmailBounceIcon];
 
 	// initialize email from the address book

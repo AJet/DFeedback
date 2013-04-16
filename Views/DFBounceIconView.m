@@ -222,15 +222,23 @@
 {
     if (_icon != nil && _isShowing)
     {
+        NSRect bounds = self.bounds;
+        NSSize iconSize = _icon.size;
+
+        // calculate center
+        NSPoint center = NSMakePoint(bounds.origin.x + 0.5 * bounds.size.width,
+                                     bounds.origin.y + 0.5 * bounds.size.height);
+        // make sure we have integer pixels when not animating
+        center.x = round(center.x);
+        center.y = round(center.y);
+        
         CGFloat currOpacity = [self calculateCurrentOpacity];
         CGFloat currSizeFactor = [self calculateCurrentSizeFactor];
         
-        NSRect bounds = self.bounds;
-        NSSize iconSize = _icon.size;
         iconSize.width *= currSizeFactor;
         iconSize.height *= currSizeFactor;
-        NSRect iconFrame = NSMakeRect(bounds.origin.x + 0.5 * (bounds.size.width - iconSize.width),
-                                      bounds.origin.y + 0.5 * (bounds.size.height - iconSize.height),
+        NSRect iconFrame = NSMakeRect(center.x - 0.5 * iconSize.width,
+                                      center.y - 0.5 * iconSize.height,
                                       iconSize.width,
                                       iconSize.height);
         [_icon drawInRect:iconFrame

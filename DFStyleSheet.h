@@ -17,7 +17,7 @@ extern NSDictionary*	DFPlaceholderTextView_placeholderTextAttributes;
 // Feedback window
 extern CGFloat			DFFeedbackWindow_bottomBarHeight;
 extern NSImage*			DFFeedbackWindow_emailWarningImage;
-extern CGFloat          DFFeedbackWindow_emailWarningImagePadding;
+extern CGFloat          DFFeedbackWindow_emailWarningImageZoomIncrement;
 
 // Crash report window
 extern CGFloat          DFCrashReportWindow_bottomBarHeight;

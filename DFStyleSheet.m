@@ -10,9 +10,7 @@ static BOOL _isInitialized = NO;
 
 //-------------------------------------------------------------------------------------------------
 // Bounce icon
-CGFloat			DFBounceIcon_bounceFactor = 1.5;
-NSTimeInterval	DFBounceIcon_bounceHalfDuration = .15;
-NSTimeInterval	DFBounceIcon_fadeDuration = .25;
+NSTimeInterval	DFBounceIcon_animationDuration = .25;
 static void		InitializeDFBounceIconStyles(void)
 {
 	// do nothing

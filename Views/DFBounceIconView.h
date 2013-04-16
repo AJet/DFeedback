@@ -4,31 +4,22 @@
 //-------------------------------------------------------------------------------------------------
 
 #import <Cocoa/Cocoa.h>
-#import <Quartz/Quartz.h>
 
 //-------------------------------------------------------------------------------------------------
 // A custom view that displays a bouncing icon to visually attract user's attention to an input error
-// Core Animation-hosting view 
 // NOTE: The view needs to be slightly larger than its icon, to allow room for bouncing
 @interface DFBounceIconView : NSView
 
 // The icon
 @property (nonatomic, retain) NSImage* icon;
 
-// Shows/hides without animation
-- (void)show;
+// Shows/hides with/without fade and bounce animations
+- (void)showWithAnimation:(BOOL)withAnimation;
 
-- (void)hide;
+- (void)hideWithAnimation:(BOOL)withAnimation;
 
-// Shows hides with fade in/out animation
-- (void)fadeIn;
-
-- (void)fadeOut;
 
 // Currently showing flag
 @property (nonatomic, readonly) BOOL isShowing;
-
-// Bounces the icon
-- (void)bounce;
 
 @end

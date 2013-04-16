@@ -3,17 +3,17 @@
 // Some rights reserved: <http://opensource.org/licenses/mit-license.php>
 //-------------------------------------------------------------------------------------------------
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 //-------------------------------------------------------------------------------------------------
-// Provides sandbox information
-@interface DFApplicationSandboxInfo : NSObject
+// Animation that calls block of code on each progress advance
+@interface NSAnimationWithBlocks : NSAnimation
 
-// Checks if the bundle is sandboxed
-+ (BOOL)isSandboxed;
+// Sets advance block
+@property (nonatomic, copy) void (^advanceBlock)(NSAnimationProgress);
 
-// Checks if the bundle has a given entitlement
-+ (BOOL)hasAddressBookDataEntitlement;
+// Sets completion block (using delegate)
+@property (nonatomic, copy) void (^completionBlock)(BOOL finished);
 
 
 @end

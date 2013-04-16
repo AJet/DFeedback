@@ -3,21 +3,17 @@
 // Some rights reserved: <http://opensource.org/licenses/mit-license.php>
 //-------------------------------------------------------------------------------------------------
 
-#import <AppKit/AppKit.h>
-
-@protocol DFLinkLabelDelegate;
+#import <Foundation/Foundation.h>
 
 //-------------------------------------------------------------------------------------------------
-// A text label that can contain clickable hyperlink
-@interface DFLinkLabel : NSView
+// Provides sandbox information
+@interface ApplicationSandboxInfo : NSObject
 
-// Initializer from existing text field, to take its text, font and frame
-- (id)initWithTextField:(NSTextField*)textField;
+// Checks if the bundle is sandboxed
++ (BOOL)isSandboxed;
 
-// String value, hyperlinks enclosed in [square brackets]
-@property (nonatomic, retain) NSString* stringValue;
+// Checks if the bundle has a given entitlement
++ (BOOL)hasAddressBookDataEntitlement;
 
-// Delegate
-@property (nonatomic, assign) id<DFLinkLabelDelegate> delegate;
 
 @end

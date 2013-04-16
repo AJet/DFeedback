@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* DemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* DemoAppDelegate.m */; };
+		7C0A8766171D96BE005A3C33 /* DFWarning.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0A8765171D96BE005A3C33 /* DFWarning.pdf */; };
+		7C0A876C171D96D3005A3C33 /* DFComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C0A8768171D96D3005A3C33 /* DFComboBoxCell.m */; };
+		7C0A876D171D96D3005A3C33 /* DFLinkLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C0A876A171D96D3005A3C33 /* DFLinkLabel.m */; };
+		7C0A8772171D96DF005A3C33 /* ApplicationSandboxInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C0A876F171D96DF005A3C33 /* ApplicationSandboxInfo.m */; };
+		7C0A8773171D96DF005A3C33 /* NSAnimationWithBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C0A8771171D96DF005A3C33 /* NSAnimationWithBlocks.m */; };
 		7C3C46261371207900AAD108 /* DFStyleSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C460E1371207900AAD108 /* DFStyleSheet.m */; };
 		7C3C462B1371207900AAD108 /* DFFeedbackSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C46191371207900AAD108 /* DFFeedbackSender.m */; };
 		7C3C462C1371207900AAD108 /* DFSystemProfileFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C461B1371207900AAD108 /* DFSystemProfileFetcher.m */; };
@@ -28,14 +33,11 @@
 		7C8E4B4D1596E4A900529DCF /* ReadMe.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B441596E4A900529DCF /* ReadMe.markdown */; };
 		7C8E4B521596E4BB00529DCF /* DFCrashReportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B4E1596E4BB00529DCF /* DFCrashReportWindow.xib */; };
 		7C8E4B531596E4BB00529DCF /* DFFeedbackWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */; };
-		7C8E4B651596E4D800529DCF /* DFWarning.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C3C46121371207900AAD108 /* DFWarning.png */; };
 		7C8E4B731596E6A700529DCF /* OSVersionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C8E4B721596E6A700529DCF /* OSVersionChecker.m */; };
 		7CF621D815AB0D64008BDEFB /* DFLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7CF621D615AB0D64008BDEFB /* DFLocalizable.strings */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		B2CC4F9A16E8C17A000CC50E /* DFWarning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B2CC4F9916E8C17A000CC50E /* DFWarning@2x.png */; };
-		B2CC4F9D16E8C1C7000CC50E /* DFApplicationSandboxInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CC4F9C16E8C1C7000CC50E /* DFApplicationSandboxInfo.m */; };
 		B2CC4F9F16E8C2EF000CC50E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2CC4F9E16E8C2EF000CC50E /* Security.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,9 +52,18 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		7C0A8765171D96BE005A3C33 /* DFWarning.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = DFWarning.pdf; sourceTree = "<group>"; };
+		7C0A8767171D96D3005A3C33 /* DFComboBoxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFComboBoxCell.h; sourceTree = "<group>"; };
+		7C0A8768171D96D3005A3C33 /* DFComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFComboBoxCell.m; sourceTree = "<group>"; };
+		7C0A8769171D96D3005A3C33 /* DFLinkLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFLinkLabel.h; sourceTree = "<group>"; };
+		7C0A876A171D96D3005A3C33 /* DFLinkLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFLinkLabel.m; sourceTree = "<group>"; };
+		7C0A876B171D96D3005A3C33 /* DFLinkLabelDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFLinkLabelDelegate.h; sourceTree = "<group>"; };
+		7C0A876E171D96DF005A3C33 /* ApplicationSandboxInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationSandboxInfo.h; sourceTree = "<group>"; };
+		7C0A876F171D96DF005A3C33 /* ApplicationSandboxInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationSandboxInfo.m; sourceTree = "<group>"; };
+		7C0A8770171D96DF005A3C33 /* NSAnimationWithBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAnimationWithBlocks.h; sourceTree = "<group>"; };
+		7C0A8771171D96DF005A3C33 /* NSAnimationWithBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAnimationWithBlocks.m; sourceTree = "<group>"; };
 		7C3C460D1371207900AAD108 /* DFStyleSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFStyleSheet.h; path = ../DFStyleSheet.h; sourceTree = SOURCE_ROOT; };
 		7C3C460E1371207900AAD108 /* DFStyleSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFStyleSheet.m; path = ../DFStyleSheet.m; sourceTree = SOURCE_ROOT; };
-		7C3C46121371207900AAD108 /* DFWarning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DFWarning.png; sourceTree = "<group>"; };
 		7C3C46181371207900AAD108 /* DFFeedbackSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFFeedbackSender.h; sourceTree = "<group>"; };
 		7C3C46191371207900AAD108 /* DFFeedbackSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFFeedbackSender.m; sourceTree = "<group>"; };
 		7C3C461A1371207900AAD108 /* DFSystemProfileFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFSystemProfileFetcher.h; sourceTree = "<group>"; };
@@ -101,9 +112,6 @@
 		7CF621DF15AB0E91008BDEFB /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Demo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Demo-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2CC4F9916E8C17A000CC50E /* DFWarning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DFWarning@2x.png"; sourceTree = "<group>"; };
-		B2CC4F9B16E8C1C7000CC50E /* DFApplicationSandboxInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFApplicationSandboxInfo.h; sourceTree = "<group>"; };
-		B2CC4F9C16E8C1C7000CC50E /* DFApplicationSandboxInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFApplicationSandboxInfo.m; sourceTree = "<group>"; };
 		B2CC4F9E16E8C2EF000CC50E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = ../../../../../../../System/Library/Frameworks/Security.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -206,11 +214,10 @@
 		7C3C46111371207900AAD108 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7C0A8765171D96BE005A3C33 /* DFWarning.pdf */,
 				7CF621D615AB0D64008BDEFB /* DFLocalizable.strings */,
 				7C8E4B4E1596E4BB00529DCF /* DFCrashReportWindow.xib */,
 				7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */,
-				7C3C46121371207900AAD108 /* DFWarning.png */,
-				B2CC4F9916E8C17A000CC50E /* DFWarning@2x.png */,
 			);
 			name = Resources;
 			path = ../Resources;
@@ -219,8 +226,10 @@
 		7C3C46171371207900AAD108 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				B2CC4F9B16E8C1C7000CC50E /* DFApplicationSandboxInfo.h */,
-				B2CC4F9C16E8C1C7000CC50E /* DFApplicationSandboxInfo.m */,
+				7C0A876E171D96DF005A3C33 /* ApplicationSandboxInfo.h */,
+				7C0A876F171D96DF005A3C33 /* ApplicationSandboxInfo.m */,
+				7C0A8770171D96DF005A3C33 /* NSAnimationWithBlocks.h */,
+				7C0A8771171D96DF005A3C33 /* NSAnimationWithBlocks.m */,
 				7C8E4B711596E6A700529DCF /* OSVersionChecker.h */,
 				7C8E4B721596E6A700529DCF /* OSVersionChecker.m */,
 				7C3C46181371207900AAD108 /* DFFeedbackSender.h */,
@@ -237,6 +246,11 @@
 		7C3C461F1371207900AAD108 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7C0A8767171D96D3005A3C33 /* DFComboBoxCell.h */,
+				7C0A8768171D96D3005A3C33 /* DFComboBoxCell.m */,
+				7C0A8769171D96D3005A3C33 /* DFLinkLabel.h */,
+				7C0A876A171D96D3005A3C33 /* DFLinkLabel.m */,
+				7C0A876B171D96D3005A3C33 /* DFLinkLabelDelegate.h */,
 				7C3C46201371207900AAD108 /* DFBounceIconView.h */,
 				7C3C46211371207900AAD108 /* DFBounceIconView.m */,
 				7C3C46221371207900AAD108 /* DFPlaceholderTextView.h */,
@@ -347,9 +361,8 @@
 				7C8E4B4D1596E4A900529DCF /* ReadMe.markdown in Resources */,
 				7C8E4B521596E4BB00529DCF /* DFCrashReportWindow.xib in Resources */,
 				7C8E4B531596E4BB00529DCF /* DFFeedbackWindow.xib in Resources */,
-				7C8E4B651596E4D800529DCF /* DFWarning.png in Resources */,
-				B2CC4F9A16E8C17A000CC50E /* DFWarning@2x.png in Resources */,
 				7CF621D815AB0D64008BDEFB /* DFLocalizable.strings in Resources */,
+				7C0A8766171D96BE005A3C33 /* DFWarning.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,7 +388,10 @@
 				7C8E4B4A1596E4A900529DCF /* GTMObjC2Runtime.m in Sources */,
 				7C8E4B4B1596E4A900529DCF /* GTMStackTrace.m in Sources */,
 				7C8E4B731596E6A700529DCF /* OSVersionChecker.m in Sources */,
-				B2CC4F9D16E8C1C7000CC50E /* DFApplicationSandboxInfo.m in Sources */,
+				7C0A876C171D96D3005A3C33 /* DFComboBoxCell.m in Sources */,
+				7C0A876D171D96D3005A3C33 /* DFLinkLabel.m in Sources */,
+				7C0A8772171D96DF005A3C33 /* ApplicationSandboxInfo.m in Sources */,
+				7C0A8773171D96DF005A3C33 /* NSAnimationWithBlocks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

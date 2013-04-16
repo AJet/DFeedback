@@ -3,7 +3,7 @@
 // Some rights reserved: <http://opensource.org/licenses/mit-license.php>
 //-------------------------------------------------------------------------------------------------
 
-#import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
 
 //-------------------------------------------------------------------------------------------------
 // Extension of combo box cell with the right margin that works nicely with bouncing icon view

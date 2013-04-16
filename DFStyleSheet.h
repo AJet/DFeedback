@@ -9,9 +9,7 @@
 // Customizable style constants that define some appearance and behavior properties of all elements
 
 // Bounce icon
-extern CGFloat			DFBounceIcon_bounceFactor;
-extern NSTimeInterval	DFBounceIcon_bounceHalfDuration;
-extern NSTimeInterval	DFBounceIcon_fadeDuration;
+extern NSTimeInterval	DFBounceIcon_animationDuration;
 
 // Placeholder text view
 extern NSDictionary*	DFPlaceholderTextView_placeholderTextAttributes;

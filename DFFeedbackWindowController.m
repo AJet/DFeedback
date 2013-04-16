@@ -12,7 +12,7 @@
 #import "DFBounceIconView.h"
 #import "DFKeyTabView.h"
 #import "OSVersionChecker.h"
-#import "DFApplicationSandboxInfo.h"
+#import "ApplicationSandboxInfo.h"
 #import "DFComboBoxCell.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -441,10 +441,10 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
     else
     {
         // check if sandboxed at all
-        if ([DFApplicationSandboxInfo isSandboxed])
+        if ([ApplicationSandboxInfo isSandboxed])
         {
             // check if has address book access
-            if (![DFApplicationSandboxInfo hasAddressBookDataEntitlement])
+            if (![ApplicationSandboxInfo hasAddressBookDataEntitlement])
             {
                 result = NO;
             }
@@ -456,14 +456,13 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 //-------------------------------------------------------------------------------------------------
 - (void)showEmailWarning
 {
-	[_emailBounceIcon fadeIn];
-	[_emailBounceIcon bounce];
+	[_emailBounceIcon showWithAnimation:YES];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)resetEmailWarning
 {
-	[_emailBounceIcon fadeOut];
+	[_emailBounceIcon hideWithAnimation:YES];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -722,7 +721,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
     // on 10.8, system profile seems to work somehow, even in sandbox, but not on 10.7 in sandbox
     if ([OSVersionChecker macOsVersion] < OSVersion_MountainLion)
     {
-        if ([DFApplicationSandboxInfo isSandboxed])
+        if ([ApplicationSandboxInfo isSandboxed])
         {
             // currently, this would require a temporary exception entitlement, don't rely on it
             // maybe later implement it using xpc then check the corresponding entitlement here

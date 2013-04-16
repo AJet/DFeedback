@@ -5,14 +5,18 @@
 
 #import "DFBounceIconView.h"
 #import "DFStyleSheet.h"
+#import "NSAnimationWithBlocks.h"
 
 //-------------------------------------------------------------------------------------------------
 @implementation DFBounceIconView
 {
-	CALayer* _rootLayer;
-	CALayer* _iconLayer;
-	BOOL _isShowing;
 	NSImage* _icon;
+    BOOL _isShowing;
+    NSAnimation* _animation;
+    BOOL _isAnimatingForward;
+    CGFloat _fromOpacity;
+    CGFloat _fromSizeFactor;
+    BOOL _suppressRefreshDuringAnimation;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -21,11 +25,18 @@
     self = [super initWithFrame:frame];
     if (self != nil) 
 	{
-		_rootLayer = [[CALayer alloc] init];			
-		_rootLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
-		_rootLayer.frame = self.bounds;
-		_rootLayer.anchorPoint = CGPointZero;
-		self.layer = _rootLayer;
+        NSAnimationWithBlocks* animation = [[NSAnimationWithBlocks alloc] initWithDuration:DFBounceIcon_animationDuration
+                                                                            animationCurve:NSAnimationLinear];
+        animation.animationBlockingMode = NSAnimationNonblocking;
+        animation.advanceBlock = ^(NSAnimationProgress progress)
+        {
+            [self animationDidAdvance:progress];
+        };
+        animation.completionBlock = ^(BOOL isFinished)
+        {
+            [self animationDidFinish:isFinished];
+        };
+        _animation = animation;
 	}
     return self;
 }
@@ -33,9 +44,8 @@
 //-------------------------------------------------------------------------------------------------
 - (void)dealloc
 {
-	[_rootLayer release];
-	[_iconLayer release];
 	[_icon release];
+    [_animation release];
 	[super dealloc];
 }
 
@@ -59,126 +69,178 @@
 		[icon retain];
 		[_icon release];
 		_icon = icon;
-		
-		// replace icon layer without animation
-		[CATransaction begin];
-		[CATransaction setDisableActions:YES];
-		
-		CGFloat opacity = _iconLayer.opacity;
-		[_iconLayer removeFromSuperlayer];
-		[_iconLayer release];
-		_iconLayer = nil;
-		if (icon != nil)
-		{
-			_iconLayer = [[CALayer alloc] init];
-			_iconLayer.frame = CGRectMake(0.0, 0.0, icon.size.width, icon.size.height);
-			_iconLayer.anchorPoint = CGPointMake(0.5, 0.5);
-            // retina support
-            _iconLayer.contentsScale = _rootLayer.contentsScale;
-			_iconLayer.contents = icon;
-			_iconLayer.opacity = opacity;
-			_iconLayer.position = CGPointMake(_rootLayer.bounds.size.width * 0.5, _rootLayer.bounds.size.height * 0.5);
-			[_rootLayer addSublayer:_iconLayer];
-		}
-		
-		[CATransaction commit];
+
+		self.needsDisplay = YES;
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)animateOpacity:(CGFloat)opacity
+- (void)showWithAnimation:(BOOL)withAnimation
 {
-	if (_iconLayer != nil)
-	{
-		// prepare animation
-        CALayer* opacityLayer = _iconLayer.presentationLayer != nil ? _iconLayer.presentationLayer : _iconLayer;
-		CABasicAnimation* opacityAnim = [CABasicAnimation animationWithKeyPath:@"opacity"];
-		opacityAnim.fromValue = @(opacityLayer.opacity);
-		opacityAnim.toValue = @(opacity);
-		opacityAnim.duration = DFBounceIcon_fadeDuration;
-		
-		// commit to-value
-		_iconLayer.opacity = opacity;
-		
-		// launch the animation after commit, or the animation will be overriden with the implicit one
-		[_iconLayer addAnimation:opacityAnim forKey:@"opacity"];
-	}
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)fadeIn
-{
-	[self animateOpacity:1.0];
-	_isShowing = YES;
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)fadeOut
-{
-	[self animateOpacity:0.0];
-	_isShowing = NO;
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)show
-{
-	[CATransaction begin];
-    [CATransaction setDisableActions:YES];
-	
-	_iconLayer.opacity = 1.0;
-	_isShowing = YES;
-	
-	[CATransaction commit];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)hide
-{
-	[CATransaction begin];
-    [CATransaction setDisableActions:YES];
-	
-	_iconLayer.opacity = 0.0;
-	_isShowing = NO;
-	
-	[CATransaction commit];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)bounce
-{
-	if (_iconLayer != nil)
-	{
-		// calculate bounds
-		CGRect bouncedBounds = _iconLayer.bounds;
-		bouncedBounds.size.width *= DFBounceIcon_bounceFactor;
-		bouncedBounds.size.height *= DFBounceIcon_bounceFactor;
-		
-		// prepare bounds animation
-        CALayer* boundsLayer = _iconLayer.presentationLayer != nil ? _iconLayer.presentationLayer : _iconLayer;
-		CABasicAnimation* boundsAnim = [CABasicAnimation animationWithKeyPath:@"bounds"];
-        CGRect fromBounds = boundsLayer.bounds;
-		boundsAnim.fromValue = [NSValue valueWithRect:fromBounds];
-		boundsAnim.toValue = [NSValue valueWithRect:bouncedBounds];
-		boundsAnim.duration = DFBounceIcon_bounceHalfDuration;
-		boundsAnim.autoreverses = YES;
-		
-		// do not commit value, will return to normal size automatically
-		[_iconLayer addAnimation:boundsAnim forKey:@"bounds"];
-	}
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)viewDidChangeBackingProperties
-{
-    if (self.window != nil)
+    if (withAnimation)
     {
-        // retina support
-        _rootLayer.contentsScale = self.window.backingScaleFactor;
-        _iconLayer.contentsScale = self.window.backingScaleFactor;
-        // force refresh icon
-        _iconLayer.contents = nil;
-        _iconLayer.contents = _icon;
+        _fromOpacity = [self calculateCurrentOpacity];
+        _fromSizeFactor = [self calculateCurrentSizeFactor];
+        _isShowing = YES;
+        _isAnimatingForward = YES;
+        [self restartAnimation];
+    }
+    else
+    {
+        [_animation stopAnimation];
+        _isShowing = YES;
+        [self animationDidFinish:YES];
     }
 }
+
+//-------------------------------------------------------------------------------------------------
+- (void)hideWithAnimation:(BOOL)withAnimation
+{
+    // only hide when not already hidden
+    if (_isShowing)
+    {
+        if (withAnimation)
+        {
+            _fromOpacity = [self calculateCurrentOpacity];
+            _fromSizeFactor = [self calculateCurrentSizeFactor];
+            _isAnimatingForward = NO;
+            [self restartAnimation];
+        }
+        else
+        {
+            [_animation stopAnimation];
+            [self animationDidFinish:YES];
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)restartAnimation
+{
+    [_animation stopAnimation];
+    _suppressRefreshDuringAnimation = YES;
+    _animation.currentProgress = 0.;
+    _suppressRefreshDuringAnimation = NO;
+    [_animation startAnimation];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)animationDidAdvance:(NSAnimationProgress)progress
+{
+    if (!_suppressRefreshDuringAnimation)
+    {
+        self.needsDisplay = YES;
+        [self displayIfNeeded];
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)animationDidFinish:(BOOL)isFinished
+{
+    if (isFinished)
+    {
+        if (!_isAnimatingForward)
+        {
+            _isShowing = NO;
+        }
+        self.needsDisplay = YES;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+- (CGFloat)calculateCurrentOpacity
+{
+    CGFloat result = 0.;
+    if (_isShowing)
+    {
+        result = 1.;
+        if (_animation.isAnimating)
+        {
+            CGFloat toOpacity = _isAnimatingForward ? 1. : 0.;
+            CGFloat animationValue = _animation.currentValue;
+            result = animationValue * (toOpacity - _fromOpacity) + _fromOpacity;
+        }
+    }
+    return result;
+}
+
+//-------------------------------------------------------------------------------------------------
+- (CGFloat)calculateCurrentSizeFactor
+{
+    CGFloat result = 1.;
+    if (_isShowing)
+    {
+        if (_animation.isAnimating)
+        {
+            CGFloat animationValue = _animation.currentValue;
+            CGFloat animationPhaseValue = animationValue;
+            CGFloat fromSizeFactor = _fromSizeFactor;
+            CGFloat toSizeFactor = 1.;
+            if (_isAnimatingForward)
+            {
+                // bounce in
+                if (animationValue <= 0.5)
+                {
+                    toSizeFactor = [self calculateMaxSizeFactor];
+                    animationPhaseValue = animationValue * 2.;
+                }
+                // then bounce out
+                else
+                {
+                    fromSizeFactor = [self calculateMaxSizeFactor];
+                    toSizeFactor = 1.;
+                    animationPhaseValue = (animationValue - 0.5) * 2.;
+                }
+            }
+            // just bouncing out
+            else
+            {
+                toSizeFactor = 1.;
+            }
+            result = animationPhaseValue * (toSizeFactor - fromSizeFactor) + fromSizeFactor;
+        }
+    }
+    return result;
+}
+
+//-------------------------------------------------------------------------------------------------
+- (CGFloat)calculateMaxSizeFactor
+{
+    CGFloat result = 1.;
+    NSSize iconSize = _icon.size;
+    if (_icon != nil && iconSize.width > 0. && iconSize.height)
+    {
+        NSSize boundsSize = self.bounds.size;
+        result = fmin(boundsSize.width / iconSize.width, boundsSize.height / iconSize.height);
+    }
+    return result;
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)drawRect:(NSRect)dirtyRect
+{
+    if (_icon != nil && _isShowing)
+    {
+        CGFloat currOpacity = [self calculateCurrentOpacity];
+        CGFloat currSizeFactor = [self calculateCurrentSizeFactor];
+        
+        NSRect bounds = self.bounds;
+        NSSize iconSize = _icon.size;
+        iconSize.width *= currSizeFactor;
+        iconSize.height *= currSizeFactor;
+        NSRect iconFrame = NSMakeRect(bounds.origin.x + 0.5 * (bounds.size.width - iconSize.width),
+                                      bounds.origin.y + 0.5 * (bounds.size.height - iconSize.height),
+                                      iconSize.width,
+                                      iconSize.height);
+        [_icon drawInRect:iconFrame
+                 fromRect:NSZeroRect
+                operation:NSCompositeSourceOver
+                 fraction:currOpacity
+           respectFlipped:YES
+                    hints:nil];
+        }
+}
+
+
 
 @end

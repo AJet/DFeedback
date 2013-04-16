@@ -16,10 +16,13 @@
 - (void)applicationDidFinishLaunching:(NSNotification*)notification 
 {
 	// TODO: insert your feedback URL here
-    NSString* feedbackURL = @"";
-	[DFFeedbackWindowController initializeWithFeedbackURL:feedbackURL]; 
+    NSString* feedbackUrl = @"";
+    NSString* updateUrl = @"";
+	[DFFeedbackWindowController initializeWithFeedbackUrl:feedbackUrl];
     // TODO: insert your icon here
-    [DFCrashReportWindowController initializeWithFeedbackURL:feedbackURL icon:[NSApp applicationIconImage]];
+    [DFCrashReportWindowController initializeWithFeedbackUrl:feedbackUrl
+                                                   updateUrl:updateUrl
+                                                        icon:[NSApp applicationIconImage]];
 }
 
 //-------------------------------------------------------------------------------------------------

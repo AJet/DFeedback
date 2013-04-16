@@ -5,28 +5,28 @@
 
 #import <Security/Security.h>
 #import <Security/SecRequirement.h>
-#import "DFApplicationSandboxInfo.h"
+#import "ApplicationSandboxInfo.h"
 
 //-------------------------------------------------------------------------------------------------
 static NSString* const kEntitlementSandbox = @"com.apple.security.app-sandbox";
 static NSString* const kEntitlementAddressBookData = @"com.apple.security.personal-information.addressbook";
 
 //-------------------------------------------------------------------------------------------------
-static DFApplicationSandboxInfo* _singleton = nil;
+static ApplicationSandboxInfo* _singleton = nil;
 
 //-------------------------------------------------------------------------------------------------
-@implementation DFApplicationSandboxInfo
+@implementation ApplicationSandboxInfo
 {
     NSURL* _bundleUrl;
     NSMutableDictionary* _queriedEntitlements;
 }
 
 //-------------------------------------------------------------------------------------------------
-+ (DFApplicationSandboxInfo*)singleton
++ (ApplicationSandboxInfo*)singleton
 {
     if (_singleton == nil)
     {
-        _singleton = [[DFApplicationSandboxInfo alloc] initWithBundleUrl:[NSBundle mainBundle].bundleURL];
+        _singleton = [[ApplicationSandboxInfo alloc] initWithBundleUrl:[NSBundle mainBundle].bundleURL];
     }
     return _singleton;
 }

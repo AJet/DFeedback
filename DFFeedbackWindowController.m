@@ -44,6 +44,8 @@ static NSString* const kStateEmailAddress = @"DFeedback_EmailAddress";
 //-------------------------------------------------------------------------------------------------
 static DFFeedbackWindowController* _singleton = nil;
 static NSString* _feedbackUrl = nil;
+static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All;
+
 
 //-------------------------------------------------------------------------------------------------
 #pragma mark - Private functions
@@ -153,11 +155,14 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 
 //-------------------------------------------------------------------------------------------------
 + (void)initializeWithFeedbackUrl:(NSString*)feedbackUrl
+           systemProfileDataTypes:(DFSystemProfileDataType)systemProfileDataTypes;
 {
 	// save params
 	[feedbackUrl retain];
 	[_feedbackUrl release];
 	_feedbackUrl = feedbackUrl;
+    
+    _systemProfileDataTypes = systemProfileDataTypes;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -693,7 +698,16 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
                                  {
                                      [self systemProfileDidFetch];
                                  }];
-		[_systemProfileFetcher fetch];
+        
+        // NOTE: easter egg: hold OPT key to gather all data instead of specified data types
+        // tell the user to do this if you happen to find that you have missed some data in the filtered profile
+        DFSystemProfileDataType dataTypes = _systemProfileDataTypes;
+        if (([NSEvent modifierFlags] &  NSAlternateKeyMask) != 0)
+        {
+            dataTypes = DFSystemProfileData_All;
+        }
+        
+		[_systemProfileFetcher fetchDataTypes:dataTypes anonymizeUser:YES];
 		
         _isFetchingSystemProfile = YES;
         

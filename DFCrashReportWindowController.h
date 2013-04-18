@@ -5,6 +5,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "DFLinkLabelDelegate.h"
+#import "DFSystemProfileDataType.h"
 
 //-------------------------------------------------------------------------------------------------
 // Crash report window controller
@@ -13,7 +14,8 @@
 // Initialization, call before first use
 + (void)initializeWithFeedbackUrl:(NSString*)feedbackUrl
                         updateUrl:(NSString*)updateUrl
-                             icon:(NSImage*)icon;
+                             icon:(NSImage*)icon
+           systemProfileDataTypes:(DFSystemProfileDataType)systemProfileDataTypes;
 
 // Singleton
 + (DFCrashReportWindowController*)singleton;

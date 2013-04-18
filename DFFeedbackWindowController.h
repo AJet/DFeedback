@@ -4,13 +4,15 @@
 //-------------------------------------------------------------------------------------------------
 
 #import <Cocoa/Cocoa.h>
+#import "DFSystemProfileDataType.h"
 
 //-------------------------------------------------------------------------------------------------
 // Feedback window controller
 @interface DFFeedbackWindowController : NSWindowController
 
 // Initialization, call before first use
-+ (void)initializeWithFeedbackUrl:(NSString*)feedbackUrl;
++ (void)initializeWithFeedbackUrl:(NSString*)feedbackUrl
+           systemProfileDataTypes:(DFSystemProfileDataType)systemProfileDataTypes;
 
 // Singleton
 + (DFFeedbackWindowController*)singleton;

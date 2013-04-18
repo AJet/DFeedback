@@ -20,6 +20,7 @@ static DFCrashReportWindowController* _singleton = nil;
 static NSImage* _icon = nil;
 static NSString* _feedbackUrl = nil;
 static NSString* _updateUrl = nil;
+static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All;
 
 //-------------------------------------------------------------------------------------------------
 @interface DFCrashReportWindowController()
@@ -82,6 +83,7 @@ static NSString* _updateUrl = nil;
 + (void)initializeWithFeedbackUrl:(NSString*)feedbackUrl
                         updateUrl:(NSString*)updateUrl
                              icon:(NSImage*)icon
+           systemProfileDataTypes:(DFSystemProfileDataType)systemProfileDataTypes;
 {
     [icon retain];
     [_icon release];
@@ -94,6 +96,8 @@ static NSString* _updateUrl = nil;
     [updateUrl retain];
     [_updateUrl release];
     _updateUrl = updateUrl;
+    
+    _systemProfileDataTypes = systemProfileDataTypes;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -227,7 +231,7 @@ static NSString* _updateUrl = nil;
 {
     _fetchingSystemProfileProgressLabel.hidden = NO;
 	[_progressIndicator startAnimation:nil];
-	[_systemProfileFetcher fetch];
+	[_systemProfileFetcher fetchDataTypes:_systemProfileDataTypes anonymizeUser:YES];
 }
 
 //-------------------------------------------------------------------------------------------------

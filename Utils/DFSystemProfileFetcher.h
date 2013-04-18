@@ -4,6 +4,7 @@
 //-------------------------------------------------------------------------------------------------
 
 #import <Cocoa/Cocoa.h>
+#import "DFSystemProfileDataType.h"
 
 //-------------------------------------------------------------------------------------------------
 // Encapsulates asynchronous fetching of system profile
@@ -13,7 +14,8 @@
 - (id)initWithCompletionBlock:(void (^)(void))completionBlock;
 
 // Begins fetching system profile, completes asynchronously
-- (void)fetch;
+- (void)fetchDataTypes:(DFSystemProfileDataType)dataTypes
+         anonymizeUser:(BOOL)anonymizeUser;
 
 // Cancels a pending request
 - (void)cancel;

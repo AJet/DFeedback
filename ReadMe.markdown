@@ -14,11 +14,12 @@ DFeedback is a package of source code (Cocoa, Obj-C) that you simply add to your
 The API is simple:
 
 1. The feedback window:
-    - First, call +[DFFeedbackWindowController initializeWithFeedbackURL:] once to initialize the component and provide a URL for sending the feedback. (For example, in your -[NSApplicationDelegate applicationWillFinishLaunching:])
+    - First, call +[DFFeedbackWindowController initializeWithFeedbackUrl:systemProfileDataTypes:] once to initialize the component and provide a URL for sending the feedback. (For example, in your -[NSApplicationDelegate applicationWillFinishLaunching:])
     - Call one of -[DFFeedbackWindowController show*] methods to display the feedback dialog.
+	- The systemProfileDataTypes parameter allows to filter the system profile string, to remove long unnecessary parts, such as Printer Software. There is a hidden feature: if you hold OPT key when calling -[DFFeedbackWindowController showBugReport] or -[DFFeedbackWindowController showFeatureRequest], or switching to Bug Report or Feature Request tabs, in other words, whenever the system profile begins fetching, you can gather the entire unfiltered profile. You can tell the user to do so if you happen to need the full profile instead of the filtered one.
 
 2. The crash reporter:
-    - First, call +[DFCrashReporterWindowController initializeWithFeedbackURL:icon:] once to initialize the component and provide a URL for sending the feedback. (For example, in your -[NSApplicationDelegate applicationWillFinishLaunching:])
+    - First, call +[DFCrashReporterWindowController initializeWithFeedbackUrl:updateUrl:icon:systemProfileDataTypes:] once to initialize the component and provide a URL for sending the feedback. (For example, in your -[NSApplicationDelegate applicationWillFinishLaunching:])
     - Specify DFApplication class as the principle class in your application's Info.plist file. Or, if you already use your own application principal class subclassed from NSApplication, subclass it from the DFApplication class instead. 
     - Use -[DFApplication isPortmortem] flag:
         * In your -[NSApplicationDelegate applicationShouldTerminateAfterLastWindowClosed:], if your app should normally quit on last window closed, but not so after a crash, when the crash reporter will forcedly close all windows and show the report window, like this: 

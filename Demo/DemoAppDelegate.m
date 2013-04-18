@@ -18,11 +18,13 @@
 	// TODO: insert your feedback URL here
     NSString* feedbackUrl = @"";
     NSString* updateUrl = @"";
-	[DFFeedbackWindowController initializeWithFeedbackUrl:feedbackUrl];
+	[DFFeedbackWindowController initializeWithFeedbackUrl:feedbackUrl
+                                   systemProfileDataTypes:DFSystemProfileData_All];
     // TODO: insert your icon here
     [DFCrashReportWindowController initializeWithFeedbackUrl:feedbackUrl
                                                    updateUrl:updateUrl
-                                                        icon:[NSApp applicationIconImage]];
+                                                        icon:[NSApp applicationIconImage]
+                                      systemProfileDataTypes:DFSystemProfileData_All];
 }
 
 //-------------------------------------------------------------------------------------------------

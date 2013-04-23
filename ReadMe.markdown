@@ -57,10 +57,6 @@ DFeedback was inspired by [JRFeedbackProvider](https://github.com/rentzsch/jrfee
 
 The component is available under the terms of non-restrictive [MIT license](http://en.wikipedia.org/wiki/MIT_License).
 
-DFWarningIcon.png from the [Basic Set](http://pixel-mixer.com/BASIC_SET/) © 2009 by Ekaterina Prokofieva can be used under the following terms:
-"These icons are free for commercial use. A link to [pixel-mixer.com](http://pixel-mixer.com) is required.
-Otherwise, please purchase a commercial license for 35$."
-
 The stack trace for the crash reporter is obtained using the [Google Toolbox for Mac](http://code.google.com/p/google-toolbox-for-mac/).
 
 Portions of the software may contain third party code distributed under other non-restrictive licenses.

@@ -5,12 +5,14 @@
 
 #import <Cocoa/Cocoa.h>
 
+@protocol DFFeedbackSenderDelegate;
+
 //-------------------------------------------------------------------------------------------------
 // Encapsulates asynchronous feedback sending
 @interface DFFeedbackSender : NSObject
 
-// Initializer
-- (id)initWithCompletionBlock:(void (^)(NSError* error))completionBlock;
+// Delegate
+@property (nonatomic, assign) id<DFFeedbackSenderDelegate> delegate;
 
 // Begins sending feedback, completes asynchronously
 - (void)sendFeedbackToUrl:(NSString*)url

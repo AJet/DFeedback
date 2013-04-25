@@ -5,6 +5,7 @@
 
 #import "DFCrashReportWindowController.h"
 #import "DFSystemProfileFetcher.h"
+#import "DFFeedbackSenderDelegate.h"
 #import "DFFeedbackSender.h"
 #import "DFPlaceholderTextView.h"
 #import "DFLinkLabel.h"
@@ -106,10 +107,8 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
     self = [super initWithWindowNibName:kNibName];
     if (self != nil) 
 	{
-		_systemProfileFetcher = [[DFSystemProfileFetcher alloc] initWithCompletionBlock:^
-                                 {
-                                     [self systemProfileDidFetch];
-                                 }];
+		_systemProfileFetcher = [[DFSystemProfileFetcher alloc] init];
+        _systemProfileFetcher.delegate = self;
     }
     return self;
 }
@@ -250,11 +249,12 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
                               _commentsTextView.textStorage.string,
                               _exceptionStackTrace];
     [_feedbackSender cancel];
+    _feedbackSender.delegate = nil;
     [_feedbackSender release];
-	_feedbackSender = [[DFFeedbackSender alloc] initWithCompletionBlock:^(NSError* error)
-    {
-        [self feedbackSenderDidCompleteWithError:error];
-    }];
+    _feedbackSender = nil;
+    
+	_feedbackSender = [[DFFeedbackSender alloc] init];
+    _feedbackSender.delegate = self;
 	[_feedbackSender sendFeedbackToUrl:_feedbackUrl
                           feedbackText:feedbackText
                           feedbackType:@"Crash"
@@ -266,9 +266,11 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 - (void)cancelPendingStuff
 {
 	[_systemProfileFetcher cancel];
+    _systemProfileFetcher.delegate = nil;
 	[_systemProfileFetcher release];
 	_systemProfileFetcher = nil;
 	[_feedbackSender cancel];
+    _feedbackSender.delegate = nil;
 	[_feedbackSender release];
 	_feedbackSender = nil;
 }
@@ -289,27 +291,33 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)feedbackSenderDidCompleteWithError:(NSError*)error
+- (void)feedbackSender:(DFFeedbackSender*)sender didFinishWithError:(NSError*)error
 {
-	[_feedbackSender release];
-	_feedbackSender = nil;
-	[self dismiss];
-	[(DFApplication*)NSApp relaunch];
+    if (sender == _feedbackSender)
+    {
+        [_feedbackSender release];
+        _feedbackSender = nil;
+        [self dismiss];
+        [(DFApplication*)NSApp relaunch];
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)systemProfileDidFetch
+- (void)systemProfileFetcherDidFinish:(DFSystemProfileFetcher*)sender
 {
-    [_progressIndicator stopAnimation:nil];
-    _progressIndicator.hidden = YES;
-    _fetchingSystemProfileProgressLabel.hidden = YES;
-    _anonymousLabel.hidden = NO;
-    NSString* profileString = [NSString stringWithFormat:@"\n\nSYSTEM PROFILE:\n\n%@", _systemProfileFetcher.profile];
-    [_detailsTextView.textStorage appendAttributedString:[[[NSAttributedString alloc] initWithString:profileString] autorelease]];
-    
-    if (_sendButtonWasClicked)
+    if (sender == _systemProfileFetcher)
     {
-        [self beginSendingFeedback];
+        [_progressIndicator stopAnimation:nil];
+        _progressIndicator.hidden = YES;
+        _fetchingSystemProfileProgressLabel.hidden = YES;
+        _anonymousLabel.hidden = NO;
+        NSString* profileString = [NSString stringWithFormat:@"\n\nSYSTEM PROFILE:\n\n%@", _systemProfileFetcher.profile];
+        [_detailsTextView.textStorage appendAttributedString:[[[NSAttributedString alloc] initWithString:profileString] autorelease]];
+        
+        if (_sendButtonWasClicked)
+        {
+            [self beginSendingFeedback];
+        }
     }
 }
 

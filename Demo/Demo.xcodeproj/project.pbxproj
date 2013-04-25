@@ -13,7 +13,6 @@
 		7C0A876C171D96D3005A3C33 /* DFComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C0A8768171D96D3005A3C33 /* DFComboBoxCell.m */; };
 		7C0A876D171D96D3005A3C33 /* DFLinkLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C0A876A171D96D3005A3C33 /* DFLinkLabel.m */; };
 		7C0A8772171D96DF005A3C33 /* ApplicationSandboxInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C0A876F171D96DF005A3C33 /* ApplicationSandboxInfo.m */; };
-		7C0A8773171D96DF005A3C33 /* NSAnimationWithBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C0A8771171D96DF005A3C33 /* NSAnimationWithBlocks.m */; };
 		7C3C46261371207900AAD108 /* DFStyleSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C460E1371207900AAD108 /* DFStyleSheet.m */; };
 		7C3C462B1371207900AAD108 /* DFFeedbackSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C46191371207900AAD108 /* DFFeedbackSender.m */; };
 		7C3C462C1371207900AAD108 /* DFSystemProfileFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C461B1371207900AAD108 /* DFSystemProfileFetcher.m */; };
@@ -34,6 +33,7 @@
 		7C8E4B521596E4BB00529DCF /* DFCrashReportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B4E1596E4BB00529DCF /* DFCrashReportWindow.xib */; };
 		7C8E4B531596E4BB00529DCF /* DFFeedbackWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */; };
 		7C8E4B731596E6A700529DCF /* OSVersionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C8E4B721596E6A700529DCF /* OSVersionChecker.m */; };
+		7CF37D3117296369002A1850 /* NSAnimationExtended.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CF37D3017296369002A1850 /* NSAnimationExtended.m */; };
 		7CF621D815AB0D64008BDEFB /* DFLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7CF621D615AB0D64008BDEFB /* DFLocalizable.strings */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -60,9 +60,9 @@
 		7C0A876B171D96D3005A3C33 /* DFLinkLabelDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFLinkLabelDelegate.h; sourceTree = "<group>"; };
 		7C0A876E171D96DF005A3C33 /* ApplicationSandboxInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationSandboxInfo.h; sourceTree = "<group>"; };
 		7C0A876F171D96DF005A3C33 /* ApplicationSandboxInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationSandboxInfo.m; sourceTree = "<group>"; };
-		7C0A8770171D96DF005A3C33 /* NSAnimationWithBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAnimationWithBlocks.h; sourceTree = "<group>"; };
-		7C0A8771171D96DF005A3C33 /* NSAnimationWithBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAnimationWithBlocks.m; sourceTree = "<group>"; };
 		7C0A8780171FC54F005A3C33 /* DFSystemProfileDataType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFSystemProfileDataType.h; path = ../DFSystemProfileDataType.h; sourceTree = "<group>"; };
+		7C29CC0D1729697E00E3EB79 /* DFFeedbackSenderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFFeedbackSenderDelegate.h; sourceTree = "<group>"; };
+		7C29CC0E1729697E00E3EB79 /* DFSystemProfileFetcherDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFSystemProfileFetcherDelegate.h; sourceTree = "<group>"; };
 		7C3C460D1371207900AAD108 /* DFStyleSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFStyleSheet.h; path = ../DFStyleSheet.h; sourceTree = SOURCE_ROOT; };
 		7C3C460E1371207900AAD108 /* DFStyleSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFStyleSheet.m; path = ../DFStyleSheet.m; sourceTree = SOURCE_ROOT; };
 		7C3C46181371207900AAD108 /* DFFeedbackSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFFeedbackSender.h; sourceTree = "<group>"; };
@@ -106,6 +106,8 @@
 		7C8E4B671596E4DF00529DCF /* ru */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ru; path = ru.lproj/DFFeedbackWindow.xib; sourceTree = "<group>"; };
 		7C8E4B711596E6A700529DCF /* OSVersionChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSVersionChecker.h; sourceTree = "<group>"; };
 		7C8E4B721596E6A700529DCF /* OSVersionChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSVersionChecker.m; sourceTree = "<group>"; };
+		7CF37D2F17296369002A1850 /* NSAnimationExtended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAnimationExtended.h; sourceTree = "<group>"; };
+		7CF37D3017296369002A1850 /* NSAnimationExtended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAnimationExtended.m; sourceTree = "<group>"; };
 		7CF621D715AB0D64008BDEFB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
 		7CF621D915AB0E80008BDEFB /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
 		7CF621DB15AB0E86008BDEFB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
@@ -227,16 +229,18 @@
 		7C3C46171371207900AAD108 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				7CF37D2F17296369002A1850 /* NSAnimationExtended.h */,
+				7CF37D3017296369002A1850 /* NSAnimationExtended.m */,
 				7C0A876E171D96DF005A3C33 /* ApplicationSandboxInfo.h */,
 				7C0A876F171D96DF005A3C33 /* ApplicationSandboxInfo.m */,
-				7C0A8770171D96DF005A3C33 /* NSAnimationWithBlocks.h */,
-				7C0A8771171D96DF005A3C33 /* NSAnimationWithBlocks.m */,
 				7C8E4B711596E6A700529DCF /* OSVersionChecker.h */,
 				7C8E4B721596E6A700529DCF /* OSVersionChecker.m */,
 				7C3C46181371207900AAD108 /* DFFeedbackSender.h */,
 				7C3C46191371207900AAD108 /* DFFeedbackSender.m */,
+				7C29CC0D1729697E00E3EB79 /* DFFeedbackSenderDelegate.h */,
 				7C3C461A1371207900AAD108 /* DFSystemProfileFetcher.h */,
 				7C3C461B1371207900AAD108 /* DFSystemProfileFetcher.m */,
+				7C29CC0E1729697E00E3EB79 /* DFSystemProfileFetcherDelegate.h */,
 				7C3C461D1371207900AAD108 /* NSURLRequest+Extension.h */,
 				7C3C461E1371207900AAD108 /* NSURLRequest+Extension.m */,
 			);
@@ -393,7 +397,7 @@
 				7C0A876C171D96D3005A3C33 /* DFComboBoxCell.m in Sources */,
 				7C0A876D171D96D3005A3C33 /* DFLinkLabel.m in Sources */,
 				7C0A8772171D96DF005A3C33 /* ApplicationSandboxInfo.m in Sources */,
-				7C0A8773171D96DF005A3C33 /* NSAnimationWithBlocks.m in Sources */,
+				7CF37D3117296369002A1850 /* NSAnimationExtended.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,12 +6,14 @@
 #import <Cocoa/Cocoa.h>
 #import "DFSystemProfileDataType.h"
 
+@protocol DFSystemProfileFetcherDelegate;
+
 //-------------------------------------------------------------------------------------------------
 // Encapsulates asynchronous fetching of system profile
 @interface DFSystemProfileFetcher : NSObject
 
-// Initializer
-- (id)initWithCompletionBlock:(void (^)(void))completionBlock;
+// Delegate
+@property (nonatomic, assign) id<DFSystemProfileFetcherDelegate> delegate;
 
 // Begins fetching system profile, completes asynchronously
 - (void)fetchDataTypes:(DFSystemProfileDataType)dataTypes

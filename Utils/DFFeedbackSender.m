@@ -4,6 +4,7 @@
 //-------------------------------------------------------------------------------------------------
 
 #import "DFFeedbackSender.h"
+#import "DFFeedbackSenderDelegate.h"
 #import "NSURLRequest+Extension.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -11,16 +12,14 @@
 {
 	BOOL _isCanceled;
 	NSURLConnection* _connection;
-    void (^_completionBlock)(NSError* error);
 }
 
 //-------------------------------------------------------------------------------------------------
-- (id)initWithCompletionBlock:(void (^)(NSError* error))completionBlock
+- (id)init
 {
 	self = [super init];
 	if (self != nil)
 	{
-        _completionBlock = [completionBlock copy];
 	}
 	return self;
 }
@@ -28,7 +27,6 @@
 //-------------------------------------------------------------------------------------------------
 - (void)dealloc
 {
-    [_completionBlock release];
 	[_connection release];
 	[super dealloc];
 }
@@ -63,10 +61,7 @@
 {
 	if (!_isCanceled)
 	{
-        if (_completionBlock != nil)
-        {
-            _completionBlock(error);
-        }
+        [self.delegate feedbackSender:self didFinishWithError:error];
 	}
 }
 
@@ -75,10 +70,7 @@
 {
 	if (!_isCanceled)
 	{
-        if (_completionBlock != nil)
-        {
-            _completionBlock(nil);
-        }
+        [self.delegate feedbackSender:self didFinishWithError:nil];
 	}
 }
 

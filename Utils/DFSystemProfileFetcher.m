@@ -4,6 +4,7 @@
 //-------------------------------------------------------------------------------------------------
 
 #import "DFSystemProfileFetcher.h"
+#import "DFSystemProfileFetcherDelegate.h"
 
 //-------------------------------------------------------------------------------------------------
 static const char* const kSectionHeaders[] =
@@ -56,7 +57,6 @@ static NSString* const kObscuredUserFullName = @"<user full name>";
 //-------------------------------------------------------------------------------------------------
 @implementation DFSystemProfileFetcher
 {
-    void (^_completionBlock)(void);
 	NSTask* _scriptTask;
 	NSPipe* _scriptPipe;
 	NSString* _profile;
@@ -72,12 +72,11 @@ static NSString* const kObscuredUserFullName = @"<user full name>";
 }
 
 //-------------------------------------------------------------------------------------------------
-- (id)initWithCompletionBlock:(void (^)(void))completionBlock
+- (id)init
 {
 	self = [super init];
 	if (self != nil)
 	{
-        _completionBlock = [completionBlock copy];
  		_scriptPipe = [[NSPipe pipe] retain];
 		_scriptTask = [[NSTask alloc] init];
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -98,7 +97,6 @@ static NSString* const kObscuredUserFullName = @"<user full name>";
 	[_scriptTask release];
 	[_scriptPipe release];
 	[_profile release];
-    [_completionBlock release];
 	[super dealloc];
 }
 
@@ -115,10 +113,8 @@ static NSString* const kObscuredUserFullName = @"<user full name>";
 		}
 	}
 	_isDoneFetching = YES;
-    if (_completionBlock != nil)
-    {
-        _completionBlock();
-    }
+    
+    [self.delegate systemProfileFetcherDidFinish:self];
 }
 
 //-------------------------------------------------------------------------------------------------

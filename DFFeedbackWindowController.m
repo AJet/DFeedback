@@ -694,10 +694,8 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 {
 	if (_systemProfileFetcher == nil)
 	{
-		_systemProfileFetcher = [[DFSystemProfileFetcher alloc] initWithCompletionBlock:^
-                                 {
-                                     [self systemProfileDidFetch];
-                                 }];
+		_systemProfileFetcher = [[DFSystemProfileFetcher alloc] init];
+        _systemProfileFetcher.delegate = self;
         
         // NOTE: easter egg: hold OPT key to gather all data instead of specified data types
         // tell the user to do this if you happen to find that you have missed some data in the filtered profile
@@ -716,21 +714,24 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)systemProfileDidFetch
+- (void)systemProfileFetcherDidFinish:(DFSystemProfileFetcher*)sender
 {
-    // update details window
-    _detailsTextView.textStorage.attributedString = [[[NSAttributedString alloc] initWithString:_systemProfileFetcher.profile] autorelease];
-    
-    // reset fetching progress
-    _isFetchingSystemProfile = NO;
-    
-    // begin sending immediately if the send button has been already clicked, or wait until it's clicked
-    if (_isSendingReport)
+    if (sender == _systemProfileFetcher)
     {
-        [self beginSendingFeedback];
+        // update details window
+        _detailsTextView.textStorage.attributedString = [[[NSAttributedString alloc] initWithString:_systemProfileFetcher.profile] autorelease];
+        
+        // reset fetching progress
+        _isFetchingSystemProfile = NO;
+        
+        // begin sending immediately if the send button has been already clicked, or wait until it's clicked
+        if (_isSendingReport)
+        {
+            [self beginSendingFeedback];
+        }
+        
+        [self updateProgressMode];
     }
-    
-    [self updateProgressMode];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -769,54 +770,64 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	NSString* userEmail = _includeEmailCheckBox.state == NSOnState ? _emailComboBox.stringValue : nil;
 	NSString* feedbackText = _textView.textStorage.string;
 	NSString* profile = _systemProfileFetcher != nil ? _systemProfileFetcher.profile : nil;
-	_feedbackSender = [[DFFeedbackSender alloc] initWithCompletionBlock:^(NSError* error)
-                       {
-                           [self feedbackDidSendWithError:error];
-                       }];
+
+    [_feedbackSender cancel];
+    _feedbackSender.delegate = nil;
+    [_feedbackSender release];
+    _feedbackSender = nil;
+    
+	_feedbackSender = [[DFFeedbackSender alloc] init];
+    _feedbackSender.delegate = self;
 	[_feedbackSender sendFeedbackToUrl:_feedbackUrl
                           feedbackText:feedbackText
                           feedbackType:[self feedbackTypeStringFromType:self.currentFeedbackType]
                          systemProfile:profile
                              userEmail:userEmail];
+    
 	[self updateProgressMode];
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)feedbackDidSendWithError:(NSError*)error
+- (void)feedbackSender:(DFFeedbackSender*)sender didFinishWithError:(NSError*)error
 {
-	// cleanup
-	[_feedbackSender release];
-	_feedbackSender = nil;
-	[self updateProgressMode];
-	
-	// check error
-	if (error == nil)
-	{
-		[self dismiss];
-	}
-	else
-	{
-		_sendButton.enabled = YES;
-		NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedStringFromTable(@"DF_ALERT_SENDFAILED_TITLE", @"DFLocalizable", nil)
-										 defaultButton:NSLocalizedStringFromTable(@"DF_ALERT_SENDFAILED_DISMISS_BUTTON_TITLE", @"DFLocalizable", nil)
-									   alternateButton:nil
-										   otherButton:nil
-							 informativeTextWithFormat:NSLocalizedStringFromTable(@"DF_ALERT_SENDFAILED_MESSAGE", @"DFLocalizable", nil), error.localizedDescription];
-		[alert beginSheetModalForWindow:self.window
-                          modalDelegate:self
-                         didEndSelector:nil
-                            contextInfo:NULL];
-	}
+    if (sender == _feedbackSender)
+    {
+        // cleanup
+        [_feedbackSender release];
+        _feedbackSender = nil;
+        [self updateProgressMode];
+        
+        // check error
+        if (error == nil)
+        {
+            [self dismiss];
+        }
+        else
+        {
+            _sendButton.enabled = YES;
+            NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedStringFromTable(@"DF_ALERT_SENDFAILED_TITLE", @"DFLocalizable", nil)
+                                             defaultButton:NSLocalizedStringFromTable(@"DF_ALERT_SENDFAILED_DISMISS_BUTTON_TITLE", @"DFLocalizable", nil)
+                                           alternateButton:nil
+                                               otherButton:nil
+                                 informativeTextWithFormat:NSLocalizedStringFromTable(@"DF_ALERT_SENDFAILED_MESSAGE", @"DFLocalizable", nil), error.localizedDescription];
+            [alert beginSheetModalForWindow:self.window
+                              modalDelegate:self
+                             didEndSelector:nil
+                                contextInfo:NULL];
+        }
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)cancelAllPendingStuff
 {
 	[_systemProfileFetcher cancel];
+    _systemProfileFetcher.delegate = nil;
 	[_systemProfileFetcher release];
 	_systemProfileFetcher = nil;
     _isFetchingSystemProfile = NO;
 	[_feedbackSender cancel];
+    _feedbackSender.delegate = nil;
 	[_feedbackSender release];
 	_feedbackSender = nil;
     _isSendingReport = NO;

@@ -6,10 +6,12 @@
 #import <Cocoa/Cocoa.h>
 #import "DFLinkLabelDelegate.h"
 #import "DFSystemProfileDataType.h"
+#import "DFFeedbackSenderDelegate.h"
+#import "DFSystemProfileFetcherDelegate.h"
 
 //-------------------------------------------------------------------------------------------------
 // Crash report window controller
-@interface DFCrashReportWindowController : NSWindowController<DFLinkLabelDelegate, NSAnimationDelegate>
+@interface DFCrashReportWindowController : NSWindowController<DFLinkLabelDelegate, NSAnimationDelegate, DFFeedbackSenderDelegate, DFSystemProfileFetcherDelegate>
 
 // Initialization, call before first use
 + (void)initializeWithFeedbackUrl:(NSString*)feedbackUrl

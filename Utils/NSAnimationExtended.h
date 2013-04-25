@@ -5,15 +5,19 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class NSAnimationExtended;
+
 //-------------------------------------------------------------------------------------------------
-// Animation that calls block of code on each progress advance
-@interface NSAnimationWithBlocks : NSAnimation
+// Extended animation delegate
+@protocol NSAnimationExtendedDelegate <NSAnimationDelegate>
 
-// Sets advance block
-@property (nonatomic, copy) void (^advanceBlock)(NSAnimationProgress);
+// Progress
+- (void)animation:(NSAnimationExtended*)animation didProgress:(NSAnimationProgress)progress;
 
-// Sets completion block (using delegate)
-@property (nonatomic, copy) void (^completionBlock)(BOOL finished);
+@end
 
+//-------------------------------------------------------------------------------------------------
+// Animation that calls delegate on each progress advance
+@interface NSAnimationExtended : NSAnimation
 
 @end

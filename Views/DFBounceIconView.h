@@ -4,11 +4,12 @@
 //-------------------------------------------------------------------------------------------------
 
 #import <Cocoa/Cocoa.h>
+#import "NSAnimationExtended.h"
 
 //-------------------------------------------------------------------------------------------------
 // A custom view that displays a bouncing icon to visually attract user's attention to an input error
 // NOTE: The view needs to be slightly larger than its icon, to allow room for bouncing
-@interface DFBounceIconView : NSView
+@interface DFBounceIconView : NSView <NSAnimationExtendedDelegate>
 
 // The icon
 @property (nonatomic, retain) NSImage* icon;

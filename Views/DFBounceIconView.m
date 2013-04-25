@@ -5,7 +5,7 @@
 
 #import "DFBounceIconView.h"
 #import "DFStyleSheet.h"
-#import "NSAnimationWithBlocks.h"
+#import "NSAnimationExtended.h"
 
 //-------------------------------------------------------------------------------------------------
 @implementation DFBounceIconView
@@ -25,18 +25,10 @@
     self = [super initWithFrame:frame];
     if (self != nil) 
 	{
-        NSAnimationWithBlocks* animation = [[NSAnimationWithBlocks alloc] initWithDuration:DFBounceIcon_animationDuration
-                                                                            animationCurve:NSAnimationLinear];
-        animation.animationBlockingMode = NSAnimationNonblocking;
-        animation.advanceBlock = ^(NSAnimationProgress progress)
-        {
-            [self animationDidAdvance:progress];
-        };
-        animation.completionBlock = ^(BOOL isFinished)
-        {
-            [self animationDidFinish:isFinished];
-        };
-        _animation = animation;
+        _animation = [[NSAnimationExtended alloc] initWithDuration:DFBounceIcon_animationDuration
+                                                    animationCurve:NSAnimationLinear];
+        _animation.animationBlockingMode = NSAnimationNonblocking;
+        _animation.delegate = self;
 	}
     return self;
 }
@@ -45,6 +37,7 @@
 - (void)dealloc
 {
 	[_icon release];
+    _animation.delegate = nil;
     [_animation release];
 	[super dealloc];
 }
@@ -89,7 +82,7 @@
     {
         [_animation stopAnimation];
         _isShowing = YES;
-        [self animationDidFinish:YES];
+        [self animationDidComplete:YES];
     }
 }
 
@@ -109,7 +102,7 @@
         else
         {
             [_animation stopAnimation];
-            [self animationDidFinish:YES];
+            [self animationDidComplete:YES];
         }
     }
 }
@@ -126,17 +119,38 @@
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)animationDidAdvance:(NSAnimationProgress)progress
+- (void)animation:(NSAnimationExtended*)animation didProgress:(NSAnimationProgress)progress
 {
-    if (!_suppressRefreshDuringAnimation)
+    if (animation == _animation)
     {
-        self.needsDisplay = YES;
-        [self displayIfNeeded];
+        if (!_suppressRefreshDuringAnimation)
+        {
+            self.needsDisplay = YES;
+            [self displayIfNeeded];
+        }
     }
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)animationDidFinish:(BOOL)isFinished
+- (void)animationDidStop:(NSAnimation*)animation
+{
+    if (animation == _animation)
+    {
+        [self animationDidComplete:NO];
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)animationDidEnd:(NSAnimation*)animation
+{
+    if (animation == _animation)
+    {
+        [self animationDidComplete:YES];
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)animationDidComplete:(BOOL)isFinished
 {
     if (isFinished)
     {
@@ -147,6 +161,7 @@
         self.needsDisplay = YES;
     }
 }
+
 
 //-------------------------------------------------------------------------------------------------
 - (CGFloat)calculateCurrentOpacity

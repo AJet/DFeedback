@@ -5,7 +5,7 @@
 
 #import "DFBounceIconView.h"
 #import "DFStyleSheet.h"
-#import "NSAnimationExtended.h"
+#import "GenericAnimation.h"
 
 //-------------------------------------------------------------------------------------------------
 @implementation DFBounceIconView
@@ -25,7 +25,7 @@
     self = [super initWithFrame:frame];
     if (self != nil) 
 	{
-        _animation = [[NSAnimationExtended alloc] initWithDuration:DFBounceIcon_animationDuration
+        _animation = [[GenericAnimation alloc] initWithDuration:DFBounceIcon_animationDuration
                                                     animationCurve:NSAnimationLinear];
         _animation.animationBlockingMode = NSAnimationNonblocking;
         _animation.delegate = self;
@@ -119,7 +119,7 @@
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)animation:(NSAnimationExtended*)animation didProgress:(NSAnimationProgress)progress
+- (void)animation:(GenericAnimation*)animation didProgress:(NSAnimationProgress)progress
 {
     if (animation == _animation)
     {

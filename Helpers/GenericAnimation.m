@@ -3,22 +3,20 @@
 // Some rights reserved: <http://opensource.org/licenses/mit-license.php>
 //-------------------------------------------------------------------------------------------------
 
-#import "NSAnimationExtended.h"
+#import "GenericAnimation.h"
 
 //-------------------------------------------------------------------------------------------------
-@implementation NSAnimationExtended
-{
-}
+@implementation GenericAnimation
 
 //-------------------------------------------------------------------------------------------------
 - (void)setCurrentProgress:(NSAnimationProgress)progress
 {
 	[super setCurrentProgress:progress];
 
-    if ([self.delegate conformsToProtocol:@protocol(NSAnimationExtendedDelegate)])
+    if ([self.delegate conformsToProtocol:@protocol(GenericAnimationDelegate)])
     {
-        [(id<NSAnimationExtendedDelegate>)self.delegate animation:self
-                                                      didProgress:progress];
+        [(id<GenericAnimationDelegate>)self.delegate animation:self
+                                                   didProgress:progress];
     }
 }
 

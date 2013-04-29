@@ -5,19 +5,19 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class NSAnimationExtended;
+@class GenericAnimation;
 
 //-------------------------------------------------------------------------------------------------
-// Extended animation delegate
-@protocol NSAnimationExtendedDelegate <NSAnimationDelegate>
+// Generic animation delegate
+@protocol GenericAnimationDelegate <NSAnimationDelegate>
 
 // Progress
-- (void)animation:(NSAnimationExtended*)animation didProgress:(NSAnimationProgress)progress;
+- (void)animation:(GenericAnimation*)animation didProgress:(NSAnimationProgress)progress;
 
 @end
 
 //-------------------------------------------------------------------------------------------------
 // Animation that calls delegate on each progress advance
-@interface NSAnimationExtended : NSAnimation
+@interface GenericAnimation : NSAnimation
 
 @end

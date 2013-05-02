@@ -98,9 +98,7 @@ static NSUInteger const kCrashSequenceCountMax = 3;
 	BOOL isAccessibilityException = [exceptionName isEqualToString:NSAccessibilityException];
 	
     // Sparkle Update bugs should be ignored
-	BOOL isSparkleException = [exceptionMessage rangeOfString:@"SUUpdater"].location != NSNotFound
-    || [exceptionMessage rangeOfString:@"SUHost"].location != NSNotFound
-    || [exceptionMessage rangeOfString:@"SUBasicUpdateDriver"].location != NSNotFound;
+	BOOL isSparkleException = [exceptionMessage rangeOfString:@"Versions/A/Sparkle"].location != NSNotFound;
     
     // Simble exceptions should be ignored
 	BOOL isSimbleException = [exceptionMessage rangeOfString:@"SIMBL"].location != NSNotFound;

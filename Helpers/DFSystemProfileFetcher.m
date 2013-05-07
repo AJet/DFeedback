@@ -5,6 +5,8 @@
 
 #import "DFSystemProfileFetcher.h"
 #import "DFSystemProfileFetcherDelegate.h"
+#import "OSVersionChecker.h"
+#import "ApplicationSandboxInfo.h"
 
 //-------------------------------------------------------------------------------------------------
 static const char* const kSectionHeaders[] =
@@ -77,13 +79,6 @@ static NSString* const kObscuredUserFullName = @"<user full name>";
 	self = [super init];
 	if (self != nil)
 	{
- 		_scriptPipe = [[NSPipe pipe] retain];
-		_scriptTask = [[NSTask alloc] init];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(scriptPipeDidComplete:)
-													 name:NSFileHandleReadToEndOfFileCompletionNotification
-												   object:_scriptPipe.fileHandleForReading];
-		
 	}
 	return self;
 }
@@ -200,32 +195,46 @@ static NSString* const kObscuredUserFullName = @"<user full name>";
          anonymizeUser:(BOOL)anonymizeUser
 {
     BOOL success = NO;
-    NSString* failureReason = nil;
     _anonymizeUser = anonymizeUser;
     _dataTypes = dataTypes;
 	_isDoneFetching = NO;
-	_scriptTask.launchPath = @"/usr/sbin/system_profiler";
-	_scriptTask.arguments = @[@"-detailLevel", @"mini"];
-	_scriptTask.standardOutput = _scriptPipe;
-	@try
-	{
-		[_scriptTask launch];
-        NSFileHandle* handle = _scriptPipe.fileHandleForReading;
-        if (handle == nil)
+    NSString* failureReason = nil;
+    if (!self.class.canFetch)
+    {
+        failureReason = @"Cannot fetch system profile on OSX 10.7.x in sandboxed mode";
+    }
+    else
+    {
+        _scriptPipe = [[NSPipe pipe] retain];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(scriptPipeDidComplete:)
+													 name:NSFileHandleReadToEndOfFileCompletionNotification
+												   object:_scriptPipe.fileHandleForReading];
+		
+        _scriptTask = [[NSTask alloc] init];
+        _scriptTask.launchPath = @"/usr/sbin/system_profiler";
+        _scriptTask.arguments = @[@"-detailLevel", @"mini"];
+        _scriptTask.standardOutput = _scriptPipe;
+        @try
         {
-            failureReason = @"Invalid file handle";
+            [_scriptTask launch];
+            NSFileHandle* handle = _scriptPipe.fileHandleForReading;
+            if (handle == nil)
+            {
+                failureReason = @"Invalid file handle";
+            }
+            else
+            {
+                [handle readToEndOfFileInBackgroundAndNotifyForModes:@[NSDefaultRunLoopMode,
+                 NSModalPanelRunLoopMode]];
+                success = YES;
+            }
         }
-        else
+        @catch (NSException* exception)
         {
-            [handle readToEndOfFileInBackgroundAndNotifyForModes:@[NSDefaultRunLoopMode,
-                                                                  NSModalPanelRunLoopMode]];
-            success = YES;
+            failureReason = exception.reason;
         }
-	}
-	@catch (NSException* exception)
-	{
-        failureReason = exception.reason;
-	}
+    }
     
     if (!success)
     {
@@ -239,6 +248,23 @@ static NSString* const kObscuredUserFullName = @"<user full name>";
 - (void)cancel
 {
 	[_scriptTask terminate];
+}
+
+//-------------------------------------------------------------------------------------------------
++ (BOOL)canFetch
+{
+    BOOL result = YES;
+    // on 10.8, system profile seems to work somehow, even in sandbox, but not on 10.7 in sandbox
+    if ([OSVersionChecker macOsVersion] < OSVersion_MountainLion)
+    {
+        if ([ApplicationSandboxInfo isSandboxed])
+        {
+            // currently, this would require a temporary exception entitlement, don't rely on it
+            // maybe later implement it using xpc then check the corresponding entitlement here
+            result = NO;
+        }
+    }
+    return result;
 }
 
 @end

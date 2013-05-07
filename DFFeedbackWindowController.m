@@ -317,7 +317,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	}
 	if ([state containsValueForKey:kStateIncludeSystemProfile])
 	{
-		BOOL includeSystemProfile = [state decodeBoolForKey:kStateIncludeSystemProfile] && self.shouldFetchSystemProfile;
+		BOOL includeSystemProfile = [state decodeBoolForKey:kStateIncludeSystemProfile] && [DFSystemProfileFetcher canFetch];
 		_includeSystemProfileCheckBox.state = includeSystemProfile ? NSOnState : NSOffState;
 	}
 }
@@ -377,7 +377,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	if (sender == _tabView)
 	{
 		// switch window views when the system profile is visible/hidden
-        BOOL isSystemProfileAvailable = self.currentFeedbackType != DFFeedback_General && self.shouldFetchSystemProfile;
+        BOOL isSystemProfileAvailable = self.currentFeedbackType != DFFeedback_General && [DFSystemProfileFetcher canFetch];
         
 		// system profile controls
 		_systemProfileContainer.hidden = !isSystemProfileAvailable;
@@ -553,7 +553,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 		[self resetEmailWarning];
         
 		// begin fetching system profile
-		BOOL isSystemProfileNeeded = self.currentFeedbackType != DFFeedback_General && self.shouldFetchSystemProfile && _includeSystemProfileCheckBox.state == NSOnState;
+		BOOL isSystemProfileNeeded = self.currentFeedbackType != DFFeedback_General && [DFSystemProfileFetcher canFetch] && _includeSystemProfileCheckBox.state == NSOnState;
 		if (isSystemProfileNeeded && !_systemProfileFetcher.isDoneFetching)
 		{
 			[self beginFetchingSystemProfile];
@@ -652,7 +652,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
     }
     else if (_isFetchingSystemProfile)
     {
-        BOOL isSystemProfileAvailable = self.shouldFetchSystemProfile && self.currentFeedbackType != DFFeedback_General && _includeSystemProfileCheckBox.state == NSOnState;
+        BOOL isSystemProfileAvailable = [DFSystemProfileFetcher canFetch] && self.currentFeedbackType != DFFeedback_General && _includeSystemProfileCheckBox.state == NSOnState;
         if (isSystemProfileAvailable)
         {
             result = DFProgress_Profiling;
@@ -743,23 +743,6 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
     _isFetchingSystemProfile = NO;
 	[_detailsWindow orderOut:self];
 	[self updateProgressMode];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (BOOL)shouldFetchSystemProfile
-{
-    BOOL result = YES;
-    // on 10.8, system profile seems to work somehow, even in sandbox, but not on 10.7 in sandbox
-    if ([OSVersionChecker macOsVersion] < OSVersion_MountainLion)
-    {
-        if ([ApplicationSandboxInfo isSandboxed])
-        {
-            // currently, this would require a temporary exception entitlement, don't rely on it
-            // maybe later implement it using xpc then check the corresponding entitlement here
-            result = NO;
-        }
-    }
-    return result;
 }
 
 //-------------------------------------------------------------------------------------------------

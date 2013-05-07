@@ -229,8 +229,8 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 - (void)beginFetchingSystemProfile
 {
     _fetchingSystemProfileProgressLabel.hidden = NO;
-	[_progressIndicator startAnimation:nil];
-	[_systemProfileFetcher fetchDataTypes:_systemProfileDataTypes anonymizeUser:YES];
+    [_progressIndicator startAnimation:nil];
+    [_systemProfileFetcher fetchDataTypes:_systemProfileDataTypes anonymizeUser:YES];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -311,9 +311,11 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
         _progressIndicator.hidden = YES;
         _fetchingSystemProfileProgressLabel.hidden = YES;
         _anonymousLabel.hidden = NO;
-        NSString* profileString = [NSString stringWithFormat:@"\n\nSYSTEM PROFILE:\n\n%@", _systemProfileFetcher.profile];
-        [_detailsTextView.textStorage appendAttributedString:[[[NSAttributedString alloc] initWithString:profileString] autorelease]];
-        
+        if (_systemProfileFetcher.profile != nil)
+        {
+            NSString* profileString = [NSString stringWithFormat:@"\n\nSYSTEM PROFILE:\n\n%@", _systemProfileFetcher.profile];
+            [_detailsTextView.textStorage appendAttributedString:[[[NSAttributedString alloc] initWithString:profileString] autorelease]];
+        }
         if (_sendButtonWasClicked)
         {
             [self beginSendingFeedback];

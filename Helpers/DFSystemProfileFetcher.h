@@ -28,4 +28,7 @@
 // Is done fetching flag
 @property (nonatomic, readonly) BOOL isDoneFetching;
 
+// Checks if system profile can be fetched on this OS version and sandbox mode
++ (BOOL)canFetch;
+
 @end

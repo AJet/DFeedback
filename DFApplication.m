@@ -5,7 +5,6 @@
 
 #import "DFApplication.h"
 #import "DFCrashReportWindowController.h"
-#import "ApplicationSandboxInfo.h"
 
 //-------------------------------------------------------------------------------------------------
 static NSString* const kUserDefaultCrashSequenceCount = @"DFApplication_crashSequenceCount";
@@ -37,33 +36,29 @@ static NSUInteger const kCrashSequenceCountMax = 3;
 //-------------------------------------------------------------------------------------------------
 - (void)launchAnotherInstanceAndWaitForTermination
 {
-    if (![ApplicationSandboxInfo isSandboxed])
-    {
-        _isRelaunching = YES;
-        
-        // launch a script that waits for the app to exit and then relaunches it
-        NSString* scriptPath = [[NSBundle mainBundle] pathForResource:@"DFRelaunch" ofType:@"sh"];
-        NSString* bundlePath = [NSString stringWithFormat:@"%s", [NSBundle mainBundle].executablePath.fileSystemRepresentation];
-        NSString* processIdentifier = [NSString stringWithFormat:@"%d", [NSProcessInfo processInfo].processIdentifier];
-        NSString* bundleId = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"];
-        NSArray* arguments = @[scriptPath,
-                               bundlePath,
-                               processIdentifier,
-                               bundleId];
-        NSTask* task = [[[NSTask alloc] init] autorelease];
-        task.launchPath = @"/bin/bash";
-        task.arguments = arguments;
-        [task launch];
-    }
-    else
-    {
-        NSLog(@"Cannot relaunch sandboxed application");
-    }
+    _isRelaunching = YES;
+
+    // NOTE: it seems to sometimes not work, at least it fails sometimes on 10.8 in sandboxed mode
+    
+    // launch a script that waits for the app to exit and then relaunches it
+    NSString* scriptPath = [[NSBundle mainBundle] pathForResource:@"DFRelaunch" ofType:@"sh"];
+    NSString* bundlePath = [NSString stringWithFormat:@"%s", [NSBundle mainBundle].executablePath.fileSystemRepresentation];
+    NSString* processIdentifier = [NSString stringWithFormat:@"%d", [NSProcessInfo processInfo].processIdentifier];
+    NSString* bundleId = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"];
+    NSArray* arguments = @[scriptPath,
+                           bundlePath,
+                           processIdentifier,
+                           bundleId];
+    NSTask* task = [[[NSTask alloc] init] autorelease];
+    task.launchPath = @"/bin/bash";
+    task.arguments = arguments;
+    [task launch];
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)relaunch
 {
+    
 	// prevent endless loop of relaunch and crash
 	NSUInteger crashSequenceCount = [[NSUserDefaults standardUserDefaults] integerForKey:kUserDefaultCrashSequenceCount];
     if (crashSequenceCount < kCrashSequenceCountMax - 1)

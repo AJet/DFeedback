@@ -8,21 +8,33 @@
 #-------------------------------------------------------------------------------------------------
 # Bash script to relaunch the app
 
-# give app a chance to terminate within 10 seconds
+processPath=$1
+processId=$2
+processBundleId=$3
+
+# waiting cycle
 i="10"
 while [ $i -gt 0 ]
 do
-  sleep 1
-  
-  is_running=$(osascript -e 'tell application "System Events" to exists (process 1 whose unix id is '$2')')
-  echo "Waiting for shutdown: " $is_running
-  if [ "$is_running" = "false" ]; then
-    i="0"
-  else
-    i=$(($i - 1))
-  fi
+# wait one second
+sleep 0.5
+
+# check if running
+instanceCount=$(ps -p $processId | grep $processPath | wc -l)
+
+if [ $instanceCount -gt 0 ]
+then
+# wait again
+echo Still running $instanceCount instances of application, $i attempts left;
+i=$(($i - 1))
+
+else
+# exit cycle
+i="0"
+fi
 done
 
 # relaunch the app
-osascript -e 'tell application "'"$1"'" to activate'
+echo Relaunching application
+open -n -b $processBundleId
 

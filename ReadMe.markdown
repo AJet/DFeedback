@@ -1,13 +1,13 @@
-##Intro
+## What's the buzz?
 
 DFeedback (DaisyDisk Feedback) is a two-in-one component for providing user feedback:
 
 1. It allows the user to send feedback and request support from within your app. Along with the message, the component can optionally send the user's e-mail and system configuration profile.
-![Screenshot](http://www.daisydiskapp.com/img/DFFeedbackScreenshot.png)
+![Screenshot](http://f.cl.ly/items/0v3j0Y371q230s3n3b3J/DFeedback.png)
 2. It automatically catches all unhandled exceptions and shows a crash report window suggesting the user to send an anonymous crash report, along with the stack trace, system configuration profile and optional user comments.
-![Screenshot](http://www.daisydiskapp.com/img/DFCrashReportScreenshot.png)
+![Screenshot](http://f.cl.ly/items/3J291y25373q413C0N0x/DDFeedback_crash.png)
 
-##Usage
+## Usage
 
 DFeedback is a package of source code (Cocoa, Obj-C) that you simply add to your project.
 
@@ -51,7 +51,7 @@ Don't forget to link to the following frameworks:
 - QuatzCore
 - AddressBook
 
-##Origin, credits and legal stuff
+## Origin, credits and legal stuff
 
 DFeedback was inspired by [JRFeedbackProvider](https://github.com/rentzsch/jrfeedbackprovider) and [FeedbackReporter](https://github.com/tcurdt/feedbackreporter), but totally rewritten from scratch (except maybe some tiny portions of code).
 
@@ -61,7 +61,7 @@ The stack trace for the crash reporter is obtained using the [Google Toolbox for
 
 Portions of the software may contain third party code distributed under other non-restrictive licenses.
 
-##FAQ
+## FAQ
 
 __What license does it use?__<br />
 We selected [MIT License](http://en.wikipedia.org/wiki/MIT_License). It's simple, it's fair and it's free of all the [GPL's](http://en.wikipedia.org/wiki/GPL) bullshit.

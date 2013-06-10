@@ -70,18 +70,18 @@
 //-------------------------------------------------------------------------------------------------
 - (void)showWithAnimation:(BOOL)withAnimation
 {
+    _isAnimatingForward = YES;
+    _isShowing = YES;
+
     if (withAnimation)
     {
         _fromOpacity = [self calculateCurrentOpacity];
         _fromSizeFactor = [self calculateCurrentSizeFactor];
-        _isShowing = YES;
-        _isAnimatingForward = YES;
         [self restartAnimation];
     }
     else
     {
         [_animation stopAnimation];
-        _isShowing = YES;
         [self animationDidComplete:YES];
     }
 }
@@ -92,11 +92,11 @@
     // only hide when not already hidden
     if (_isShowing)
     {
+        _isAnimatingForward = NO;
         if (withAnimation)
         {
             _fromOpacity = [self calculateCurrentOpacity];
             _fromSizeFactor = [self calculateCurrentSizeFactor];
-            _isAnimatingForward = NO;
             [self restartAnimation];
         }
         else

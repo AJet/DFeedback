@@ -62,7 +62,7 @@ static SoftwareVersion* _version = nil;
         _version.major = majorVersion;
         _version.minor = minorVersion;
         _version.build = buildVersion;
-
+        _version.displayName = [NSString stringWithFormat:@"%i.%i.%i", majorVersion, minorVersion, buildVersion];
     }
     return _version;
 }

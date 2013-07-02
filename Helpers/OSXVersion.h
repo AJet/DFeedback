@@ -5,21 +5,27 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class SoftwareVersion;
+
 //-------------------------------------------------------------------------------------------------
-typedef enum OSVersion : NSUInteger
+typedef enum OSXGeneration : NSUInteger
 {
-    OSVersion_Unknown = 0,
-    OSVersion_Leopard = 0x1050,
-    OSVersion_SnowLeopard = 0x1060,
-    OSVersion_Lion = 0x1070,
-    OSVersion_MountainLion = 0x1080
-} OSVersion;
+    OSXGeneration_Unknown = 0,
+    OSXGeneration_Leopard = 0x1050,
+    OSXGeneration_SnowLeopard = 0x1060,
+    OSXGeneration_Lion = 0x1070,
+    OSXGeneration_MountainLion = 0x1080,
+    OSXGeneration_Mavericks = 0x1090,
+} OSXGeneration;
 
 //-------------------------------------------------------------------------------------------------
-// OS version checker
-@interface OSVersionChecker : NSObject
+// OSX version
+@interface OSXVersion : NSObject
 
-// Gets OS version
-+ (OSVersion)macOsVersion;
+// Gets OSX generation
++ (OSXGeneration)generation;
+
+// Gets full OSX version
++ (SoftwareVersion*)version;
 
 @end

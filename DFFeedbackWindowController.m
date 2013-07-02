@@ -11,9 +11,9 @@
 #import "DFStyleSheet.h"
 #import "DFBounceIconView.h"
 #import "DFKeyTabView.h"
-#import "OSVersionChecker.h"
 #import "ApplicationSandboxInfo.h"
 #import "DFComboBoxCell.h"
+#import "OSXVersion.h"
 
 //-------------------------------------------------------------------------------------------------
 #pragma mark - Private constants
@@ -224,13 +224,10 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
     }
 	
 	// restoration
-	if ([OSVersionChecker macOsVersion] >= OSVersion_Lion)
-	{
-		[self.window performSelector:@selector(setRestorable:)
-                          withObject:(id)(NSUInteger)YES];
-		[self.window performSelector:@selector(setRestorationClass:)
-                          withObject:self.class];
-	}
+    [self.window performSelector:@selector(setRestorable:)
+                      withObject:(id)(NSUInteger)YES];
+    [self.window performSelector:@selector(setRestorationClass:)
+                      withObject:self.class];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -454,7 +451,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 - (BOOL)shouldAccessContacts
 {
     BOOL result = YES;
-    if ([OSVersionChecker macOsVersion] >= OSVersion_MountainLion)
+    if ([OSXVersion generation] >= OSXGeneration_MountainLion)
     {
         // we don't want the dreaded dialog that the app wants to access your contacts
         result = NO;

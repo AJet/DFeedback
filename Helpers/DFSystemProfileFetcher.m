@@ -5,7 +5,7 @@
 
 #import "DFSystemProfileFetcher.h"
 #import "DFSystemProfileFetcherDelegate.h"
-#import "OSVersionChecker.h"
+#import "OSXVersion.h"
 #import "ApplicationSandboxInfo.h"
 
 //-------------------------------------------------------------------------------------------------
@@ -255,7 +255,7 @@ static NSString* const kObscuredUserFullName = @"<user full name>";
 {
     BOOL result = YES;
     // on 10.8, system profile seems to work somehow, even in sandbox, but not on 10.7 in sandbox
-    if ([OSVersionChecker macOsVersion] < OSVersion_MountainLion)
+    if ([OSXVersion generation] < OSXGeneration_MountainLion)
     {
         if ([ApplicationSandboxInfo isSandboxed])
         {

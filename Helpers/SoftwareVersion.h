@@ -17,11 +17,14 @@
 
 // Fields
 @property (nonatomic, retain) NSString* displayName;
+- (void)makeDisplayName;
 
 @property (nonatomic) NSUInteger major;
 
 @property (nonatomic) NSUInteger minor;
+@property (nonatomic) BOOL hasMinor;
 
 @property (nonatomic) NSUInteger build;
+@property (nonatomic) BOOL hasBuild;
 
 @end

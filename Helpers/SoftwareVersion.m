@@ -35,7 +35,9 @@
 	{
 		NSUInteger majorVersion = 0;
 		NSUInteger minorVersion = 0;
+        BOOL hasMinor = NO;
 		NSUInteger buildVersion = 0;
+        BOOL hasBuild = NO;
 		int scanned = 0;
 		NSScanner* scanner = [NSScanner scannerWithString:parts[0]];
 		if ([scanner scanInt:&scanned] && scanned >= 0)
@@ -44,15 +46,17 @@
 			if (parts.count > 1)
 			{
 				scanner = [NSScanner scannerWithString:parts[1]];
-				if ([scanner scanInt:&scanned] && scanned > 0)
+				if ([scanner scanInt:&scanned] && scanned >= 0)
 				{
 					minorVersion = scanned;
+                    hasMinor = YES;
 					if (parts.count > 2)
 					{
 						scanner = [NSScanner scannerWithString:parts[2]];
-						if ([scanner scanInt:&scanned] && scanned > 0)
+						if ([scanner scanInt:&scanned] && scanned >= 0)
 						{
 							buildVersion = scanned;
+                            hasBuild = YES;
 						}
 					}
 				}
@@ -60,7 +64,9 @@
 			result = [[[SoftwareVersion alloc] init] autorelease];
             result.major = majorVersion;
             result.minor = minorVersion;
+            result.hasMinor = hasMinor;
             result.build = buildVersion;
+            result.hasBuild = hasBuild;
 		}
 	}
 	return result;
@@ -96,5 +102,23 @@
 	return NSOrderedSame;
 }
 
+//-------------------------------------------------------------------------------------------------
+- (void)makeDisplayName
+{
+    NSString* displayName = nil;
+    if (_hasBuild && _hasMinor)
+    {
+        displayName = [NSString stringWithFormat:@"%lu.%lu.%lu", _major, _minor, _build];
+    }
+    else if (_hasMinor)
+    {
+        displayName = [NSString stringWithFormat:@"%lu.%lu", _major, _minor];
+    }
+    else
+    {
+        displayName = [NSString stringWithFormat:@"%lu", _major];
+    }
+    self.displayName = displayName;
+}
 
 @end

@@ -8,9 +8,14 @@
 #import "DFCrashReportWindowController.h"
 
 //-------------------------------------------------------------------------------------------------
-@implementation DemoAppDelegate
+@interface DemoAppDelegate()
+
+@property (assign) IBOutlet NSWindow* window;
+
+@end
+
 //-------------------------------------------------------------------------------------------------
-@synthesize window;
+@implementation DemoAppDelegate
 
 //-------------------------------------------------------------------------------------------------
 - (void)applicationDidFinishLaunching:(NSNotification*)notification 
@@ -52,11 +57,11 @@
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)crashThread
+- (void)crashThread:(BOOL)isGCD
 {
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     
-    NSAssert(false, @"Test crash in a separate thread");
+    NSAssert(false, @"Test crash in a separate %@ thread", isGCD ? @"GCD" : @"NS");
     
     [pool release];
     
@@ -64,9 +69,19 @@
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)testCrashInThread:(id)sender
+- (IBAction)testCrashInNSThread:(id)sender
 {
-    [NSThread detachNewThreadSelector:@selector(crashThread) toTarget:self withObject:nil];
+    [NSThread detachNewThreadSelector:@selector(crashThread:) toTarget:self withObject:(id)NO];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (IBAction)testCrashInGCDThread:(id)sender
+{
+    dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(dispatchQueue,
+                   ^{
+                       [self crashThread:YES];
+                   });
 }
 
 //-------------------------------------------------------------------------------------------------

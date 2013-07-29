@@ -11,7 +11,6 @@
 #import "DFLinkLabel.h"
 #import "DFStyleSheet.h"
 #import "DFApplication.h"
-#import "GTMStackTrace.h"
 
 //-------------------------------------------------------------------------------------------------
 static NSString* const kNibName = @"DFCrashReportWindow";
@@ -202,9 +201,11 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 
 //-------------------------------------------------------------------------------------------------
 - (void)showReportForException:(NSException*)exception
+           exceptionStackTrace:(NSString*)exceptionStackTrace
 {
     // save exception
-    self.exception = exception;
+    self.exceptionMessage = exception.reason;
+    self.exceptionStackTrace = exceptionStackTrace;
 	
 	// center the window
 	NSWindow* window = self.window;
@@ -216,13 +217,6 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 	// show window
 	[self initializeControls];
     [NSApp runModalForWindow:window];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (void)setException:(NSException*)exception
-{
-    self.exceptionMessage = exception.reason;
-    self.exceptionStackTrace = GTMStackTraceFromException(exception);
 }
 
 //-------------------------------------------------------------------------------------------------

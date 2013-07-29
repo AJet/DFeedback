@@ -5,6 +5,7 @@
 
 #import "DFApplication.h"
 #import "DFCrashReportWindowController.h"
+#import "GTMStackTrace.h"
 
 //-------------------------------------------------------------------------------------------------
 static NSString* const kUserDefaultCrashSequenceCount = @"DFApplication_crashSequenceCount";
@@ -95,24 +96,42 @@ static NSUInteger const kCrashSequenceCountMax = 3;
 
 //-------------------------------------------------------------------------------------------------
 - (BOOL)shouldIgnoreException:(NSException*)exception
-{   
+          exceptionStackTrace:(NSString*)exceptionStackTrace
+{
+    BOOL result = NO;
 	NSString* exceptionName = exception.name;
-	NSString* exceptionMessage = exception.reason;
 	
     // accessibility exceptions are a normal mode of operation, should be ignored
 	BOOL isAccessibilityException = [exceptionName isEqualToString:NSAccessibilityException];
-	
-    // Sparkle Update bugs should be ignored
-	BOOL isSparkleException = [exceptionMessage rangeOfString:@"Versions/A/Sparkle"].location != NSNotFound;
+    if (isAccessibilityException)
+    {
+        result = YES;
+    }
+    else
+    {
+        // Sparkle Update bugs should be ignored
+        BOOL isSparkleException = [exceptionStackTrace rangeOfString:@"Versions/A/Sparkle"].location != NSNotFound;
+        if (isSparkleException)
+        {
+            result = YES;
+        }
+        else
+        {
+            // Simble exceptions should be ignored
+            BOOL isSimbleException = [exceptionStackTrace rangeOfString:@"SIMBL"].location != NSNotFound;
+            if (isSimbleException)
+            {
+                result = YES;
+            }
+        }
+	}
     
-    // Simble exceptions should be ignored
-	BOOL isSimbleException = [exceptionMessage rangeOfString:@"SIMBL"].location != NSNotFound;
-	
-	return isAccessibilityException || isSparkleException || isSimbleException;
+	return result;
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)reportExceptionInMainThread:(NSException*)exception
+                exceptionStackTrace:(NSString*)exceptionStackTrace
 {
     @try
     {
@@ -130,7 +149,8 @@ static NSUInteger const kCrashSequenceCountMax = 3;
             }
             
             // show problem report window
-            [[DFCrashReportWindowController singleton] showReportForException:exception];
+            [[DFCrashReportWindowController singleton] showReportForException:exception
+                                                          exceptionStackTrace:exceptionStackTrace];
         }
     }
     @catch (NSException* fatalException)
@@ -153,21 +173,28 @@ static NSUInteger const kCrashSequenceCountMax = 3;
 {
     [super reportException:exception];
 
-	if (![self shouldIgnoreException:exception])
+    NSString* exceptionStackTrace = GTMStackTraceFromException(exception);
+    
+	if (![self shouldIgnoreException:exception
+                 exceptionStackTrace:exceptionStackTrace])
     {
         // main thread
         if ([NSThread currentThread] == [NSThread mainThread])
         {
-            [self reportExceptionInMainThread:exception];
+            [self reportExceptionInMainThread:exception
+                          exceptionStackTrace:exceptionStackTrace];
         }
         // not main thread
         else
         {
             // handle on main thread
-            [self performSelectorOnMainThread:@selector(reportExceptionInMainThread:)
-                                   withObject:exception
-                                waitUntilDone:NO];
+            dispatch_async(dispatch_get_main_queue(),
+                           ^{
+                               [self reportExceptionInMainThread:exception
+                                             exceptionStackTrace:exceptionStackTrace];
+                           });
             // exit immediately, or will crash the app
+            // TODO: this causes a crash with signal if the thread is from GCD, not a pthread
             [NSThread exit];
         }
     }

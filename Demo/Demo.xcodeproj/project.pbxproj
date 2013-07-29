@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* DemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* DemoAppDelegate.m */; };
+		7C04198E17A6572200574A51 /* OSXVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C04198B17A6572200574A51 /* OSXVersion.m */; };
+		7C04198F17A6572200574A51 /* SoftwareVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C04198D17A6572200574A51 /* SoftwareVersion.m */; };
 		7C0A8766171D96BE005A3C33 /* DFWarning.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 7C0A8765171D96BE005A3C33 /* DFWarning.pdf */; };
 		7C0A876C171D96D3005A3C33 /* DFComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C0A8768171D96D3005A3C33 /* DFComboBoxCell.m */; };
 		7C0A876D171D96D3005A3C33 /* DFLinkLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C0A876A171D96D3005A3C33 /* DFLinkLabel.m */; };
@@ -17,7 +19,6 @@
 		7C29CC59172E459700E3EB79 /* DFSystemProfileFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C29CC4F172E459700E3EB79 /* DFSystemProfileFetcher.m */; };
 		7C29CC5A172E459700E3EB79 /* GenericAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C29CC52172E459700E3EB79 /* GenericAnimation.m */; };
 		7C29CC5B172E459700E3EB79 /* NSURLRequest+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C29CC54172E459700E3EB79 /* NSURLRequest+Extension.m */; };
-		7C29CC5C172E459700E3EB79 /* OSVersionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C29CC56172E459700E3EB79 /* OSVersionChecker.m */; };
 		7C3C46261371207900AAD108 /* DFStyleSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C460E1371207900AAD108 /* DFStyleSheet.m */; };
 		7C3C462E1371207900AAD108 /* DFBounceIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C46211371207900AAD108 /* DFBounceIconView.m */; };
 		7C3C462F1371207900AAD108 /* DFPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C3C46231371207900AAD108 /* DFPlaceholderTextView.m */; };
@@ -30,8 +31,6 @@
 		7C8E4B491596E4A900529DCF /* DFRelaunch.sh in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B3B1596E4A900529DCF /* DFRelaunch.sh */; };
 		7C8E4B4A1596E4A900529DCF /* GTMObjC2Runtime.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C8E4B401596E4A900529DCF /* GTMObjC2Runtime.m */; };
 		7C8E4B4B1596E4A900529DCF /* GTMStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C8E4B421596E4A900529DCF /* GTMStackTrace.m */; };
-		7C8E4B4C1596E4A900529DCF /* MIT License.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B431596E4A900529DCF /* MIT License.txt */; };
-		7C8E4B4D1596E4A900529DCF /* ReadMe.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B441596E4A900529DCF /* ReadMe.markdown */; };
 		7C8E4B521596E4BB00529DCF /* DFCrashReportWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B4E1596E4BB00529DCF /* DFCrashReportWindow.xib */; };
 		7C8E4B531596E4BB00529DCF /* DFFeedbackWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C8E4B501596E4BB00529DCF /* DFFeedbackWindow.xib */; };
 		7CF621D815AB0D64008BDEFB /* DFLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7CF621D615AB0D64008BDEFB /* DFLocalizable.strings */; };
@@ -52,6 +51,10 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		7C04198A17A6572200574A51 /* OSXVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSXVersion.h; sourceTree = "<group>"; };
+		7C04198B17A6572200574A51 /* OSXVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSXVersion.m; sourceTree = "<group>"; };
+		7C04198C17A6572200574A51 /* SoftwareVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoftwareVersion.h; sourceTree = "<group>"; };
+		7C04198D17A6572200574A51 /* SoftwareVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoftwareVersion.m; sourceTree = "<group>"; };
 		7C0A8765171D96BE005A3C33 /* DFWarning.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = DFWarning.pdf; sourceTree = "<group>"; };
 		7C0A8767171D96D3005A3C33 /* DFComboBoxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFComboBoxCell.h; sourceTree = "<group>"; };
 		7C0A8768171D96D3005A3C33 /* DFComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFComboBoxCell.m; sourceTree = "<group>"; };
@@ -71,8 +74,6 @@
 		7C29CC52172E459700E3EB79 /* GenericAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericAnimation.m; sourceTree = "<group>"; };
 		7C29CC53172E459700E3EB79 /* NSURLRequest+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLRequest+Extension.h"; sourceTree = "<group>"; };
 		7C29CC54172E459700E3EB79 /* NSURLRequest+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLRequest+Extension.m"; sourceTree = "<group>"; };
-		7C29CC55172E459700E3EB79 /* OSVersionChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSVersionChecker.h; sourceTree = "<group>"; };
-		7C29CC56172E459700E3EB79 /* OSVersionChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSVersionChecker.m; sourceTree = "<group>"; };
 		7C3C460D1371207900AAD108 /* DFStyleSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFStyleSheet.h; path = ../DFStyleSheet.h; sourceTree = SOURCE_ROOT; };
 		7C3C460E1371207900AAD108 /* DFStyleSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFStyleSheet.m; path = ../DFStyleSheet.m; sourceTree = SOURCE_ROOT; };
 		7C3C46201371207900AAD108 /* DFBounceIconView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFBounceIconView.h; sourceTree = "<group>"; };
@@ -96,8 +97,6 @@
 		7C8E4B401596E4A900529DCF /* GTMObjC2Runtime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMObjC2Runtime.m; sourceTree = "<group>"; };
 		7C8E4B411596E4A900529DCF /* GTMStackTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMStackTrace.h; sourceTree = "<group>"; };
 		7C8E4B421596E4A900529DCF /* GTMStackTrace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMStackTrace.m; sourceTree = "<group>"; };
-		7C8E4B431596E4A900529DCF /* MIT License.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "MIT License.txt"; path = "../MIT License.txt"; sourceTree = "<group>"; };
-		7C8E4B441596E4A900529DCF /* ReadMe.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ReadMe.markdown; path = ../ReadMe.markdown; sourceTree = "<group>"; };
 		7C8E4B4F1596E4BB00529DCF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DFCrashReportWindow.xib; sourceTree = "<group>"; };
 		7C8E4B511596E4BB00529DCF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DFFeedbackWindow.xib; sourceTree = "<group>"; };
 		7C8E4B541596E4CA00529DCF /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/DFCrashReportWindow.xib; sourceTree = "<group>"; };
@@ -175,8 +174,6 @@
 			children = (
 				B2CC4F9E16E8C2EF000CC50E /* Security.framework */,
 				7C8D263A137004D300AB9F8D /* DFeedback */,
-				7C8E4B431596E4A900529DCF /* MIT License.txt */,
-				7C8E4B441596E4A900529DCF /* ReadMe.markdown */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -217,6 +214,10 @@
 		7C29CC48172E459700E3EB79 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				7C04198A17A6572200574A51 /* OSXVersion.h */,
+				7C04198B17A6572200574A51 /* OSXVersion.m */,
+				7C04198C17A6572200574A51 /* SoftwareVersion.h */,
+				7C04198D17A6572200574A51 /* SoftwareVersion.m */,
 				7C29CC49172E459700E3EB79 /* ApplicationSandboxInfo.h */,
 				7C29CC4A172E459700E3EB79 /* ApplicationSandboxInfo.m */,
 				7C29CC4B172E459700E3EB79 /* DFFeedbackSender.h */,
@@ -229,8 +230,6 @@
 				7C29CC52172E459700E3EB79 /* GenericAnimation.m */,
 				7C29CC53172E459700E3EB79 /* NSURLRequest+Extension.h */,
 				7C29CC54172E459700E3EB79 /* NSURLRequest+Extension.m */,
-				7C29CC55172E459700E3EB79 /* OSVersionChecker.h */,
-				7C29CC56172E459700E3EB79 /* OSVersionChecker.m */,
 			);
 			name = Helpers;
 			path = ../Helpers;
@@ -363,8 +362,6 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				7C8E4B491596E4A900529DCF /* DFRelaunch.sh in Resources */,
-				7C8E4B4C1596E4A900529DCF /* MIT License.txt in Resources */,
-				7C8E4B4D1596E4A900529DCF /* ReadMe.markdown in Resources */,
 				7C8E4B521596E4BB00529DCF /* DFCrashReportWindow.xib in Resources */,
 				7C8E4B531596E4BB00529DCF /* DFFeedbackWindow.xib in Resources */,
 				7CF621D815AB0D64008BDEFB /* DFLocalizable.strings in Resources */,
@@ -397,7 +394,8 @@
 				7C29CC59172E459700E3EB79 /* DFSystemProfileFetcher.m in Sources */,
 				7C29CC5A172E459700E3EB79 /* GenericAnimation.m in Sources */,
 				7C29CC5B172E459700E3EB79 /* NSURLRequest+Extension.m in Sources */,
-				7C29CC5C172E459700E3EB79 /* OSVersionChecker.m in Sources */,
+				7C04198E17A6572200574A51 /* OSXVersion.m in Sources */,
+				7C04198F17A6572200574A51 /* SoftwareVersion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

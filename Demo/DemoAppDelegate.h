@@ -7,23 +7,6 @@
 
 //-------------------------------------------------------------------------------------------------
 // Application delegate
-//-------------------------------------------------------------------------------------------------
 @interface DemoAppDelegate : NSObject <NSApplicationDelegate> 
-{
-    NSWindow *window;
-}
 
-//-------------------------------------------------------------------------------------------------
-// Outlets
-//-------------------------------------------------------------------------------------------------
-@property (assign) IBOutlet NSWindow *window;
-
-//-------------------------------------------------------------------------------------------------
-// Private actions (visible to IB)
-//-------------------------------------------------------------------------------------------------
-- (IBAction)sendGeneralQuestion:(id)sender;
-- (IBAction)sendBugReport:(id)sender;
-- (IBAction)sendFeatureRequest:(id)sender;
-- (IBAction)testCrash:(id)sender;
-- (IBAction)testCrashInThread:(id)sender;
 @end

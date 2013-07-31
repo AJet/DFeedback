@@ -53,9 +53,6 @@ static const DFSystemProfileDataType kSectionTypes[] =
     DFSystemProfileData_WiFi
 };
 
-static NSString* const kObscuredUserName = @"<user name>";
-static NSString* const kObscuredUserFullName = @"<user full name>";
-
 //-------------------------------------------------------------------------------------------------
 @implementation DFSystemProfileFetcher
 {
@@ -64,7 +61,6 @@ static NSString* const kObscuredUserFullName = @"<user full name>";
 	NSString* _profile;
 	BOOL _isDoneFetching;
     DFSystemProfileDataType _dataTypes;
-    BOOL _anonymizeUser;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -170,32 +166,13 @@ static NSString* const kObscuredUserFullName = @"<user full name>";
         }
     }
 
-    // anonymize
-    if (_anonymizeUser)
-    {
-        // remove full name
-        NSString* userFullName = NSFullUserName();
-        [profile replaceOccurrencesOfString:userFullName
-                                 withString:kObscuredUserFullName
-                                    options:NSCaseInsensitiveSearch
-                                      range:NSMakeRange(0, profile.length)];
-        // remove short name
-        NSString* userName = NSUserName();
-        [profile replaceOccurrencesOfString:userName
-                                 withString:kObscuredUserName
-                                    options:NSCaseInsensitiveSearch
-                                      range:NSMakeRange(0, profile.length)];
-    }
-    
     return profile;
 }
 
 //-------------------------------------------------------------------------------------------------
 - (void)fetchDataTypes:(DFSystemProfileDataType)dataTypes
-         anonymizeUser:(BOOL)anonymizeUser
 {
     BOOL success = NO;
-    _anonymizeUser = anonymizeUser;
     _dataTypes = dataTypes;
 	_isDoneFetching = NO;
     NSString* failureReason = nil;

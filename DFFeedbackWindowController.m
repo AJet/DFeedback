@@ -14,6 +14,7 @@
 #import "ApplicationSandboxInfo.h"
 #import "DFComboBoxCell.h"
 #import "OSXVersion.h"
+#import "StringAnonymizer.h"
 
 //-------------------------------------------------------------------------------------------------
 #pragma mark - Private constants
@@ -118,6 +119,9 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 @property (nonatomic, assign) IBOutlet NSTextView* detailsTextView;
 @property (nonatomic, assign) IBOutlet NSProgressIndicator* detailsProgressIndicator;
 @property (nonatomic, assign) IBOutlet NSTextField* detailsProgressLabel;
+
+// Displayed data
+@property (nonatomic, retain) NSString* systemProfile;
 
 @end
 
@@ -391,6 +395,8 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 				textContainerFrame.origin.y -= diffHeight;
 				textContainerFrame.size.height += diffHeight;
 			}
+            // also close details window, it becomes irrelevant
+            [self.detailsWindow orderOut:self];
 		}
 		else
 		{
@@ -689,6 +695,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 //-------------------------------------------------------------------------------------------------
 - (void)beginFetchingSystemProfile
 {
+    self.systemProfile = nil;
 	if (_systemProfileFetcher == nil)
 	{
 		_systemProfileFetcher = [[DFSystemProfileFetcher alloc] init];
@@ -702,7 +709,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
             dataTypes = DFSystemProfileData_All;
         }
         
-		[_systemProfileFetcher fetchDataTypes:dataTypes anonymizeUser:YES];
+		[_systemProfileFetcher fetchDataTypes:dataTypes];
 		
         _isFetchingSystemProfile = YES;
         
@@ -715,8 +722,10 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 {
     if (sender == _systemProfileFetcher)
     {
+        self.systemProfile = AnonymizeString(_systemProfileFetcher.profile);
+        
         // update details window
-        _detailsTextView.textStorage.attributedString = [[[NSAttributedString alloc] initWithString:_systemProfileFetcher.profile] autorelease];
+        _detailsTextView.textStorage.attributedString = [[[NSAttributedString alloc] initWithString:_systemProfile] autorelease];
         
         // reset fetching progress
         _isFetchingSystemProfile = NO;
@@ -738,6 +747,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	[_systemProfileFetcher release];
 	_systemProfileFetcher = nil;
     _isFetchingSystemProfile = NO;
+    self.systemProfile = nil;
 	[_detailsWindow orderOut:self];
 	[self updateProgressMode];
 }
@@ -749,7 +759,6 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 {
 	NSString* userEmail = _includeEmailCheckBox.state == NSOnState ? _emailComboBox.stringValue : nil;
 	NSString* feedbackText = _textView.textStorage.string;
-	NSString* profile = _systemProfileFetcher != nil ? _systemProfileFetcher.profile : nil;
 
     [_feedbackSender cancel];
     _feedbackSender.delegate = nil;
@@ -761,7 +770,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	[_feedbackSender sendFeedbackToUrl:_feedbackUrl
                           feedbackText:feedbackText
                           feedbackType:[self feedbackTypeStringFromType:self.currentFeedbackType]
-                         systemProfile:profile
+                         systemProfile:_systemProfile
                              userEmail:userEmail];
     
 	[self updateProgressMode];
@@ -806,6 +815,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 	[_systemProfileFetcher release];
 	_systemProfileFetcher = nil;
     _isFetchingSystemProfile = NO;
+    self.systemProfile = nil;
 	[_feedbackSender cancel];
     _feedbackSender.delegate = nil;
 	[_feedbackSender release];

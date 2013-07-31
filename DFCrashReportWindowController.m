@@ -11,6 +11,7 @@
 #import "DFLinkLabel.h"
 #import "DFStyleSheet.h"
 #import "DFApplication.h"
+#import "StringAnonymizer.h"
 
 //-------------------------------------------------------------------------------------------------
 static NSString* const kNibName = @"DFCrashReportWindow";
@@ -54,6 +55,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 // exception data
 @property (nonatomic, retain) NSString* exceptionMessage;
 @property (nonatomic, retain) NSString* exceptionStackTrace;
+@property (nonatomic, retain) NSString* systemProfile;
 
 @end
 
@@ -118,6 +120,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 	[self cancelPendingStuff];
     [_exceptionMessage release];
     [_exceptionStackTrace release];
+    [_systemProfile release];
     [_updateLinkLabel release];
     _windowAnimation.delegate = nil;
     [_windowAnimation release];
@@ -205,7 +208,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 {
     // save exception
     self.exceptionMessage = exception.reason;
-    self.exceptionStackTrace = exceptionStackTrace;
+    self.exceptionStackTrace = AnonymizeString(exceptionStackTrace);
 	
 	// center the window
 	NSWindow* window = self.window;
@@ -222,9 +225,10 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 //-------------------------------------------------------------------------------------------------
 - (void)beginFetchingSystemProfile
 {
+    self.systemProfile = nil;
     _fetchingSystemProfileProgressLabel.hidden = NO;
     [_progressIndicator startAnimation:nil];
-    [_systemProfileFetcher fetchDataTypes:_systemProfileDataTypes anonymizeUser:YES];
+    [_systemProfileFetcher fetchDataTypes:_systemProfileDataTypes];
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -252,7 +256,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 	[_feedbackSender sendFeedbackToUrl:_feedbackUrl
                           feedbackText:feedbackText
                           feedbackType:@"Crash"
-                         systemProfile:_systemProfileFetcher.profile
+                         systemProfile:_systemProfile
                              userEmail:nil];
 }
 
@@ -307,7 +311,8 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
         _anonymousLabel.hidden = NO;
         if (_systemProfileFetcher.profile != nil)
         {
-            NSString* profileString = [NSString stringWithFormat:@"\n\nSYSTEM PROFILE:\n\n%@", _systemProfileFetcher.profile];
+            self.systemProfile = AnonymizeString(_systemProfileFetcher.profile);
+            NSString* profileString = [NSString stringWithFormat:@"\n\nSYSTEM PROFILE:\n\n%@", _systemProfile];
             [_detailsTextView.textStorage appendAttributedString:[[[NSAttributedString alloc] initWithString:profileString] autorelease]];
         }
         if (_sendButtonWasClicked)

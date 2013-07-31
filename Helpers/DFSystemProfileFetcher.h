@@ -16,8 +16,7 @@
 @property (nonatomic, assign) id<DFSystemProfileFetcherDelegate> delegate;
 
 // Begins fetching system profile, completes asynchronously
-- (void)fetchDataTypes:(DFSystemProfileDataType)dataTypes
-         anonymizeUser:(BOOL)anonymizeUser;
+- (void)fetchDataTypes:(DFSystemProfileDataType)dataTypes;
 
 // Cancels a pending request
 - (void)cancel;

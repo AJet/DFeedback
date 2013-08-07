@@ -12,6 +12,7 @@
 static const char* const kSectionHeaders[] =
 {
     "Audio:",
+    "Audio (Built In):",
     "Bluetooth:",
     "Card Reader:",
     "Diagnostics:",
@@ -28,12 +29,14 @@ static const char* const kSectionHeaders[] =
     "Software:",
     "Thunderbolt:",
     "USB:",
-    "Wi-Fi:"
+    "Wi-Fi:",
+    "ATA:"
 };
 
 static const DFSystemProfileDataType kSectionTypes[] =
 {
     DFSystemProfileData_Audio,
+    DFSystemProfileData_AudioBuiltIn,
     DFSystemProfileData_Bluetooth,
     DFSystemProfileData_CardReader,
     DFSystemProfileData_Diagnostics,
@@ -50,7 +53,8 @@ static const DFSystemProfileDataType kSectionTypes[] =
     DFSystemProfileData_Software,
     DFSystemProfileData_Thunderbolt,
     DFSystemProfileData_USB,
-    DFSystemProfileData_WiFi
+    DFSystemProfileData_WiFi,
+    DFSystemProfileData_ATA
 };
 
 //-------------------------------------------------------------------------------------------------

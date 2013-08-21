@@ -58,11 +58,9 @@ static SoftwareVersion* _version = nil;
         SInt32 buildVersion = 0;
         Gestalt(gestaltSystemVersionBugFix, &buildVersion);
 
-        _version = [[SoftwareVersion alloc] init];
-        _version.major = majorVersion;
-        _version.minor = minorVersion;
-        _version.build = buildVersion;
-        _version.displayName = [NSString stringWithFormat:@"%i.%i.%i", majorVersion, minorVersion, buildVersion];
+        NSUInteger numbers[3] = {majorVersion, minorVersion, buildVersion};
+        _version = [[SoftwareVersion versionFromNumbers:numbers count:3] retain];
+        [_version makeDisplayName];
     }
     return _version;
 }

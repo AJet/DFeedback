@@ -12,19 +12,22 @@
 // Parses string and creates version
 + (SoftwareVersion*)versionFromString:(NSString*)versionString;
 
+// Creates version from an array of numbers
++ (SoftwareVersion*)versionFromNumbers:(const NSUInteger*)numbers
+                                 count:(NSUInteger)count;
+
 // Comparator
 - (NSComparisonResult)compare:(SoftwareVersion*)other;
 
-// Fields
+// Display name saved
 @property (nonatomic, retain) NSString* displayName;
+
+// Display name generated
 - (void)makeDisplayName;
 
-@property (nonatomic) NSUInteger major;
-
-@property (nonatomic) NSUInteger minor;
-@property (nonatomic) BOOL hasMinor;
-
-@property (nonatomic) NSUInteger build;
-@property (nonatomic) BOOL hasBuild;
+// Access to particular numbers
+@property (nonatomic, readonly) NSUInteger majorNumber;
+@property (nonatomic, readonly) NSUInteger minorNumber;
+@property (nonatomic, readonly) NSUInteger buildNumber;
 
 @end

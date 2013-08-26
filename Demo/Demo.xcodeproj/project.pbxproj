@@ -37,6 +37,7 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		8E8CE44D17CB2099009D79C8 /* StringAnonymizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E8CE44C17CB2099009D79C8 /* StringAnonymizer.m */; };
 		B2CC4F9F16E8C2EF000CC50E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2CC4F9E16E8C2EF000CC50E /* Security.framework */; };
 /* End PBXBuildFile section */
 
@@ -114,6 +115,8 @@
 		7CF621DF15AB0E91008BDEFB /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Demo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Demo-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E8CE44B17CB2099009D79C8 /* StringAnonymizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringAnonymizer.h; sourceTree = "<group>"; };
+		8E8CE44C17CB2099009D79C8 /* StringAnonymizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringAnonymizer.m; sourceTree = "<group>"; };
 		B2CC4F9E16E8C2EF000CC50E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = ../../../../../../../System/Library/Frameworks/Security.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -230,6 +233,8 @@
 				7C29CC52172E459700E3EB79 /* GenericAnimation.m */,
 				7C29CC53172E459700E3EB79 /* NSURLRequest+Extension.h */,
 				7C29CC54172E459700E3EB79 /* NSURLRequest+Extension.m */,
+				8E8CE44B17CB2099009D79C8 /* StringAnonymizer.h */,
+				8E8CE44C17CB2099009D79C8 /* StringAnonymizer.m */,
 			);
 			name = Helpers;
 			path = ../Helpers;
@@ -379,6 +384,7 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* DemoAppDelegate.m in Sources */,
 				7C3C46261371207900AAD108 /* DFStyleSheet.m in Sources */,
+				8E8CE44D17CB2099009D79C8 /* StringAnonymizer.m in Sources */,
 				7C3C462E1371207900AAD108 /* DFBounceIconView.m in Sources */,
 				7C3C462F1371207900AAD108 /* DFPlaceholderTextView.m in Sources */,
 				7C3C46331371221700AAD108 /* DFKeyTabView.m in Sources */,

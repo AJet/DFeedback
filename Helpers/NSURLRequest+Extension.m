@@ -29,13 +29,16 @@
     CFStringRef uuidStringRef = CFUUIDCreateString(NULL, uuidRef);
     CFRelease(uuidRef);
     NSString* uuid = [(NSString*)uuidStringRef autorelease];
-    NSString* boundary = [NSString stringWithFormat:@"x-mime-boundary://%@", uuid];
+    NSString* boundary = [NSString stringWithFormat:@"x-mime-boundary-%@", uuid];
     
     // create the form
     NSMutableData* formData = [NSMutableData data];
     for (NSString* key in values.allKeys)
 	{
-        [NSURLRequest appendFormat:@"\r\n--%@\r\n" arg:boundary toData:formData];
+		if (formData.length > 0) {
+			[NSURLRequest appendString:@"\r\n" toData:formData];
+		}
+		[NSURLRequest appendFormat:@"--%@\r\n" arg:boundary toData:formData];
         [NSURLRequest appendFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n" arg:key toData:formData];
         id value = values[key];
         if ([value isKindOfClass:[NSData class]]) 

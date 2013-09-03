@@ -25,6 +25,8 @@
 // Display name generated
 - (void)makeDisplayName;
 
+- (NSString*)displayNameUpToMinor;
+
 // Access to particular numbers
 @property (nonatomic, readonly) NSUInteger majorNumber;
 @property (nonatomic, readonly) NSUInteger minorNumber;

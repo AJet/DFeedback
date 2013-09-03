@@ -42,7 +42,7 @@ typedef struct
 - (void)dealloc
 {
 	[_displayName release];
-    for (NSUInteger i = 0; i < VersionPart_Count; ++i)
+    for (VersionPartIndex i = 0; i < VersionPart_Count; ++i)
     {
         [_parts[i].string release];
     }
@@ -54,8 +54,8 @@ typedef struct
 {
     SoftwareVersion* result = [[[SoftwareVersion alloc] init] autorelease];
 	NSArray* partStrings = [versionString componentsSeparatedByString:@"."];
-    NSUInteger partCount = MIN(partStrings.count, VersionPart_Count);
-    for (NSUInteger i = 0; i < partCount; ++i)
+    VersionPartIndex partCount = MIN(partStrings.count, VersionPart_Count);
+    for (VersionPartIndex i = 0; i < partCount; ++i)
     {
         NSString* partString = partStrings[i];
         NSScanner* scanner = [NSScanner scannerWithString:partString];
@@ -93,8 +93,8 @@ typedef struct
     if (count > 0)
     {
         result = [[[SoftwareVersion alloc] init] autorelease];
-        NSUInteger partCount = MIN(count, VersionPart_Count);
-        for (NSUInteger i = 0; i < partCount; ++i)
+        VersionPartIndex partCount = MIN(count, VersionPart_Count);
+        for (VersionPartIndex i = 0; i < partCount; ++i)
         {
             VersionPart* part = result.parts + i;
             part->isSet = YES;
@@ -111,7 +111,7 @@ typedef struct
     {
         return NSOrderedDescending;
     }
-    for (NSUInteger i = 0; i < VersionPart_Count; ++i)
+    for (VersionPartIndex i = 0; i < VersionPart_Count; ++i)
     {
         VersionPart* selfPart = _parts + i;
         VersionPart* otherPart = other.parts + i;
@@ -160,10 +160,10 @@ typedef struct
 }
 
 //-------------------------------------------------------------------------------------------------
-- (void)makeDisplayName
+- (NSString*)displayNameUpToPart:(VersionPartIndex)partIndex
 {
     NSString* displayName = nil;
-    for (NSUInteger i = 0; i < VersionPart_Count; ++i)
+    for (VersionPartIndex i = 0; i <= partIndex; ++i)
     {
         VersionPart* part = _parts + i;
         if (part->isSet)
@@ -187,8 +187,22 @@ typedef struct
             break;
         }
     }
+    return displayName;
+}
+
+//-------------------------------------------------------------------------------------------------
+- (NSString*)displayNameUpToMinor
+{
+    return [self displayNameUpToPart:VersionPart_Minor];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)makeDisplayName
+{
+    NSString* displayName = [self displayNameUpToPart:VersionPart_Count - 1];
     self.displayName = displayName;
 }
+
 
 //-------------------------------------------------------------------------------------------------
 - (VersionPart*)parts

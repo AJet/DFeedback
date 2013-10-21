@@ -315,7 +315,7 @@ Gw
                         </scroller>
                     </scrollView>
                     <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="120" userLabel="Progress Indicator">
-                        <rect key="frame" x="119" y="160" width="16" height="16"/>
+                        <rect key="frame" x="113" y="160" width="16" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </progressIndicator>
                     <textField verticalHuggingPriority="750" id="122">

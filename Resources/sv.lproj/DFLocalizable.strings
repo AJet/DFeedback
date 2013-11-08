@@ -1,0 +1,11 @@
+﻿/*-------------------------------------------------------------------------------------------------*/
+/* Copyright (c) 2008 DaisyDisk Team: <http://www.daisydiskapp.com> */
+/* Some rights reserved: <http://opensource.org/licenses/mit-license.php> */
+/*-------------------------------------------------------------------------------------------------*/
+
+"DFeedback_Alert_SendFailed_Title" = "Kunde inte skicka feedback";
+"DFeedback_Alert_SendFailed_Message" = "Följande fel har inträffat: %@";
+"DFeedback_Alert_SendFailed_Button_Dismiss" = "Avfärda";
+
+"DFeedback_PlaceholderText" = "Skriv din feedback på engelska, eftersom vi inte förstår svenska.";
+

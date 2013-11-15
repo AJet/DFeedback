@@ -457,13 +457,13 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
 - (BOOL)shouldAccessContacts
 {
     BOOL result = YES;
-    if ([OSXVersion generation] >= OSXGeneration_MountainLion)
-    {
-        // we don't want the dreaded dialog that the app wants to access your contacts
-        result = NO;
-    }
-    else
-    {
+//    if ([OSXVersion generation] >= OSXGeneration_MountainLion)
+//    {
+//        // we don't want the dreaded dialog that the app wants to access your contacts
+//        result = NO;
+//    }
+//    else
+//    {
         // check if sandboxed at all
         if ([ApplicationSandboxInfo isSandboxed])
         {
@@ -473,7 +473,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
                 result = NO;
             }
         }
-    }
+//    }
     return result;
 }
 

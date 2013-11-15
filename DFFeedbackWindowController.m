@@ -205,7 +205,7 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
                                    forEdge:NSMinYEdge];
 	
 	// initialize placeholder strings
-	_textView.placeholderText = NSLocalizedStringFromTable(@"DF_TEXT_PLACEHOLDER", @"DFLocalizable", nil);
+	_textView.placeholderText = NSLocalizedStringFromTable(@"DFeedback_PlaceholderText", @"DFLocalizable", nil);
 	
 	// initialize email bounce icon
     _emailBounceIconSavedFrame = _emailBounceIcon.frame;
@@ -794,11 +794,11 @@ static BOOL IsValidEmailAddress(NSString* emailAddress)
         else
         {
             _sendButton.enabled = YES;
-            NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedStringFromTable(@"DF_ALERT_SENDFAILED_TITLE", @"DFLocalizable", nil)
-                                             defaultButton:NSLocalizedStringFromTable(@"DF_ALERT_SENDFAILED_DISMISS_BUTTON_TITLE", @"DFLocalizable", nil)
+            NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedStringFromTable(@"DFeedback_Alert_SendFailed_Title", @"DFLocalizable", nil)
+                                             defaultButton:NSLocalizedStringFromTable(@"DFeedback_Alert_SendFailed_Button_Dismiss", @"DFLocalizable", nil)
                                            alternateButton:nil
                                                otherButton:nil
-                                 informativeTextWithFormat:NSLocalizedStringFromTable(@"DF_ALERT_SENDFAILED_MESSAGE", @"DFLocalizable", nil), error.localizedDescription];
+                                 informativeTextWithFormat:NSLocalizedStringFromTable(@"DFeedback_Alert_SendFailed_Message", @"DFLocalizable", nil), error.localizedDescription];
             [alert beginSheetModalForWindow:self.window
                               modalDelegate:self
                              didEndSelector:nil

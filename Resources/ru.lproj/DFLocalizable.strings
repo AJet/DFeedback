@@ -1,11 +1,11 @@
-/*-------------------------------------------------------------------------------------------------*/
+﻿/*-------------------------------------------------------------------------------------------------*/
 /* Copyright (c) 2008 DaisyDisk Team: <http://www.daisydiskapp.com> */
 /* Some rights reserved: <http://opensource.org/licenses/mit-license.php> */
 /*-------------------------------------------------------------------------------------------------*/
 
-"DF_ALERT_SENDFAILED_TITLE" = "Не удалось отправить сообщение";
-"DF_ALERT_SENDFAILED_MESSAGE" = "Причина неудачи: %@";
-"DF_ALERT_SENDFAILED_DISMISS_BUTTON_TITLE" = "Скрыть";
+"DFeedback_Alert_SendFailed_Title" = "Не удалось отправить сообщение";
+"DFeedback_Alert_SendFailed_Message" = "Причина неудачи: %@";
+"DFeedback_Alert_SendFailed_Button_Dismiss" = "Скрыть";
 
-"DF_TEXT_PLACEHOLDER" = "Можете писать по-русски, мы поймем :)"; /* we do understand Russian, but if you don't this should be as follows: "Пожалуйста, пишите ваше сообщение по-английски, так как мы не говорим по-русски." */
+"DFeedback_PlaceholderText" = "Можете писать по-русски, мы поймем :)";
 

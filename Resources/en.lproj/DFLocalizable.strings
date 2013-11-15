@@ -1,10 +1,10 @@
-/*-------------------------------------------------------------------------------------------------*/
+﻿/*-------------------------------------------------------------------------------------------------*/
 /* Copyright (c) 2008 DaisyDisk Team: <http://www.daisydiskapp.com> */
 /* Some rights reserved: <http://opensource.org/licenses/mit-license.php> */
 /*-------------------------------------------------------------------------------------------------*/
 
-"DF_ALERT_SENDFAILED_TITLE" = "Failed to send the feedback";
-"DF_ALERT_SENDFAILED_MESSAGE" = "The following error has occurred: %@";
-"DF_ALERT_SENDFAILED_DISMISS_BUTTON_TITLE" = "Dismiss";
+"DFeedback_Alert_SendFailed_Title" = "Failed to send the feedback";
+"DFeedback_Alert_SendFailed_Message" = "The following error has occurred: %@";
+"DFeedback_Alert_SendFailed_Button_Dismiss" = "Dismiss";
 
-"DF_TEXT_PLACEHOLDER" = ""; /* we do understand English, for other languages should be, translated: Please write your feedback in English, as we can't understand <language>. */
+"DFeedback_PlaceholderText" = ""; /* we do understand English, for other languages should be, translated: Please write your feedback in English, as we can't understand <language>. */

@@ -175,7 +175,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
     
     _iconImageView.image = _icon;
     
-	_commentsTextView.placeholderText = NSLocalizedStringFromTable(@"DF_TEXT_PLACEHOLDER", @"DFLocalizable", nil);
+	_commentsTextView.placeholderText = NSLocalizedStringFromTable(@"DFeedback_PlaceholderText", @"DFLocalizable", nil);
     
     // replace update label with link label
     if (_updateLabel != nil)

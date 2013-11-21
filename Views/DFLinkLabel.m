@@ -131,9 +131,9 @@
                                                                  range:NSMakeRange(searchLocation, valueLength - searchLocation)].location;
                 NSAssert(closeBracketLocation != NSNotFound, @"Link label error: open bracket unmatched with close bracket");
 
-                NSString* newPiece = [value substringWithRange:NSMakeRange(openBracketLocation + 1, closeBracketLocation - openBracketLocation - 1)];
-                [_linkRanges addObject:[NSValue valueWithRange:NSMakeRange(_text.length, newPiece.length)]];
-                [self appendTextWithPart:newPiece attributes:linkTextAttrs];
+                NSString* linkPiece = [value substringWithRange:NSMakeRange(openBracketLocation + 1, closeBracketLocation - openBracketLocation - 1)];
+                [_linkRanges addObject:[NSValue valueWithRange:NSMakeRange(_text.length, linkPiece.length)]];
+                [self appendTextWithPart:linkPiece attributes:linkTextAttrs];
                 
                 
                 searchLocation = closeBracketLocation + 1;

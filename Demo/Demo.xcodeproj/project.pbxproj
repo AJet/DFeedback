@@ -85,6 +85,12 @@
 		7C3C46321371221700AAD108 /* DFKeyTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFKeyTabView.m; sourceTree = "<group>"; };
 		7C3C46C41371428900AAD108 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		7C3C46CA137142A000AAD108 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		7C8440B4187D83A200C38BDF /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/DFCrashReportWindow.xib; sourceTree = "<group>"; };
+		7C8440B5187D83A200C38BDF /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/DFFeedbackWindow.xib; sourceTree = "<group>"; };
+		7C8440B6187D83A200C38BDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
+		7C8440B7187D83B500C38BDF /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = sv.lproj/DFCrashReportWindow.xib; sourceTree = "<group>"; };
+		7C8440B8187D83B500C38BDF /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = sv.lproj/DFFeedbackWindow.xib; sourceTree = "<group>"; };
+		7C8440B9187D83B500C38BDF /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
 		7C8E4B351596E4A900529DCF /* DFApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFApplication.h; path = ../DFApplication.h; sourceTree = "<group>"; };
 		7C8E4B361596E4A900529DCF /* DFApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DFApplication.m; path = ../DFApplication.m; sourceTree = "<group>"; };
 		7C8E4B371596E4A900529DCF /* DFCrashReportWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DFCrashReportWindowController.h; path = ../DFCrashReportWindowController.h; sourceTree = "<group>"; };
@@ -349,6 +355,8 @@
 				fr,
 				it,
 				ru,
+				es,
+				sv,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Demo */;
 			projectDirPath = "";
@@ -432,6 +440,8 @@
 				7C8E4B5A1596E4D200529DCF /* fr */,
 				7C8E4B601596E4D800529DCF /* it */,
 				7C8E4B661596E4DF00529DCF /* ru */,
+				7C8440B4187D83A200C38BDF /* es */,
+				7C8440B7187D83B500C38BDF /* sv */,
 			);
 			name = DFCrashReportWindow.xib;
 			sourceTree = "<group>";
@@ -444,6 +454,8 @@
 				7C8E4B5B1596E4D200529DCF /* fr */,
 				7C8E4B611596E4D800529DCF /* it */,
 				7C8E4B671596E4DF00529DCF /* ru */,
+				7C8440B5187D83A200C38BDF /* es */,
+				7C8440B8187D83B500C38BDF /* sv */,
 			);
 			name = DFFeedbackWindow.xib;
 			sourceTree = "<group>";
@@ -456,6 +468,8 @@
 				7CF621DB15AB0E86008BDEFB /* fr */,
 				7CF621DD15AB0E8C008BDEFB /* it */,
 				7CF621DF15AB0E91008BDEFB /* ru */,
+				7C8440B6187D83A200C38BDF /* es */,
+				7C8440B9187D83B500C38BDF /* sv */,
 			);
 			name = DFLocalizable.strings;
 			sourceTree = "<group>";

@@ -114,6 +114,9 @@
 		7C8E4B611596E4D800529DCF /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/DFFeedbackWindow.xib; sourceTree = "<group>"; };
 		7C8E4B661596E4DF00529DCF /* ru */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ru; path = ru.lproj/DFCrashReportWindow.xib; sourceTree = "<group>"; };
 		7C8E4B671596E4DF00529DCF /* ru */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ru; path = ru.lproj/DFFeedbackWindow.xib; sourceTree = "<group>"; };
+		7CE0209A187E83D300D88621 /* pl */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = pl; path = pl.lproj/DFCrashReportWindow.xib; sourceTree = "<group>"; };
+		7CE0209B187E83D300D88621 /* pl */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = pl; path = pl.lproj/DFFeedbackWindow.xib; sourceTree = "<group>"; };
+		7CE0209C187E83D300D88621 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
 		7CF621D715AB0D64008BDEFB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
 		7CF621D915AB0E80008BDEFB /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
 		7CF621DB15AB0E86008BDEFB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/DFLocalizable.strings; sourceTree = "<group>"; };
@@ -357,6 +360,7 @@
 				ru,
 				es,
 				sv,
+				pl,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Demo */;
 			projectDirPath = "";
@@ -442,6 +446,7 @@
 				7C8E4B661596E4DF00529DCF /* ru */,
 				7C8440B4187D83A200C38BDF /* es */,
 				7C8440B7187D83B500C38BDF /* sv */,
+				7CE0209A187E83D300D88621 /* pl */,
 			);
 			name = DFCrashReportWindow.xib;
 			sourceTree = "<group>";
@@ -456,6 +461,7 @@
 				7C8E4B671596E4DF00529DCF /* ru */,
 				7C8440B5187D83A200C38BDF /* es */,
 				7C8440B8187D83B500C38BDF /* sv */,
+				7CE0209B187E83D300D88621 /* pl */,
 			);
 			name = DFFeedbackWindow.xib;
 			sourceTree = "<group>";
@@ -470,6 +476,7 @@
 				7CF621DF15AB0E91008BDEFB /* ru */,
 				7C8440B6187D83A200C38BDF /* es */,
 				7C8440B9187D83B500C38BDF /* sv */,
+				7CE0209C187E83D300D88621 /* pl */,
 			);
 			name = DFLocalizable.strings;
 			sourceTree = "<group>";

@@ -15,6 +15,7 @@
 #import "DFComboBoxCell.h"
 #import "OSXVersion.h"
 #import "StringAnonymizer.h"
+#import "EmailValidation.h"
 
 //-------------------------------------------------------------------------------------------------
 #pragma mark - Private constants
@@ -47,39 +48,6 @@ static DFFeedbackWindowController* _singleton = nil;
 static NSString* _feedbackUrl = nil;
 static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All;
 
-
-//-------------------------------------------------------------------------------------------------
-#pragma mark - Private functions
-//-------------------------------------------------------------------------------------------------
-static BOOL IsEmptyMessage(NSString* string)
-{
-    BOOL result = YES;
-	if ([string length] > 0)
-	{
-		NSString* regEx = @".*[^ \t\r\n]+.*";
-		NSPredicate* test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regEx];
-		if([test evaluateWithObject:string])
-		{
-			result = NO;
-		}
-	}
-	return result;
-}
-
-//-------------------------------------------------------------------------------------------------
-static BOOL IsValidEmailAddress(NSString* emailAddress)
-{
-	if (emailAddress != nil && ![emailAddress isEqualToString:@""])
-	{
-		NSString* emailRegEx = @"[ ]*[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}[ ]*";
-		NSPredicate* emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx];
-		if([emailTest evaluateWithObject:emailAddress])
-		{
-			return YES;
-		}
-	}
-	return NO;
-}
 
 //-------------------------------------------------------------------------------------------------
 #pragma mark - Private interface

@@ -123,6 +123,15 @@ static NSUInteger const kCrashSequenceCountMax = 3;
             {
                 result = YES;
             }
+            else
+            {
+                // Mars Themes exception
+                BOOL isMarsThemesException = [exceptionStackTrace rangeOfString:@"MTTextTools"].location != NSNotFound;
+                if (isMarsThemesException)
+                {
+                    result = YES;
+                }
+            }
         }
 	}
     

@@ -43,6 +43,7 @@ In your application delegate's `NSUserInterfaceValidations validateUserInterface
                     …
                 }
 
+Note the `+[DFApplication ignoreExceptionsWhoseStackTraceContains:]` method. You can use it to absorb certain exceptions in case if their stack trace contains either of the specified strings. This is useful to avoid crashing on exceptions in third-party components.
 
 The two above components are independent on each other, you can use any or both of them.
 

@@ -12,10 +12,26 @@ static NSString* const kUserDefaultCrashSequenceCount = @"DFApplication_crashSeq
 static NSUInteger const kCrashSequenceCountMax = 3;
 
 //-------------------------------------------------------------------------------------------------
+static NSMutableArray* _ignoredExceptionStrings = nil;
+
+//-------------------------------------------------------------------------------------------------
 @implementation DFApplication
 {
     BOOL _isRelaunching;
     BOOL _isPostmortem;
+}
+
+//-------------------------------------------------------------------------------------------------
++ (void)ignoreExceptionsWhoseStackTraceContains:(NSArray*)strings
+{
+    if (_ignoredExceptionStrings == nil)
+    {
+        _ignoredExceptionStrings = [[NSMutableArray alloc] initWithCapacity:strings.count];
+        if (strings != nil)
+        {
+            [_ignoredExceptionStrings addObjectsFromArray:strings];
+        }
+    }
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -24,6 +40,13 @@ static NSUInteger const kCrashSequenceCountMax = 3;
 	self = [super init];
 	if (self != nil)
 	{
+        // initialize ignored exceptions
+        if (_ignoredExceptionStrings == nil)
+        {
+            [self.class ignoreExceptionsWhoseStackTraceContains: @[@"Versions/A/Sparkle",
+                                                                   @"SIMBL",
+                                                                   @"MTTextTools"]];
+        }
 	}
 	return self;
 }
@@ -109,28 +132,13 @@ static NSUInteger const kCrashSequenceCountMax = 3;
     }
     else
     {
-        // Sparkle Update bugs should be ignored
-        BOOL isSparkleException = [exceptionStackTrace rangeOfString:@"Versions/A/Sparkle"].location != NSNotFound;
-        if (isSparkleException)
+        for (NSString* ignoredString in _ignoredExceptionStrings)
         {
-            result = YES;
-        }
-        else
-        {
-            // Simble exceptions should be ignored
-            BOOL isSimbleException = [exceptionStackTrace rangeOfString:@"SIMBL"].location != NSNotFound;
-            if (isSimbleException)
+            BOOL isMatch = [exceptionStackTrace rangeOfString:ignoredString].location != NSNotFound;
+            if (isMatch)
             {
                 result = YES;
-            }
-            else
-            {
-                // Mars Themes exception
-                BOOL isMarsThemesException = [exceptionStackTrace rangeOfString:@"MTTextTools"].location != NSNotFound;
-                if (isMarsThemesException)
-                {
-                    result = YES;
-                }
+                break;
             }
         }
 	}

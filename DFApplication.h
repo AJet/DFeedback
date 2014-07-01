@@ -15,4 +15,7 @@
 // Flag indicating that an unhandled exception has occured and the app is in process of terminating
 @property (nonatomic, readonly) BOOL isPostmortem;
 
+// You can ignore certain exceptions whose stack traces contain the following strings
++ (void)ignoreExceptionsWhoseStackTraceContains:(NSArray*)strings;
+
 @end

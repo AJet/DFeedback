@@ -13,6 +13,7 @@ static NSUInteger const kCrashSequenceCountMax = 3;
 
 //-------------------------------------------------------------------------------------------------
 static NSMutableArray* _ignoredExceptionStrings = nil;
+static BOOL _hasHardcodedExceptions = NO;
 
 //-------------------------------------------------------------------------------------------------
 @implementation DFApplication
@@ -26,11 +27,12 @@ static NSMutableArray* _ignoredExceptionStrings = nil;
 {
     if (_ignoredExceptionStrings == nil)
     {
-        _ignoredExceptionStrings = [[NSMutableArray alloc] initWithCapacity:strings.count];
-        if (strings != nil)
-        {
-            [_ignoredExceptionStrings addObjectsFromArray:strings];
-        }
+        _ignoredExceptionStrings = [[NSMutableArray alloc] init];
+    }
+
+    if (strings != nil)
+    {
+        [_ignoredExceptionStrings addObjectsFromArray:strings];
     }
 }
 
@@ -40,12 +42,12 @@ static NSMutableArray* _ignoredExceptionStrings = nil;
 	self = [super init];
 	if (self != nil)
 	{
-        // initialize ignored exceptions
-        if (_ignoredExceptionStrings == nil)
+        if (!_hasHardcodedExceptions)
         {
             [self.class ignoreExceptionsWhoseStackTraceContains: @[@"Versions/A/Sparkle",
                                                                    @"SIMBL",
                                                                    @"MTTextTools"]];
+            _hasHardcodedExceptions = YES;
         }
 	}
 	return self;

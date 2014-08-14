@@ -18,26 +18,27 @@ static SoftwareVersion* _version = nil;
 {
 	if (_generation == OSXGeneration_Unknown)
 	{
-		SInt32 version = 0;
-		if (Gestalt(gestaltSystemVersion, &version) == noErr)
+		SoftwareVersion *version = [self version];
+		
+		if (version.majorNumber == 10)
 		{
-			if (version >= 0x1090)
+			if (version.minorNumber >= 9)
 			{
 				_generation = OSXGeneration_Mavericks;
 			}
-			else if (version >= 0x1080)
+			else if (version.minorNumber >= 8)
 			{
 				_generation = OSXGeneration_MountainLion;
 			}
-			else if (version >= 0x1070)
+			else if (version.minorNumber >= 7)
 			{
 				_generation = OSXGeneration_Lion;
 			}
-			else if (version >= 0x1060)
+			else if (version.minorNumber >= 6)
 			{
 				_generation = OSXGeneration_SnowLeopard;
 			}
-			else if (version >= 0x1050)
+			else if (version.minorNumber >= 5)
 			{
 				_generation = OSXGeneration_Leopard;
 			}
@@ -51,15 +52,21 @@ static SoftwareVersion* _version = nil;
 {
     if (_version == nil)
     {
-        SInt32 majorVersion = 0;
-        Gestalt(gestaltSystemVersionMajor, &majorVersion);
-        SInt32 minorVersion = 0;
-        Gestalt(gestaltSystemVersionMinor, &minorVersion);
-        SInt32 buildVersion = 0;
-        Gestalt(gestaltSystemVersionBugFix, &buildVersion);
-
-        NSUInteger numbers[3] = {majorVersion, minorVersion, buildVersion};
-        _version = [[SoftwareVersion versionFromNumbers:numbers count:3] retain];
+		NSDictionary * dict = [[[NSDictionary alloc] initWithContentsOfFile:@"/System/Library/CoreServices/SystemVersion.plist"] autorelease];
+        NSString *productVersion = [dict valueForKey:@"ProductVersion"];
+		NSArray *components = [[productVersion stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] componentsSeparatedByString:@"."];
+		NSUInteger numbers[components.count];
+		for (NSUInteger componentIndex = 0; componentIndex < components.count; componentIndex++) {
+			NSString *component = components[componentIndex];
+			long long number;
+			NSScanner *scanner = [NSScanner scannerWithString:component];
+			if (![scanner scanLongLong:&number]) {
+				number = 0;
+			}
+			numbers[componentIndex] = number;
+		}
+		
+        _version = [[SoftwareVersion versionFromNumbers:numbers count:components.count] retain];
         [_version makeDisplayName];
     }
     return _version;

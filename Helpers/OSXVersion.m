@@ -18,15 +18,15 @@ static SoftwareVersion* _version = nil;
 {
 	if (_generation == OSXGeneration_Unknown)
 	{
-        SInt32 major = 0;
-        if (Gestalt(gestaltSystemVersionMajor, &major) == noErr)
+        SInt32 majorVersion = 0;
+        if (Gestalt(gestaltSystemVersionMajor, &majorVersion) == noErr)
         {
-            if (major == 10)
+            if (majorVersion == 10)
             {
-                SInt32 minor = 0;
-                if (Gestalt(gestaltSystemVersionMinor, &minor) == noErr)
+                SInt32 minorVersion = 0;
+                if (Gestalt(gestaltSystemVersionMinor, &minorVersion) == noErr)
                 {
-                    switch (minor)
+                    switch (minorVersion)
                     {
                         case 10:
                             _generation = OSXGeneration_Yosemite;

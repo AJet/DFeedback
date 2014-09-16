@@ -68,7 +68,7 @@ static BOOL _hasHardcodedExceptions = NO;
     
     // launch a script that waits for the app to exit and then relaunches it
     NSString* scriptPath = [[NSBundle mainBundle] pathForResource:@"DFRelaunch" ofType:@"sh"];
-    NSString* bundlePath = [NSString stringWithFormat:@"%s", [NSBundle mainBundle].executablePath.fileSystemRepresentation];
+    NSString* bundlePath = [NSString stringWithFormat:@"%s", [NSBundle mainBundle].bundlePath.fileSystemRepresentation];
     NSString* processIdentifier = [NSString stringWithFormat:@"%d", [NSProcessInfo processInfo].processIdentifier];
     NSString* bundleId = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"];
     NSArray* arguments = @[scriptPath,

@@ -100,7 +100,7 @@
         
         NSDictionary* linkTextAttrs = @{NSFontAttributeName : (_font != nil ? _font : DFLinkLabel_font),
                                         NSForegroundColorAttributeName : DFLinkLabel_linkColor,
-                                        NSUnderlineStyleAttributeName : (DFLinkLabel_linkUnderlined ? @(NSUnderlinePatternSolid | NSSingleUnderlineStyle) : @(NSUnderlineStyleNone))};
+                                        NSUnderlineStyleAttributeName : (DFLinkLabel_linkUnderlined ? @(NSUnderlinePatternSolid | NSUnderlineStyleSingle) : @(NSUnderlineStyleNone))};
 
         // split into attributed ranges
         NSUInteger openBracketLocation = NSNotFound;

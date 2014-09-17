@@ -762,15 +762,15 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
         else
         {
             _sendButton.enabled = YES;
-            NSAlert* alert = [NSAlert alertWithMessageText:NSLocalizedStringFromTable(@"DFeedback_Alert_SendFailed_Title", @"DFLocalizable", nil)
-                                             defaultButton:NSLocalizedStringFromTable(@"DFeedback_Alert_SendFailed_Button_Dismiss", @"DFLocalizable", nil)
-                                           alternateButton:nil
-                                               otherButton:nil
-                                 informativeTextWithFormat:NSLocalizedStringFromTable(@"DFeedback_Alert_SendFailed_Message", @"DFLocalizable", nil), error.localizedDescription];
+            NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+            alert.messageText = NSLocalizedStringFromTable(@"DFeedback_Alert_SendFailed_Title", @"DFLocalizable", nil);
+            alert.informativeText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"DFeedback_Alert_SendFailed_Message", @"DFLocalizable", nil), error.localizedDescription];
+            [alert addButtonWithTitle:NSLocalizedStringFromTable(@"DFeedback_Alert_SendFailed_Button_Dismiss", @"DFLocalizable", nil)];
             [alert beginSheetModalForWindow:self.window
-                              modalDelegate:self
-                             didEndSelector:nil
-                                contextInfo:NULL];
+                          completionHandler:^(NSModalResponse returnCode)
+            {
+                // do nothing
+            }];
         }
     }
 }

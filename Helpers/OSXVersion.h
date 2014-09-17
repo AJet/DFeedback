@@ -16,7 +16,7 @@ typedef enum OSXGeneration : NSUInteger
     OSXGeneration_Lion = 0x1070,
     OSXGeneration_MountainLion = 0x1080,
     OSXGeneration_Mavericks = 0x1090,
-    OSXGeneration_Yosemite = 0x1010,
+    OSXGeneration_Yosemite = 0x10A0,
 } OSXGeneration;
 
 //-------------------------------------------------------------------------------------------------

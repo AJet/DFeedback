@@ -10,11 +10,11 @@
 @interface SoftwareVersion : NSObject
 
 // Parses string and creates version
-+ (SoftwareVersion*)versionFromString:(NSString*)versionString;
++ (SoftwareVersion*)makeVersionFromString:(NSString*)versionString;
 
 // Creates version from an array of numbers
-+ (SoftwareVersion*)versionFromNumbers:(const NSUInteger*)numbers
-                                 count:(NSUInteger)count;
++ (SoftwareVersion*)makeVersionFromNumbers:(const NSUInteger*)numbers
+                                     count:(NSUInteger)count;
 
 // Comparator
 - (NSComparisonResult)compare:(SoftwareVersion*)other;

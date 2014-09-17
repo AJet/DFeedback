@@ -50,7 +50,7 @@ typedef struct
 }
 
 //-------------------------------------------------------------------------------------------------
-+ (SoftwareVersion*)versionFromString:(NSString*)versionString
++ (SoftwareVersion*)makeVersionFromString:(NSString*)versionString
 {
     SoftwareVersion* result = [[[SoftwareVersion alloc] init] autorelease];
 	NSArray* partStrings = [versionString componentsSeparatedByString:@"."];
@@ -86,8 +86,8 @@ typedef struct
 }
 
 //-------------------------------------------------------------------------------------------------
-+ (SoftwareVersion*)versionFromNumbers:(const NSUInteger*)numbers
-                                 count:(NSUInteger)count
++ (SoftwareVersion*)makeVersionFromNumbers:(const NSUInteger*)numbers
+                                     count:(NSUInteger)count
 {
     SoftwareVersion* result = nil;
     if (count > 0)

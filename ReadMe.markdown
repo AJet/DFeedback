@@ -3,10 +3,10 @@
 DFeedback (DaisyDisk Feedback) is a two-in-one component for providing user feedback:
 
 It allows the user to send feedback and request support from within your app. Along with the message, the component can optionally send the user's e-mail and system configuration profile.
-![Screenshot](http://f.cl.ly/items/0v3j0Y371q230s3n3b3J/DFeedback.png)
+![Screenshot](http://cl.ly/image/071u0O021t2J/Feedback.png)
 
 It automatically catches all unhandled exceptions and shows a crash report window suggesting the user to send an anonymous crash report, along with the stack trace, system configuration profile and optional user comments.
-![Screenshot](http://f.cl.ly/items/3J291y25373q413C0N0x/DDFeedback_crash.png)
+![Screenshot](http://f.cl.ly/items/2G1k2Y353B2h2R3i2J3a/crash.png)
 
 # Usage
 

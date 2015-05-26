@@ -45,9 +45,9 @@ struct GTMClassDescription {
 static struct GTMClassDescription *GTMClassDescriptions(NSUInteger *total_count) {
 	int class_count = objc_getClassList(nil, 0);
 	struct GTMClassDescription *class_descs 
-    = calloc(class_count, sizeof(struct GTMClassDescription));
+    = calloc((size_t)class_count, sizeof(struct GTMClassDescription));
 	if (class_descs) {
-		Class *classes = calloc(class_count, sizeof(Class));
+		Class *classes = calloc((size_t)class_count, sizeof(Class));
 		if (classes) {
 			objc_getClassList(classes, class_count);
 			for (int i = 0; i < class_count; ++i) {
@@ -68,7 +68,7 @@ static struct GTMClassDescription *GTMClassDescriptions(NSUInteger *total_count)
 		}
 	}
 	if (total_count) {
-		*total_count = class_count;
+		*total_count = (NSUInteger)class_count;
 	}
 	return class_descs;
 }
@@ -141,7 +141,7 @@ static NSUInteger GTMGetStackAddressDescriptorsForAddresses(void *pcs[],
 		// If we have one, store it off.
 		if (best_method) {
 			currDesc->symbol = sel_getName(method_getName(best_method));
-			currDesc->is_class_method = is_class_method;
+			currDesc->is_class_method = is_class_method != 0;
 			currDesc->class_name = class_name;
 		}
 		Dl_info info = { NULL, NULL, NULL, NULL };

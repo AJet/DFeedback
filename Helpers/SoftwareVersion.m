@@ -64,7 +64,7 @@ typedef struct
         part->isSet = [scanner scanInteger:&number] && number >= 0;
         if (part->isSet)
         {
-            part->number = number;
+            part->number = (NSUInteger)number;
             if (!scanner.isAtEnd)
             {
                 part->string = [[partString substringFromIndex:scanner.scanLocation] retain];

@@ -129,7 +129,7 @@ static const DFSystemProfileDataType kSectionTypes[] =
         if (*cp == '\n' || cp == endOfString)
         {
             // analyze line if not empty
-            NSUInteger currLineLength = cp - currLine;
+            NSUInteger currLineLength = (NSUInteger)(cp - currLine);
             if (currLineLength > 0)
             {
                 // this is a section header

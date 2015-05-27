@@ -223,7 +223,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
         self.window.title = windowTitle;
         
         // select tab
-        NSUInteger tabIndex = [self tabIndexFromFeedbackType:feedbackType];
+        NSInteger tabIndex = (NSInteger)[self tabIndexFromFeedbackType:feedbackType];
         _tabsSegmentedControl.selectedSegment = tabIndex;
         [_tabView selectTabViewItemAtIndex:tabIndex];
         [self tabView:_tabView didSelectTabViewItem:[_tabView tabViewItemAtIndex:tabIndex]];
@@ -336,8 +336,8 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 //-------------------------------------------------------------------------------------------------
 - (DFFeedbackType)currentFeedbackType;
 {
-	NSUInteger tabIndex = [_tabView indexOfTabViewItem:_tabView.selectedTabViewItem];
-	return [self feedbackTypeFromTabIndex:tabIndex];
+	NSInteger tabIndex = [_tabView indexOfTabViewItem:_tabView.selectedTabViewItem];
+	return [self feedbackTypeFromTabIndex:(NSUInteger)tabIndex];
 }
 
 //-------------------------------------------------------------------------------------------------

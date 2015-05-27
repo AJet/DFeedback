@@ -86,7 +86,7 @@ static BOOL _hasHardcodedExceptions = NO;
 {
     
 	// prevent endless loop of relaunch and crash
-	NSUInteger crashSequenceCount = [[NSUserDefaults standardUserDefaults] integerForKey:kUserDefaultCrashSequenceCount];
+	NSUInteger crashSequenceCount = (NSUInteger)[[NSUserDefaults standardUserDefaults] integerForKey:kUserDefaultCrashSequenceCount];
     if (crashSequenceCount < kCrashSequenceCountMax - 1)
 	{
 		[self launchAnotherInstanceAndWaitForTermination];
@@ -101,9 +101,9 @@ static BOOL _hasHardcodedExceptions = NO;
 	if (_isPostmortem && _isRelaunching)
 	{
         // save sequential crash count
-		NSUInteger crashSequenceCount = [[NSUserDefaults standardUserDefaults] integerForKey:kUserDefaultCrashSequenceCount];
+		NSUInteger crashSequenceCount = (NSUInteger)[[NSUserDefaults standardUserDefaults] integerForKey:kUserDefaultCrashSequenceCount];
         ++crashSequenceCount;
-        [[NSUserDefaults standardUserDefaults] setInteger:crashSequenceCount 
+        [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)crashSequenceCount
                                                    forKey:kUserDefaultCrashSequenceCount];
         [[NSUserDefaults standardUserDefaults] synchronize];
 		

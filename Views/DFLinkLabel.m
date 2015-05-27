@@ -109,7 +109,7 @@
         while (searchLocation < valueLength)
         {
             openBracketLocation = [value rangeOfString:@"["
-                                               options:0
+                                               options:(NSStringCompareOptions)0
                                                  range:NSMakeRange(searchLocation, valueLength - searchLocation)].location;
 
             // string before open bracket
@@ -127,7 +127,7 @@
                 // link range
                 searchLocation = openBracketLocation + 1;
                 NSUInteger closeBracketLocation = [value rangeOfString:@"]"
-                                                               options:0
+                                                               options:(NSStringCompareOptions)0
                                                                  range:NSMakeRange(searchLocation, valueLength - searchLocation)].location;
                 NSAssert(closeBracketLocation != NSNotFound, @"Link label error: open bracket unmatched with close bracket");
 
@@ -191,7 +191,7 @@
 	}
 	_trackingArea = [[NSTrackingArea alloc]
                      initWithRect:self.bounds
-                     options:(NSTrackingActiveInKeyWindow | NSTrackingMouseMoved | NSTrackingMouseEnteredAndExited)
+                     options:(NSTrackingAreaOptions)(NSTrackingActiveInKeyWindow | NSTrackingMouseMoved | NSTrackingMouseEnteredAndExited)
                      owner:self
                      userInfo:nil];
 	[self addTrackingArea:_trackingArea];

@@ -71,7 +71,7 @@ static SoftwareVersion* _version = nil;
                 SInt32 buildVersion = 0;
                 if (Gestalt(gestaltSystemVersionBugFix, &buildVersion) == noErr)
                 {
-                    NSUInteger numbers[3] = {majorVersion, minorVersion, buildVersion};
+                    NSUInteger numbers[3] = {(NSUInteger)majorVersion, (NSUInteger)minorVersion, (NSUInteger)buildVersion};
                     _version = [[SoftwareVersion makeVersionFromNumbers:numbers count:3] retain];
                     [_version makeDisplayName];
                 }

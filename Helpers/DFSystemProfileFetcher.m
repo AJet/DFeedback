@@ -9,52 +9,108 @@
 #import "ApplicationSandboxInfo.h"
 
 //-------------------------------------------------------------------------------------------------
-static const char* const kSectionHeaders[] =
+static NSString* kDataTypeIds[] =
 {
-    "Audio:",
-    "Audio (Built In):",
-    "Bluetooth:",
-    "Card Reader:",
-    "Diagnostics:",
-    "Disc Burning:",
-    "Ethernet Cards:",
-    "FireWire:",
-    "Graphics/Displays:",
-    "Hardware:",
-    "Memory:",
-    "Network:",
-    "Printer Software:",
-    "Printers:",
-    "Serial-ATA:",
-    "Software:",
-    "Thunderbolt:",
-    "USB:",
-    "Wi-Fi:",
-    "ATA:"
+    @"SPAirPortDataType",
+    @"SPApplicationsDataType",
+    @"SPAudioDataType",
+    @"SPBluetoothDataType",
+    @"SPCameraDataType",
+    @"SPCardReaderDataType",
+    @"SPComponentDataType",
+    @"SPConfigurationProfileDataType",
+    @"SPDeveloperToolsDataType",
+    @"SPDiagnosticsDataType",
+    @"SPDisabledSoftwareDataType",
+    @"SPDiscBurningDataType",
+    @"SPEthernetDataType",
+    @"SPExtensionsDataType",
+    @"SPFirewallDataType",
+    @"SPFireWireDataType",
+    @"SPFibreChannelDataType",
+    @"SPFontsDataType",
+    @"SPFrameworksDataType",
+    @"SPDisplaysDataType",
+    @"SPHardwareDataType",
+    @"SPHardwareRAIDDataType",
+    @"SPInstallHistoryDataType",
+    @"SPLogsDataType",
+    @"SPManagedClientDataType",
+    @"SPMemoryDataType",
+    @"SPNetworkDataType",
+    @"SPNetworkLocationDataType",
+    @"SPNetworkVolumeDataType",
+    @"SPNVMeDataType",
+    @"SPParallelATADataType",
+    @"SPParallelSCSIDataType",
+    @"SPPCIDataType",
+    @"SPPowerDataType",
+    @"SPPrefPaneDataType",
+    @"SPPrintersSoftwareDataType",
+    @"SPPrintersDataType",
+    @"SPSASDataType",
+    @"SPSerialATADataType",
+    @"SPSoftwareDataType",
+    @"SPSPIDataType",
+    @"SPStartupItemDataType",
+    @"SPStorageDataType",
+    @"SPSyncServicesDataType",
+    @"SPThunderboltDataType",
+    @"SPUniversalAccessDataType",
+    @"SPUSBDataType",
+    @"SPWWANDataType"
 };
 
-static const DFSystemProfileDataType kSectionTypes[] =
+static const DFSystemProfileDataType kDataTypes[] =
 {
+    DFSystemProfileData_AirPort,
+    DFSystemProfileData_Applications,
     DFSystemProfileData_Audio,
-    DFSystemProfileData_AudioBuiltIn,
     DFSystemProfileData_Bluetooth,
+    DFSystemProfileData_Camera,
     DFSystemProfileData_CardReader,
+    DFSystemProfileData_Component,
+    DFSystemProfileData_ConfigurationProfile,
+    DFSystemProfileData_DeveloperTools,
     DFSystemProfileData_Diagnostics,
+    DFSystemProfileData_DisabledSoftware,
     DFSystemProfileData_DiscBurning,
     DFSystemProfileData_EthernetCards,
+    DFSystemProfileData_Extensions,
+    DFSystemProfileData_Firewall,
     DFSystemProfileData_FireWire,
-    DFSystemProfileData_GraphicsDisplays,
+    DFSystemProfileData_FibreChannel,
+    DFSystemProfileData_Fonts,
+    DFSystemProfileData_Frameworks,
+    DFSystemProfileData_Displays,
     DFSystemProfileData_Hardware,
+    DFSystemProfileData_HardwareRAID,
+    DFSystemProfileData_InstallHistory,
+    DFSystemProfileData_Logs,
+    DFSystemProfileData_ManagedClient,
     DFSystemProfileData_Memory,
     DFSystemProfileData_Network,
+    DFSystemProfileData_NetworkLocations,
+    DFSystemProfileData_NetworkVolume,
+    DFSystemProfileData_NVMe,
+    DFSystemProfileData_ParallelATA,
+    DFSystemProfileData_ParallelSCSI,
+    DFSystemProfileData_PCI,
+    DFSystemProfileData_Power,
+    DFSystemProfileData_PrefPane,
     DFSystemProfileData_PrinterSoftware,
     DFSystemProfileData_Printers,
+    DFSystemProfileData_SAS,
     DFSystemProfileData_SerialATA,
     DFSystemProfileData_Software,
+    DFSystemProfileData_SPI,
+    DFSystemProfileData_StartupItem,
+    DFSystemProfileData_Storage,
+    DFSystemProfileData_SyncServices,
     DFSystemProfileData_Thunderbolt,
+    DFSystemProfileData_UniversalAccess,
     DFSystemProfileData_USB,
-    DFSystemProfileData_WiFi,
-    DFSystemProfileData_ATA
+    DFSystemProfileData_WWAN
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -70,7 +126,7 @@ static const DFSystemProfileDataType kSectionTypes[] =
 //-------------------------------------------------------------------------------------------------
 + (void)initialize
 {
-    NSAssert(sizeof(kSectionHeaders) / sizeof(kSectionHeaders[0]) == sizeof(kSectionTypes) / sizeof(kSectionTypes[0]), @"The number of section headers doesn't match the number of section types.");
+    NSAssert(sizeof(kDataTypeIds) / sizeof(kDataTypeIds[0]) == sizeof(kDataTypes) / sizeof(kDataTypes[0]), @"The number of data types doesn't match the number of data type ids.");
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -104,73 +160,13 @@ static const DFSystemProfileDataType kSectionTypes[] =
 		if (data != nil)
 		{
 			[_profile release];
-			_profile = [[self filteredProfileFromData:data dataTypes:_dataTypes] retain];
+            NSString* newProfile = [NSString stringWithUTF8String:data.bytes];
+			_profile = [newProfile retain];
 		}
 	}
 	_isDoneFetching = YES;
     
     [self.delegate systemProfileFetcherDidFinish:self];
-}
-
-//-------------------------------------------------------------------------------------------------
-- (NSString*)filteredProfileFromData:(NSData*)data
-                           dataTypes:(DFSystemProfileDataType)dataTypes
-{
-    NSMutableString* profile = [NSMutableString string];
-    
-    const char* endOfString = (const char*)data.bytes + data.length;
-    char* currLine = (char*)data.bytes;
-    BOOL isCurrLineSectionHeader = YES;
-    BOOL isSectionIncluded = YES;
-    // cycle of characters
-    for (char* cp = (char*)data.bytes; cp <= endOfString; ++cp)
-    {
-        // detect end of line
-        if (*cp == '\n' || cp == endOfString)
-        {
-            // analyze line if not empty
-            NSUInteger currLineLength = (NSUInteger)(cp - currLine);
-            if (currLineLength > 0)
-            {
-                // this is a section header
-                if (isCurrLineSectionHeader)
-                {
-                    for (NSUInteger i = 0; i < sizeof(kSectionHeaders) / sizeof(kSectionHeaders[0]); ++i)
-                    {
-                        if (strncmp(currLine, kSectionHeaders[i], strlen(kSectionHeaders[i])) == 0)
-                        {
-                            isSectionIncluded = (kSectionTypes[i] & _dataTypes) != 0;
-                            break;
-                        }
-                    }
-                }
-            }
-            // include the line
-            if (isSectionIncluded)
-            {
-                NSString* currLineString = [[[NSString alloc] initWithBytes:currLine length:currLineLength encoding:NSUTF8StringEncoding] autorelease];
-                [profile appendString:currLineString];
-                [profile appendString:@"\n"];
-            }
-            
-            // new line
-            currLine = cp + 1;
-            isCurrLineSectionHeader = YES;
-        }
-        else
-        {
-            // detect section header
-            if (cp == currLine)
-            {
-                if (*cp == ' ')
-                {
-                    isCurrLineSectionHeader = NO;
-                }
-            }
-        }
-    }
-
-    return profile;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -194,7 +190,23 @@ static const DFSystemProfileDataType kSectionTypes[] =
 		
         _scriptTask = [[NSTask alloc] init];
         _scriptTask.launchPath = @"/usr/sbin/system_profiler";
-        _scriptTask.arguments = @[@"-detailLevel", @"mini"];
+
+        NSMutableArray* arguments = [NSMutableArray array];
+        if (dataTypes != DFSystemProfileData_All)
+        {
+            for (NSUInteger i = 0; i < sizeof(kDataTypeIds) / sizeof(kDataTypeIds[0]); ++i)
+            {
+                DFSystemProfileDataType currDataType = kDataTypes[i];
+                if ((currDataType & dataTypes) != 0)
+                {
+                    [arguments addObject:kDataTypeIds[i]];
+                }
+            }
+        }
+        [arguments addObject:@"-detailLevel"];
+        [arguments addObject:@"mini"];
+        
+        _scriptTask.arguments = arguments;
         _scriptTask.standardOutput = _scriptPipe;
         @try
         {

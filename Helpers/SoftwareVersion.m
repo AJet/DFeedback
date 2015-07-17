@@ -33,7 +33,7 @@ typedef struct
 	self = [super init];
 	if (self != nil)
 	{
-        memset(_parts, 0, sizeof(_parts));
+        bzero(_parts, sizeof(_parts));
 	}
 	return self;
 }

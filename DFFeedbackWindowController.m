@@ -65,6 +65,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 // system profile controls
 @property (nonatomic, assign) IBOutlet NSView* systemProfileContainer;
 @property (nonatomic, assign) IBOutlet NSButton* includeSystemProfileCheckBox;
+@property (nonatomic, assign) IBOutlet NSButton* seeDetailsButton;
 
 // email controls
 @property (nonatomic, assign) IBOutlet NSButton* includeEmailCheckBox;
@@ -103,6 +104,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 	BOOL _isSendingReport;
     BOOL _isFetchingSystemProfile;
     NSRect _emailBounceIconSavedFrame;
+    NSPopover* _detailsPopover;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -122,6 +124,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 - (void)dealloc
 {
 	[self cancelAllPendingStuff];
+    [_detailsPopover release];
 	[super dealloc];
 }
 
@@ -411,11 +414,19 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 //-------------------------------------------------------------------------------------------------
 - (IBAction)showDetails:(id)sender
 {
-	if (!_detailsWindow.isVisible)
-	{
-		[_detailsWindow center];
-	}
-	[_detailsWindow makeKeyAndOrderFront:self];
+    if (_detailsPopover == nil)
+    {
+        _detailsPopover = [[NSPopover alloc] init];
+        _detailsPopover.behavior = NSPopoverBehaviorTransient;
+        NSViewController* detailsPopoverController = [[[NSViewController alloc] init] autorelease];
+        // TODO: replace window with view in xib, when all locales will be updated
+        detailsPopoverController.view = _detailsWindow.contentView;
+        _detailsPopover.contentViewController = detailsPopoverController;
+    }
+    
+    [_detailsPopover showRelativeToRect:_seeDetailsButton.bounds
+                                 ofView:_seeDetailsButton
+                          preferredEdge:NSMinYEdge];
 }
 
 
@@ -716,7 +727,6 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 	_systemProfileFetcher = nil;
     _isFetchingSystemProfile = NO;
     self.systemProfile = nil;
-	[_detailsWindow orderOut:self];
 	[self updateProgressMode];
 }
 
@@ -806,7 +816,6 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 	{
 		[self cancelAllPendingStuff];
 		[self.window orderOut:self];
-		[_detailsWindow orderOut:self];
 		[_singleton release];
 		_singleton = nil;
 	}

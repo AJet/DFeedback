@@ -15,8 +15,14 @@
 
     if ([self.delegate conformsToProtocol:@protocol(GenericAnimationDelegate)])
     {
-        [(id<GenericAnimationDelegate>)self.delegate animation:self
-                                                   didProgress:progress];
+        // it was found that sometimes the auto-release of objects during animation is postponed
+        // which may cause build-up of significant amount of used memory
+        // so auto-release explicitly
+        @autoreleasepool
+        {
+            [(id<GenericAnimationDelegate>)self.delegate animation:self
+                                                       didProgress:progress];
+        }
     }
 }
 

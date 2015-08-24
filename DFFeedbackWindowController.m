@@ -704,7 +704,14 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
         self.systemProfile = AnonymizeString(_systemProfileFetcher.profile);
         
         // update details window
-        _detailsTextView.textStorage.attributedString = [[[NSAttributedString alloc] initWithString:_systemProfile] autorelease];
+        if (_systemProfile != nil)
+        {
+            _detailsTextView.textStorage.attributedString = [[[NSAttributedString alloc] initWithString:_systemProfile] autorelease];
+        }
+        else
+        {
+            _detailsTextView.textStorage.attributedString = [[[NSAttributedString alloc] init] autorelease];
+        }
         
         // reset fetching progress
         _isFetchingSystemProfile = NO;

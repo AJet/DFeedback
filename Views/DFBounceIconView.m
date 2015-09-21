@@ -224,7 +224,7 @@
 {
     CGFloat result = 1.;
     NSSize iconSize = _icon.size;
-    if (_icon != nil && iconSize.width > 0. && iconSize.height)
+    if (_icon != nil && iconSize.width > 0 && iconSize.height > 0)
     {
         NSSize boundsSize = self.bounds.size;
         result = fmin(boundsSize.width / iconSize.width, boundsSize.height / iconSize.height);

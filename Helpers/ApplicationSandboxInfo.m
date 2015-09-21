@@ -94,7 +94,7 @@ static ApplicationSandboxInfo* _singleton = nil;
                 if (entitlementRequirement != NULL)
                 {
                     // validate code signature and at the same time check requirement
-                    OSStatus signatureValidationResult = SecStaticCodeCheckValidityWithErrors(bundleStaticCode, kSecCSBasicValidateOnly, entitlementRequirement, NULL);
+                    OSStatus signatureValidationResult = SecStaticCodeCheckValidityWithErrors(bundleStaticCode, (SecCSFlags)kSecCSBasicValidateOnly, entitlementRequirement, NULL);
                     if (signatureValidationResult == errSecSuccess)
                     {
                         entitlementResult = YES;

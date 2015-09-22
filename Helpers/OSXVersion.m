@@ -28,6 +28,9 @@ static SoftwareVersion* _version = nil;
                 {
                     switch (minorVersion)
                     {
+                        case 11:
+                            _generation = OSXGeneration_ElCapitan;
+                            break;
                         case 10:
                             _generation = OSXGeneration_Yosemite;
                             break;

@@ -253,14 +253,14 @@ Gw
                         </connections>
                     </button>
                     <segmentedControl verticalHuggingPriority="750" id="83" userLabel="Tabs Segmented Control">
-                        <rect key="frame" x="23" y="376" width="461" height="25"/>
+                        <rect key="frame" x="20" y="376" width="466" height="25"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="84">
                             <font key="font" metaFont="system"/>
                             <segments>
-                                <segment label="Allgemeine Fragen" width="153" selected="YES"/>
-                                <segment label="Neue Funktion" width="152" tag="1"/>
-                                <segment label="Fehlerbericht" width="152"/>
+                                <segment label="Allgemeine Fragen" width="155" selected="YES"/>
+                                <segment label="Neue Funktion" width="154" tag="1"/>
+                                <segment label="Fehlerbericht" width="153"/>
                             </segments>
                         </segmentedCell>
                         <connections>

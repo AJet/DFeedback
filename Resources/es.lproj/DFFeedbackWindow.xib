@@ -316,11 +316,11 @@ Gw
                         </scroller>
                     </scrollView>
                     <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="120" userLabel="Progress Indicator">
-                        <rect key="frame" x="119" y="162" width="16" height="16"/>
+                        <rect key="frame" x="113" y="162" width="16" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </progressIndicator>
                     <textField verticalHuggingPriority="750" id="122">
-                        <rect key="frame" x="143" y="163" width="140" height="14"/>
+                        <rect key="frame" x="135" y="163" width="180" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Recuperando perfil del sistema…" id="123">
                             <font key="font" metaFont="smallSystem"/>

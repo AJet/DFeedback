@@ -18,47 +18,61 @@ static SoftwareVersion* _version = nil;
 {
 	if (_generation == OSXGeneration_Unknown)
 	{
+        OSXGeneration result = _generation;
+
         SInt32 majorVersion = 0;
         if (Gestalt(gestaltSystemVersionMajor, &majorVersion) == noErr)
         {
-            if (majorVersion == 10)
+            SInt32 minorVersion = 0;
+            if (Gestalt(gestaltSystemVersionMinor, &minorVersion) == noErr)
             {
-                SInt32 minorVersion = 0;
-                if (Gestalt(gestaltSystemVersionMinor, &minorVersion) == noErr)
+                if (majorVersion == 10)
                 {
                     switch (minorVersion)
                     {
                         case 12:
-                            _generation = OSXGeneration_Sierra;
+                            result = OSXGeneration_Sierra;
                             break;
                         case 11:
-                            _generation = OSXGeneration_ElCapitan;
+                            result = OSXGeneration_ElCapitan;
                             break;
                         case 10:
-                            _generation = OSXGeneration_Yosemite;
+                            result = OSXGeneration_Yosemite;
                             break;
                         case 9:
-                            _generation = OSXGeneration_Mavericks;
+                            result = OSXGeneration_Mavericks;
                             break;
                         case 8:
-                            _generation = OSXGeneration_MountainLion;
+                            result = OSXGeneration_MountainLion;
                             break;
                         case 7:
-                            _generation = OSXGeneration_Lion;
+                            result = OSXGeneration_Lion;
                             break;
                         case 6:
-                            _generation = OSXGeneration_SnowLeopard;
+                            result = OSXGeneration_SnowLeopard;
                             break;
                         case 5:
-                            _generation = OSXGeneration_Leopard;
+                            result = OSXGeneration_Leopard;
                             break;
                             
                         default:
                             break;
                     }
                 }
+                
+                if (result == OSXGeneration_Unknown)
+                {
+                    // an attempt to provide future compatibility
+                    if (majorVersion >= 0 && majorVersion <= 0xFF && minorVersion >= 0 && minorVersion <= 0xFF)
+                    {
+                        result = (OSXGeneration)((majorVersion << 8) | minorVersion);
+                    }
+                }
             }
+
         }
+        
+        _generation = result;
 	}
 	return _generation;
 }

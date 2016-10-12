@@ -3,9 +3,9 @@
 /* Some rights reserved: <http://opensource.org/licenses/mit-license.php> */
 /*-------------------------------------------------------------------------------------------------*/
 
-"DFeedback_Alert_SendFailed_Title" = "无法传送意见反馈";
-"DFeedback_Alert_SendFailed_Message" = "发生了以下错误: %@";
-"DFeedback_Alert_SendFailed_Button_Dismiss" = "忽略";
+"DFeedback_Alert_SendFailed_Title" = "发送反馈失败";
+"DFeedback_Alert_SendFailed_Message" = "发生错误: %@";
+"DFeedback_Alert_SendFailed_Button_Dismiss" = "离开";
 
-"DFeedback_PlaceholderText" = "请用英语写反馈, 我们不说<lang>。";
+"DFeedback_PlaceholderText" = "请用英文撰写和提交反馈信息,我们看不懂中文.";
 

@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="101000" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="DFCrashReportWindowController">
@@ -27,7 +27,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="关于%@问题报告" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" visibleAtLaunch="NO" animationBehavior="default" id="1">
+        <window title="%@问题报告" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" visibleAtLaunch="NO" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="28" width="558" height="490"/>
@@ -36,8 +36,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="558" height="490"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" id="10" userLabel="Send Button">
-                        <rect key="frame" x="386" y="5" width="158" height="32"/>
+                    <button verticalHuggingPriority="750" misplaced="YES" id="10" userLabel="Send Button">
+                        <rect key="frame" x="395" y="5" width="150" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="push" title="发送崩溃报告" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="11">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -51,8 +51,8 @@ DQ
                             <outlet property="nextKeyView" destination="69" id="106"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" id="50" userLabel="Cancel button">
-                        <rect key="frame" x="304" y="5" width="82" height="32"/>
+                    <button verticalHuggingPriority="750" misplaced="YES" id="50" userLabel="Cancel button">
+                        <rect key="frame" x="298" y="5" width="97" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="push" title="取消" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="51">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -70,7 +70,7 @@ DQ
                     <textField verticalHuggingPriority="750" id="63">
                         <rect key="frame" x="125" y="453" width="416" height="17"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="恭喜您发现了一个Bug" id="64">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="恭喜.您发现了一个漏洞!" id="64">
                             <font key="font" metaFont="systemBold"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -79,7 +79,7 @@ DQ
                     <textField verticalHuggingPriority="750" id="65">
                         <rect key="frame" x="125" y="411" width="416" height="34"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="您可以报告发现的问题。我们将要尽力修正错误。" id="66">
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="您是否愿意提交报告?以便我们能尝试为您修复该问题." id="66">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -92,7 +92,7 @@ DQ
                             <textField verticalHuggingPriority="750" id="20" userLabel="Comments Hint Label">
                                 <rect key="frame" x="18" y="87" width="396" height="17"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="软件崩溃前您都干了什么？" id="21">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="程序崩溃前的一刻您执行了什么操作?" id="21">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -116,15 +116,13 @@ DQ
                                     <rect key="frame" x="1" y="1" width="409" height="79"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textView importsGraphics="NO" richText="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="25" customClass="DFPlaceholderTextView">
+                                        <textView importsGraphics="NO" richText="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" spellingCorrection="YES" smartInsertDelete="YES" id="25" customClass="DFPlaceholderTextView">
                                             <rect key="frame" x="0.0" y="0.0" width="409" height="79"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <size key="minSize" width="409" height="79"/>
                                             <size key="maxSize" width="1272" height="10000000"/>
                                             <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            <size key="minSize" width="409" height="79"/>
-                                            <size key="maxSize" width="1272" height="10000000"/>
                                         </textView>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -151,15 +149,13 @@ DQ
                                     <rect key="frame" x="1" y="1" width="409" height="160"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textView editable="NO" importsGraphics="NO" richText="NO" findStyle="panel" continuousSpellChecking="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="33">
+                                        <textView editable="NO" importsGraphics="NO" richText="NO" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" usesRuler="YES" spellingCorrection="YES" smartInsertDelete="YES" id="33">
                                             <rect key="frame" x="0.0" y="0.0" width="409" height="160"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <size key="minSize" width="409" height="160"/>
                                             <size key="maxSize" width="1272" height="10000000"/>
                                             <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            <size key="minSize" width="409" height="160"/>
-                                            <size key="maxSize" width="1272" height="10000000"/>
                                         </textView>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -202,7 +198,7 @@ DQ
                     <textField hidden="YES" verticalHuggingPriority="750" id="84" userLabel="Sending Report Progress Label">
                         <rect key="frame" x="41" y="16" width="263" height="13"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="传送报告⋯" id="85">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="发送报告…" id="85">
                             <font key="font" metaFont="system" size="10"/>
                             <color key="textColor" red="0.32549021" green="0.32549021" blue="0.32549021" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -211,7 +207,7 @@ DQ
                     <textField verticalHuggingPriority="750" id="14" userLabel="Fetching System Profile Progress Label">
                         <rect key="frame" x="41" y="16" width="263" height="13"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="获取系统信息⋯" id="15">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="正在获取系统配置…" id="15">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" red="0.32549021" green="0.32549021" blue="0.32549021" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -220,7 +216,7 @@ DQ
                     <textField hidden="YES" verticalHuggingPriority="750" id="16" userLabel="Anonymous Label">
                         <rect key="frame" x="17" y="16" width="287" height="13"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="崩溃数据报告是匿名的" id="17">
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="崩溃报告中使用的数据都是匿名的" id="17">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" red="0.32549021" green="0.32549021" blue="0.32549021" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -229,7 +225,7 @@ DQ
                     <textField verticalHuggingPriority="750" id="99">
                         <rect key="frame" x="125" y="65" width="416" height="17"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="还在发生崩溃吗？［检查更新］" id="100">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="多次遇到崩溃问题? [检查更新]" id="100">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

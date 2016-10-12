@@ -6,6 +6,7 @@
 #import "DFApplication.h"
 #import "DFCrashReportWindowController.h"
 #import "GTMStackTrace.h"
+#import "OSXVersion.h"
 
 //-------------------------------------------------------------------------------------------------
 static NSString* const kUserDefaultCrashSequenceCount = @"DFApplication_crashSequenceCount";
@@ -84,7 +85,6 @@ static BOOL _hasHardcodedExceptions = NO;
 //-------------------------------------------------------------------------------------------------
 - (void)relaunch
 {
-    
 	// prevent endless loop of relaunch and crash
 	NSUInteger crashSequenceCount = (NSUInteger)[[NSUserDefaults standardUserDefaults] integerForKey:kUserDefaultCrashSequenceCount];
     if (crashSequenceCount < kCrashSequenceCountMax - 1)
@@ -190,7 +190,11 @@ static BOOL _hasHardcodedExceptions = NO;
 //-------------------------------------------------------------------------------------------------
 - (void)reportException:(NSException*)exception
 {
-    [super reportException:exception];
+    if (OSXVersion.generation < OSXGeneration_Sierra)
+    {
+        // starting from Sierra, this causes another dialog about the crash to display
+        [super reportException:exception];
+    }
 
     NSString* exceptionStackTrace = GTMStackTraceFromException(exception);
     

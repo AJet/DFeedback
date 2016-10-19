@@ -195,8 +195,8 @@ DQ
                         <rect key="frame" x="20" y="14" width="16" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </progressIndicator>
-                    <textField hidden="YES" verticalHuggingPriority="750" id="84" userLabel="Sending Report Progress Label">
-                        <rect key="frame" x="41" y="16" width="263" height="13"/>
+                    <textField hidden="YES" verticalHuggingPriority="750" misplaced="YES" id="84" userLabel="Sending Report Progress Label">
+                        <rect key="frame" x="41" y="16" width="263" height="14"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="发送报告…" id="85">
                             <font key="font" metaFont="system" size="10"/>
@@ -204,8 +204,8 @@ DQ
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" id="14" userLabel="Fetching System Profile Progress Label">
-                        <rect key="frame" x="41" y="16" width="263" height="13"/>
+                    <textField verticalHuggingPriority="750" misplaced="YES" id="14" userLabel="Fetching System Profile Progress Label">
+                        <rect key="frame" x="41" y="16" width="263" height="14"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="正在获取系统配置…" id="15">
                             <font key="font" metaFont="smallSystem"/>
@@ -213,8 +213,8 @@ DQ
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField hidden="YES" verticalHuggingPriority="750" id="16" userLabel="Anonymous Label">
-                        <rect key="frame" x="17" y="16" width="287" height="13"/>
+                    <textField hidden="YES" verticalHuggingPriority="750" misplaced="YES" id="16" userLabel="Anonymous Label">
+                        <rect key="frame" x="17" y="16" width="287" height="14"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="崩溃报告中使用的数据都是匿名的" id="17">
                             <font key="font" metaFont="smallSystem"/>

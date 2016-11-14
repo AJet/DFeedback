@@ -70,7 +70,7 @@ DQ
                     <textField verticalHuggingPriority="750" id="63">
                         <rect key="frame" x="125" y="453" width="416" height="17"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="恭喜。您發現了一個漏洞！" id="64">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="恭喜您發現了一個漏洞！" id="64">
                             <font key="font" metaFont="systemBold"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -79,7 +79,7 @@ DQ
                     <textField verticalHuggingPriority="750" id="65">
                         <rect key="frame" x="125" y="411" width="416" height="34"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="您是否願意提交報告？以便我們能嘗試為您修復該問題。" id="66">
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="您願意回報問題嗎？協助我們嘗試為您修復此問題。" id="66">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -92,7 +92,7 @@ DQ
                             <textField verticalHuggingPriority="750" id="20" userLabel="Comments Hint Label">
                                 <rect key="frame" x="18" y="87" width="396" height="17"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="程式崩潰前的一刻您執行了什麼操作？" id="21">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="程式崩潰前的一刻您執行了什麼動作？" id="21">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -207,7 +207,7 @@ DQ
                     <textField verticalHuggingPriority="750" misplaced="YES" id="14" userLabel="Fetching System Profile Progress Label">
                         <rect key="frame" x="41" y="16" width="263" height="14"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="正在獲取系統組態⋯" id="15">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="正在獲取系統資訊⋯" id="15">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" red="0.32549021" green="0.32549021" blue="0.32549021" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -216,7 +216,7 @@ DQ
                     <textField hidden="YES" verticalHuggingPriority="750" misplaced="YES" id="16" userLabel="Anonymous Label">
                         <rect key="frame" x="17" y="16" width="287" height="14"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="崩潰報告中使用的資料都是匿名的" id="17">
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="崩潰報告內的資料是匿名的" id="17">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" red="0.32549021" green="0.32549021" blue="0.32549021" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

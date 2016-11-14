@@ -7,6 +7,6 @@
 "DFeedback_Alert_SendFailed_Message" = "發生錯誤：%@";
 "DFeedback_Alert_SendFailed_Button_Dismiss" = "離開";
 
-"DFeedback_PlaceholderText" = "請用英文撰寫和提交回饋資訊，我們看不懂中文。";
+"DFeedback_PlaceholderText" = "請以英文撰寫和提交回饋，我們看不懂中文，請見諒。";
 
 

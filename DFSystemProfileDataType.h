@@ -7,7 +7,7 @@
 
 //-------------------------------------------------------------------------------------------------
 // Kinds of data to retrieve from system_profiler tool
-// Note: there can be more data types depending on the OS X version, use system_profiler -listDataTypes to list all
+// Note: there can be more data types depending on the macOS version, use system_profiler -listDataTypes to list all
 typedef enum : UInt64
 {
     DFSystemProfileData_All                     = 0,

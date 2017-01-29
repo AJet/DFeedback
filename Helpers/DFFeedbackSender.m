@@ -6,6 +6,7 @@
 #import "DFFeedbackSender.h"
 #import "DFFeedbackSenderDelegate.h"
 #import "NSURLRequest+Extension.h"
+#import "LiteralHelpers.h"
 
 //-------------------------------------------------------------------------------------------------
 @implementation DFFeedbackSender
@@ -39,14 +40,15 @@
 				userEmail:(NSString*)userEmail
 				 
 {
-	// create dictionary of fields to be transmitted using http POST
-    NSDictionary* form = @{@"feedbackType": feedbackType,
-                          @"feedback": feedbackText,
-                          @"email": userEmail != nil ? userEmail : @"<email suppressed>",
-                          @"appName": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"],
-                          @"bundleID": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"],
-                          @"version": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"],
-                          @"systemProfile": systemProfile != nil ? systemProfile : @"<system profile suppressed>"};
+    // create dictionary of fields to be transmitted using http POST
+    NSDictionary* form = NSDictionaryWithKeysAndValues(@"feedbackType", feedbackType,
+                                                       @"feedback", feedbackText,
+                                                       @"email", userEmail != nil ? userEmail : @"<email suppressed>",
+                                                       @"appName", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"],
+                                                       @"bundleID", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"],
+                                                       @"version", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"],
+                                                       @"systemProfile", systemProfile != nil ? systemProfile : @"<system profile suppressed>",
+                                                       nil);
 	// create request
     NSURLRequest* request = [NSURLRequest requestWithUrl:[NSURL URLWithString:url] postForm:form];
 	// begin sending the data

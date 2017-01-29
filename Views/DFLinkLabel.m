@@ -6,6 +6,7 @@
 #import "DFLinkLabel.h"
 #import "DFLinkLabelDelegate.h"
 #import "DFStyleSheet.h"
+#import "LiteralHelpers.h"
 
 //-------------------------------------------------------------------------------------------------
 @implementation DFLinkLabel
@@ -95,12 +96,14 @@
     
     if (value != nil)
     {
-        NSDictionary* normalTextAttrs = @{NSFontAttributeName : (_font != nil ? _font : DFLinkLabel_font),
-                                          NSForegroundColorAttributeName : (_textColor != nil ? _textColor : DFLinkLabel_normalColor)};
+        NSDictionary* normalTextAttrs = NSDictionaryWithKeysAndValues(NSFontAttributeName, (_font != nil ? _font : DFLinkLabel_font),
+                                                                      NSForegroundColorAttributeName, (_textColor != nil ? _textColor : DFLinkLabel_normalColor),
+                                                                      nil);
         
-        NSDictionary* linkTextAttrs = @{NSFontAttributeName : (_font != nil ? _font : DFLinkLabel_font),
-                                        NSForegroundColorAttributeName : DFLinkLabel_linkColor,
-                                        NSUnderlineStyleAttributeName : (DFLinkLabel_linkUnderlined ? @(NSUnderlinePatternSolid | NSUnderlineStyleSingle) : @(NSUnderlineStyleNone))};
+        NSDictionary* linkTextAttrs = NSDictionaryWithKeysAndValues(NSFontAttributeName, (_font != nil ? _font : DFLinkLabel_font),
+                                                                    NSForegroundColorAttributeName, DFLinkLabel_linkColor,
+                                                                    NSUnderlineStyleAttributeName, (DFLinkLabel_linkUnderlined ? @(NSUnderlinePatternSolid | NSUnderlineStyleSingle) : @(NSUnderlineStyleNone)),
+                                                                    nil);
 
         // split into attributed ranges
         NSUInteger openBracketLocation = NSNotFound;

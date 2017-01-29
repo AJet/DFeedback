@@ -12,6 +12,7 @@
 #import "DFStyleSheet.h"
 #import "DFApplication.h"
 #import "StringAnonymizer.h"
+#import "LiteralHelpers.h"
 
 //-------------------------------------------------------------------------------------------------
 static NSString* const kNibName = @"DFCrashReportWindow";
@@ -437,9 +438,10 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
         _windowAnimation.animationCurve = NSAnimationEaseInOut;
         _windowAnimation.duration = [self.window animationResizeTime:targetWindowFrame];
         _windowAnimation.delegate = self;
-        NSDictionary* windowAnimDict = @{NSViewAnimationTargetKey : self.window,
-                                         NSViewAnimationStartFrameKey : [NSValue valueWithRect:sourceWindowFrame],
-                                         NSViewAnimationEndFrameKey : [NSValue valueWithRect:targetWindowFrame]};
+        NSDictionary* windowAnimDict = NSDictionaryWithKeysAndValues(NSViewAnimationTargetKey, self.window,
+                                                                     NSViewAnimationStartFrameKey, [NSValue valueWithRect:sourceWindowFrame],
+                                                                     NSViewAnimationEndFrameKey, [NSValue valueWithRect:targetWindowFrame],
+                                                                     nil);
         _windowAnimation.viewAnimations = @[windowAnimDict];
         [_windowAnimation startAnimation];
     }

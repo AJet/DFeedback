@@ -4,6 +4,7 @@
 //-------------------------------------------------------------------------------------------------
 
 #import "DFStyleSheet.h"
+#import "LiteralHelpers.h"
 
 //-------------------------------------------------------------------------------------------------
 static BOOL _isInitialized = NO;
@@ -21,8 +22,9 @@ static void		InitializeDFBounceIconStyles(void)
 NSDictionary*	DFPlaceholderTextView_placeholderTextAttributes = nil;
 static void		InitializeDFPlaceholderTextViewStyles(void)
 {
-	DFPlaceholderTextView_placeholderTextAttributes = [@{NSForegroundColorAttributeName: [NSColor colorWithDeviceRed:128./255. green:128./255. blue:145./255. alpha:1.],
-														NSFontAttributeName: [NSFont userFontOfSize:12]} retain];
+    DFPlaceholderTextView_placeholderTextAttributes = [NSDictionaryWithKeysAndValues(NSForegroundColorAttributeName, [NSColor colorWithDeviceRed:128./255. green:128./255. blue:145./255. alpha:1.],
+                                                                                     NSFontAttributeName, [NSFont userFontOfSize:12],
+                                                                                     nil) retain];
 }
 
 //-------------------------------------------------------------------------------------------------

@@ -1,0 +1,11 @@
+﻿/*-------------------------------------------------------------------------------------------------*/
+/* Copyright (c) 2008 DaisyDisk Team: <http://www.daisydiskapp.com> */
+/* Some rights reserved: <http://opensource.org/licenses/mit-license.php> */
+/*-------------------------------------------------------------------------------------------------*/
+
+"DFeedback_Alert_SendFailed_Title" = "フィードバックの送信に失敗しました。";
+"DFeedback_Alert_SendFailed_Message" = "次のエラーが発生しました：%@";
+"DFeedback_Alert_SendFailed_Button_Dismiss" = "閉じる";
+
+"DFeedback_PlaceholderText" = "可能な限り英語でメッセージをお願いします";
+

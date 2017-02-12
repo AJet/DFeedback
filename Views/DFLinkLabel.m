@@ -68,6 +68,7 @@
     [_font release];
     [_textColor release];
     [_trackingArea release];
+    [_stringValue release];
     [super dealloc];
 }
 

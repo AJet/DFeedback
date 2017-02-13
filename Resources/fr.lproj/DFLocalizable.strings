@@ -3,9 +3,9 @@
 /* Some rights reserved: <http://opensource.org/licenses/mit-license.php> */
 /*-------------------------------------------------------------------------------------------------*/
 
-"DFeedback_Alert_SendFailed_Title" = "Erreur lors de l'envoi du commentaire";
+"DFeedback_Alert_SendFailed_Title" = "Erreur lors de l’envoi du commentaire";
 "DFeedback_Alert_SendFailed_Message" = "L’erreur suivante est survenue : %@";
 "DFeedback_Alert_SendFailed_Button_Dismiss" = "Fermer";
 
-"DFeedback_PlaceholderText" = "Merci d'écrire votre commentaire en anglais vu que nous ne comprenons pas le français.";
+"DFeedback_PlaceholderText" = "Merci d’écrire votre commentaire en anglais car que nous ne comprenons pas le français.";
 

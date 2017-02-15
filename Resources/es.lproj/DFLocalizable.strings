@@ -3,7 +3,7 @@
 /* Some rights reserved: <http://opensource.org/licenses/mit-license.php> */
 /*-------------------------------------------------------------------------------------------------*/
 
-"DFeedback_Alert_SendFailed_Title" = "Falló al enviar la Retroalimentación";
+"DFeedback_Alert_SendFailed_Title" = "Falló al enviar la retroalimentación";
 "DFeedback_Alert_SendFailed_Message" = "Ha ocurrido el siguiente error: %@";
 "DFeedback_Alert_SendFailed_Button_Dismiss" = "Rechazar";
 

@@ -20,7 +20,7 @@
 //-------------------------------------------------------------------------------------------------
 #pragma mark - Private constants
 //-------------------------------------------------------------------------------------------------
-static NSString* const NIB_NAME = @"DFFeedbackWindow";
+static NSString* const kNibName = @"DFFeedbackWindow";
 typedef enum : NSUInteger
 {
 	DFFeedback_General = 0,
@@ -112,7 +112,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 //-------------------------------------------------------------------------------------------------
 - (id)init
 {
-    self = [super initWithWindowNibName:NIB_NAME];
+    self = [super initWithWindowNibName:kNibName];
     if (self != nil)
 	{
 		// do nothing
@@ -156,8 +156,8 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 //-------------------------------------------------------------------------------------------------
 - (void)initializeEmailBounceIcon
 {
+    NSRect emailBounceIconFrame = _emailBounceIcon.frame;
 	_emailBounceIcon.icon = DFFeedbackWindow_emailWarningImage;
-    NSRect emailBounceIconFrame = _emailBounceIconSavedFrame;
     CGFloat emailBounceIconCenterX = emailBounceIconFrame.origin.x + .5 * emailBounceIconFrame.size.width;
     CGFloat emailBounceIconCenterY = emailBounceIconFrame.origin.y + .5 * emailBounceIconFrame.size.height;
     emailBounceIconFrame.size.width = DFFeedbackWindow_emailWarningImage.size.width + DFFeedbackWindow_emailWarningImageZoomIncrement;
@@ -179,7 +179,6 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 	_textView.placeholderText = NSLocalizedStringFromTable(@"DFeedback_PlaceholderText", @"DFLocalizable", nil);
 	
 	// initialize email bounce icon
-    _emailBounceIconSavedFrame = _emailBounceIcon.frame;
     [self initializeEmailBounceIcon];
 
 	// initialize email from the address book

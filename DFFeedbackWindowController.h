@@ -19,6 +19,8 @@
 // Singleton
 + (DFFeedbackWindowController*)singleton;
 
+@property (nonatomic, retain) NSString* defaultUserEmail;
+
 // Shows the feedback window on the specified tab
 - (void)showGeneralQuestion;
 

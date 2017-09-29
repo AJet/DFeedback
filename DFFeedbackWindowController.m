@@ -125,6 +125,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 {
 	[self cancelAllPendingStuff];
     [_detailsPopover release];
+    [_defaultUserEmail release];
 	[super dealloc];
 }
 
@@ -232,10 +233,11 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 
         // load previous e-mail
         NSString* previousEmail = [[NSUserDefaults standardUserDefaults] objectForKey:kStateEmailAddress];
-        if (previousEmail != nil)
+        if (previousEmail.length == 0)
         {
-            _emailComboBox.stringValue = previousEmail;
+            previousEmail = _defaultUserEmail;
         }
+        _emailComboBox.stringValue = previousEmail != nil ? previousEmail : @"";
     }
 }
 

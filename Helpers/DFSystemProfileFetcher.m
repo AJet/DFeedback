@@ -9,7 +9,7 @@
 #import "ApplicationSandboxInfo.h"
 
 //-------------------------------------------------------------------------------------------------
-static NSString* kDataTypeIds[] =
+static NSString* kDataTypeIDs[] =
 {
     @"SPAirPortDataType",
     @"SPApplicationsDataType",
@@ -126,7 +126,7 @@ static const DFSystemProfileDataType kDataTypes[] =
 //-------------------------------------------------------------------------------------------------
 + (void)initialize
 {
-    NSAssert(sizeof(kDataTypeIds) / sizeof(kDataTypeIds[0]) == sizeof(kDataTypes) / sizeof(kDataTypes[0]), @"The number of data types doesn't match the number of data type ids.");
+    NSAssert(sizeof(kDataTypeIDs) / sizeof(kDataTypeIDs[0]) == sizeof(kDataTypes) / sizeof(kDataTypes[0]), @"The number of data types doesn't match the number of data type ids.");
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -194,12 +194,12 @@ static const DFSystemProfileDataType kDataTypes[] =
         NSMutableArray* arguments = [NSMutableArray array];
         if (dataTypes != DFSystemProfileData_All)
         {
-            for (NSUInteger i = 0; i < sizeof(kDataTypeIds) / sizeof(kDataTypeIds[0]); ++i)
+            for (NSUInteger i = 0; i < sizeof(kDataTypeIDs) / sizeof(kDataTypeIDs[0]); ++i)
             {
                 DFSystemProfileDataType currDataType = kDataTypes[i];
                 if ((currDataType & dataTypes) != 0)
                 {
-                    [arguments addObject:kDataTypeIds[i]];
+                    [arguments addObject:kDataTypeIDs[i]];
                 }
             }
         }

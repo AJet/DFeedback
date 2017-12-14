@@ -9,8 +9,8 @@
 # Bash script to relaunch the app
 
 processPath=$1
-processId=$2
-processBundleId=$3
+processID=$2
+processBundleID=$3
 
 # waiting cycle
 i="10"
@@ -20,7 +20,7 @@ do
 sleep 0.5
 
 # check if running
-instanceCount=$(ps -p $processId | grep $processPath | wc -l)
+instanceCount=$(ps -p $processID | grep $processPath | wc -l)
 
 if [ $instanceCount -gt 0 ]
 then
@@ -36,5 +36,5 @@ done
 
 # relaunch the app
 echo Relaunching application
-open -n -b $processBundleId
+open -n -b $processBundleID
 

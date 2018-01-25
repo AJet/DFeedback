@@ -42,8 +42,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="530" height="420"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <comboBox verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" id="60" userLabel="E-mail Combo Box">
-                        <rect key="frame" x="188" y="55" width="325" height="26"/>
+                    <comboBox verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="YES" id="60" userLabel="E-mail Combo Box">
+                        <rect key="frame" x="193" y="55" width="320" height="26"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="john.appleseed@apple.com" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="61" customClass="DFComboBoxCell">
                             <font key="font" metaFont="system"/>
@@ -55,7 +55,7 @@
                             <outlet property="delegate" destination="-2" id="75"/>
                         </connections>
                     </comboBox>
-                    <button id="59" userLabel="Include E-mail Check Box">
+                    <button misplaced="YES" id="59" userLabel="Include E-mail Check Box">
                         <rect key="frame" x="18" y="59" width="169" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <buttonCell key="cell" type="check" title="Envoyer les réponses à :" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="62">
@@ -250,15 +250,15 @@ Gw
                             <action selector="cancel:" target="-2" id="51"/>
                         </connections>
                     </button>
-                    <segmentedControl verticalHuggingPriority="750" id="83" userLabel="Tabs Segmented Control">
-                        <rect key="frame" x="20" y="376" width="490" height="25"/>
+                    <segmentedControl verticalHuggingPriority="750" misplaced="YES" id="83" userLabel="Tabs Segmented Control">
+                        <rect key="frame" x="20" y="376" width="490" height="23"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="84">
                             <font key="font" metaFont="system"/>
                             <segments>
-                                <segment label="Question générale" width="149" selected="YES"/>
-                                <segment label="Demande de fonctionnalité" width="187" tag="1"/>
-                                <segment label="Rapporter un bug" width="150"/>
+                                <segment label="Question générale" width="148" selected="YES"/>
+                                <segment label="Demande de fonctionnalité" width="185" tag="1"/>
+                                <segment label="Rapporter un bug" width="149"/>
                             </segments>
                         </segmentedCell>
                         <connections>

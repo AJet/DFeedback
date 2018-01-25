@@ -105,6 +105,19 @@ typedef struct
 }
 
 //-------------------------------------------------------------------------------------------------
+- (void)roundDownToParts:(NSUInteger)numberOfParts
+{
+    for (VersionPartIndex i = numberOfParts; i < VersionPart_Count; ++i)
+    {
+        VersionPart* part = _parts + i;
+        part->number = 0;
+        [part->string release];
+        part->string = nil;
+        part->isSet = NO;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------
 - (NSComparisonResult)compare:(SoftwareVersion*)other
 {
     if (other == nil)

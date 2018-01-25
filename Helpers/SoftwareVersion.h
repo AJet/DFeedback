@@ -16,6 +16,9 @@
 + (SoftwareVersion*)makeVersionFromNumbers:(const NSUInteger*)numbers
                                      count:(NSUInteger)count;
 
+// Round version to the nearest lower number by cutting off unneeded parts
+- (void)roundDownToParts:(NSUInteger)numberOfParts;
+
 // Comparator
 - (NSComparisonResult)compare:(SoftwareVersion*)other;
 

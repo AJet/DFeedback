@@ -109,7 +109,7 @@
                                         <textField verticalHuggingPriority="750" id="38" userLabel="General Question Hint">
                                             <rect key="frame" x="0.0" y="3" width="466" height="17"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Wie können wir Ihnen helfen?" id="43">
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Wie können wir dir helfen?" id="43">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -121,12 +121,12 @@
                             <tabViewItem identifier="2" id="14" userLabel="Feature Request Tab">
                                 <view key="view" id="15">
                                     <rect key="frame" x="0.0" y="0.0" width="466" height="20"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" id="32" userLabel="Feature Request Hint">
                                             <rect key="frame" x="0.0" y="3" width="466" height="17"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Welche Funktion würden Sie gerne implementiert oder verbessert sehen?" id="37">
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Welche Funktion würdest du gerne implementiert oder verbessert sehen?" id="37">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -138,12 +138,12 @@
                             <tabViewItem identifier="1" id="13" userLabel="Bug Report Tab">
                                 <view key="view" id="16">
                                     <rect key="frame" x="0.0" y="0.0" width="466" height="20"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" id="23" userLabel="Bug Report Hint">
                                             <rect key="frame" x="0.0" y="3" width="466" height="17"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Was haben Sie gemacht und was ging schief?" id="24">
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Was hast du gemacht und was ging schief?" id="24">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

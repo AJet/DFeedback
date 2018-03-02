@@ -1,4 +1,4 @@
-﻿/*-------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------*/
 /* Copyright (c) 2008 DaisyDisk Team: <http://www.daisydiskapp.com> */
 /* Some rights reserved: <http://opensource.org/licenses/mit-license.php> */
 /*-------------------------------------------------------------------------------------------------*/
@@ -7,5 +7,5 @@
 "DFeedback_Alert_SendFailed_Message" = "Folgender Fehler ist aufgetreten: %@";
 "DFeedback_Alert_SendFailed_Button_Dismiss" = "Schließen";
 
-"DFeedback_PlaceholderText" = "Bitte verfassen Sie Ihr Feedback auf Englisch, da wir kein Deutsch verstehen.";
+"DFeedback_PlaceholderText" = "Bitte verfasse dein Feedback auf Englisch, da wir kein Deutsch verstehen.";
 

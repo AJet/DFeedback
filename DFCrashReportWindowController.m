@@ -150,7 +150,8 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 	_sendButton.enabled = YES;
     
     NSString* details = [NSString stringWithFormat:@"MESSAGE:\n%@\n\nSTACK TRACE:\n%@", _exceptionMessage, _exceptionStackTrace];
-	_detailsTextView.textStorage.attributedString = [[[NSAttributedString alloc] initWithString:details] autorelease];
+	_detailsTextView.textStorage.attributedString = [[[NSAttributedString alloc] initWithString:details
+                                                                                     attributes:@{NSForegroundColorAttributeName : NSColor.controlTextColor}] autorelease];
     
     _detailsDisclosureButton.state = NSOffState;
     
@@ -314,7 +315,8 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
         {
             self.systemProfile = AnonymizeString(_systemProfileFetcher.profile);
             NSString* profileString = [NSString stringWithFormat:@"\n\nSYSTEM PROFILE:\n\n%@", _systemProfile];
-            [_detailsTextView.textStorage appendAttributedString:[[[NSAttributedString alloc] initWithString:profileString] autorelease]];
+            [_detailsTextView.textStorage appendAttributedString:[[[NSAttributedString alloc] initWithString:profileString
+                                                                                                  attributes:@{NSForegroundColorAttributeName : NSColor.controlTextColor}] autorelease]];
         }
         if (_sendButtonWasClicked)
         {

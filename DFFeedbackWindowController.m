@@ -707,7 +707,8 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
         // update details window
         if (_systemProfile != nil)
         {
-            _detailsTextView.textStorage.attributedString = [[[NSAttributedString alloc] initWithString:_systemProfile] autorelease];
+            _detailsTextView.textStorage.attributedString = [[[NSAttributedString alloc] initWithString:_systemProfile
+                                                                                             attributes:@{NSForegroundColorAttributeName : NSColor.controlTextColor}] autorelease];
         }
         else
         {

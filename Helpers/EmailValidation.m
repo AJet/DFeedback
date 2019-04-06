@@ -24,10 +24,10 @@ BOOL IsEmptyMessage(NSString* string)
 //-------------------------------------------------------------------------------------------------
 BOOL IsValidEmailAddress(NSString* emailAddress)
 {
-	if (emailAddress != nil && ![emailAddress isEqualToString:@""])
+	if (emailAddress != nil && emailAddress.length > 0)
 	{
-		NSString* emailRegEx = @"[ ]*[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}[ ]*";
-		NSPredicate* emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx];
+		NSString* emailRegEx = @"^([-a-z0-9._+])+@([a-z0-9])(([a-z0-9._-])*([a-z0-9]))*(\\.([a-z0-9])([a-z0-9_-])*([a-z0-9]))+$";
+		NSPredicate* emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES[cd] %@", emailRegEx];
 		if([emailTest evaluateWithObject:emailAddress])
 		{
 			return YES;

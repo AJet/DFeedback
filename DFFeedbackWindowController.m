@@ -516,7 +516,9 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 //-------------------------------------------------------------------------------------------------
 - (IBAction)sendReport:(id)sender
 {
-	BOOL shouldBlinkInvalidEmail = _includeEmailCheckBox.intValue != 0 && !IsValidEmailAddress(_emailComboBox.stringValue);
+    NSString* email = _emailComboBox.stringValue;
+    email = [email stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" \n\r\t"]];
+	BOOL shouldBlinkInvalidEmail = _includeEmailCheckBox.intValue != 0 && !IsValidEmailAddress(email);
 	if (shouldBlinkInvalidEmail)
 	{
 		[self showEmailWarning];
@@ -526,7 +528,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
         // save e-mail additionally so that the next message can be sent without typing the e-mail again
         if (_includeEmailCheckBox.intValue != 0)
         {
-            [[NSUserDefaults standardUserDefaults] setObject:_emailComboBox.stringValue forKey:kStateEmailAddress];
+            [[NSUserDefaults standardUserDefaults] setObject:email forKey:kStateEmailAddress];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
         
@@ -744,7 +746,9 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 //-------------------------------------------------------------------------------------------------
 - (void)beginSendingFeedback
 {
-	NSString* userEmail = _includeEmailCheckBox.state == NSOnState ? _emailComboBox.stringValue : nil;
+	NSString* email = _includeEmailCheckBox.state == NSOnState ? _emailComboBox.stringValue : nil;
+    email = [email stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" \n\r\t"]];
+
 	NSString* feedbackText = _textView.textStorage.string;
 
     [_feedbackSender cancel];
@@ -758,7 +762,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
                           feedbackText:feedbackText
                           feedbackType:[self feedbackTypeStringFromType:self.currentFeedbackType]
                          systemProfile:_systemProfile
-                             userEmail:userEmail];
+                             userEmail:email];
     
 	[self updateProgressMode];
 }

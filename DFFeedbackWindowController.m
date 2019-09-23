@@ -300,7 +300,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 {
 	[state encodeObject:_textView.string forKey:kStateMessage];
 	[state encodeObject:_emailComboBox.stringValue forKey:kStateEmailAddress];
-	[state encodeInt:self.currentFeedbackType forKey:kStateFeedbackType];
+	[state encodeInteger:(NSInteger)self.currentFeedbackType forKey:kStateFeedbackType];
 	[state encodeBool:_includeEmailCheckBox.state == NSOnState forKey:kStateIncludeEmailAddress];
 	[state encodeBool:_includeSystemProfileCheckBox.state == NSOnState forKey:kStateIncludeSystemProfile];
 }

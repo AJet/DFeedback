@@ -160,8 +160,7 @@ static const DFSystemProfileDataType kDataTypes[] =
 		if (data != nil)
 		{
 			[_profile release];
-            NSString* newProfile = [NSString stringWithUTF8String:data.bytes];
-			_profile = [newProfile retain];
+            _profile = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 		}
 	}
 	_isDoneFetching = YES;

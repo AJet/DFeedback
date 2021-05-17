@@ -21,6 +21,8 @@
 
 @property (nonatomic, retain) NSString* defaultUserEmail;
 
+@property (nonatomic, retain) NSString* message;
+
 // Shows the feedback window on the specified tab
 - (void)showGeneralQuestion;
 

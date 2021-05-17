@@ -105,6 +105,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
     BOOL _isFetchingSystemProfile;
     NSRect _emailBounceIconSavedFrame;
     NSPopover* _detailsPopover;
+    NSString* _message;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -126,6 +127,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 	[self cancelAllPendingStuff];
     [_detailsPopover release];
     [_defaultUserEmail release];
+    [_message release];
 	[super dealloc];
 }
 
@@ -198,6 +200,8 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
         }
     }
 	
+    [self setMessage:_message];
+    
 	// restoration
     [self.window performSelector:@selector(setRestorable:)
                       withObject:(id)(NSUInteger)YES];
@@ -246,6 +250,29 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
 {
 	// this is needed to prevent the focus ring to appear on the tab buttons, each time the window is shown
 	[self.window makeFirstResponder:_tabView];
+}
+
+//-------------------------------------------------------------------------------------------------
+- (NSString*)message
+{
+    return _textView.textStorage.string;
+}
+
+//-------------------------------------------------------------------------------------------------
+- (void)setMessage:(NSString*)msg
+{
+    if (_textView != nil)
+    {
+        [[_textView.textStorage mutableString] setString:(msg != nil ? msg : @"")];
+        [_message release];
+        _message = nil;
+    }
+    else
+    {
+        [msg retain];
+        [_message release];
+        _message = msg;
+    }
 }
 
 //-------------------------------------------------------------------------------------------------

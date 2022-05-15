@@ -46,7 +46,7 @@
                                                        @"email", userEmail != nil ? userEmail : @"<email suppressed>",
                                                        @"appName", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"],
                                                        @"bundleID", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"],
-                                                       @"version", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"],
+                                                       @"version", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
                                                        @"systemProfile", systemProfile != nil ? systemProfile : @"<system profile suppressed>",
                                                        nil);
 	// create request

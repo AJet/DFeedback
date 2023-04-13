@@ -258,7 +258,7 @@
                                       iconSize.height);
         [_icon drawInRect:iconFrame
                  fromRect:NSZeroRect
-                operation:NSCompositeSourceOver
+                operation:NSCompositingOperationSourceOver
                  fraction:currOpacity
            respectFlipped:YES
                     hints:nil];

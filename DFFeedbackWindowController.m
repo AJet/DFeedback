@@ -713,7 +713,7 @@ static DFSystemProfileDataType _systemProfileDataTypes = DFSystemProfileData_All
         // NOTE: easter egg: hold OPT key to gather all data instead of specified data types
         // tell the user to do this if you happen to find that you have missed some data in the filtered profile
         DFSystemProfileDataType dataTypes = _systemProfileDataTypes;
-        if (([NSEvent modifierFlags] &  NSAlternateKeyMask) != 0)
+        if (([NSEvent modifierFlags] &  NSEventModifierFlagOption) != 0)
         {
             dataTypes = DFSystemProfileData_All;
         }

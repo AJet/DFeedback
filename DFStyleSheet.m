@@ -54,8 +54,8 @@ BOOL            DFLinkLabel_linkUnderlined = YES;
 static void		InitializeDFLinkLabel(void)
 {
     DFLinkLabel_font = [[NSFont systemFontOfSize:12.] retain];
-    DFLinkLabel_normalColor = [[NSColor colorWithDeviceRed:0. green:0. blue:0. alpha:1.] retain];
-    DFLinkLabel_linkColor = [[NSColor colorWithDeviceRed:0. green:0. blue:1. alpha:1.] retain];
+    DFLinkLabel_normalColor = [[NSColor textColor] retain];
+    DFLinkLabel_linkColor = [[NSColor linkColor] retain];
 }
 
 

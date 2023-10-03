@@ -10,7 +10,7 @@
 
 //-------------------------------------------------------------------------------------------------
 // Feedback window controller
-@interface DFFeedbackWindowController : NSWindowController <DFFeedbackSenderDelegate, DFSystemProfileFetcherDelegate>
+@interface DFFeedbackWindowController : NSWindowController <NSWindowRestoration, DFFeedbackSenderDelegate, DFSystemProfileFetcherDelegate>
 
 // Initialization, call before first use
 + (void)initializeWithFeedbackUrl:(NSString*)feedbackUrl
